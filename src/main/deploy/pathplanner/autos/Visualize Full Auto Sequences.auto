@@ -7,25 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Preload & CoOP Path 1"
+            "pathName": "Right Spam L1 Path 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Preload & CoOP Path 2"
+            "pathName": "Right Spam L1 Path 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Preload & CoOP Path 3"
+            "pathName": "Right Spam L1 Path 3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Preload & CoOP Path 4"
+            "pathName": "Right Spam L1 Path 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Spam L1 Path 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Spam L1 Path 6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Spam L1 Path 7"
           }
         }
       ]

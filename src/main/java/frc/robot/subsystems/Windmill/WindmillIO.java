@@ -12,6 +12,7 @@ public interface WindmillIO {
         public Rotation2d absolutePosition = new Rotation2d();
         public double absolutePositionRadians = 0;
         public double appliedVolts = 0;
+        public double current = 0;
 
     }
 

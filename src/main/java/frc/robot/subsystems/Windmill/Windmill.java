@@ -12,6 +12,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Windmill.WindmillIO.WindmillInputs;
 
@@ -25,7 +28,10 @@ public class Windmill extends SubsystemBase {
     private TrapezoidProfile.Constraints windmillConstraints;
     private ArmFeedforward windmillFF;
 
-    private Mechanism2d meched;
+    private Mechanism2d windmillMech2d;
+    private MechanismRoot2d root;
+    private MechanismLigament2d windmillLigament;
+
 
 
     public Windmill(WindmillIO io) {
@@ -35,7 +41,11 @@ public class Windmill extends SubsystemBase {
         windmillPID = new ProfiledPIDController(0, 0, 0, windmillConstraints); //set to what we need later
         windmillFF = new ArmFeedforward(0, 0, 0); // Check ^^ (Also what in the world is Ks Kg and Kv)
 
-    
+        windmillMech2d = new Mechanism2d(60, 60); // Find the right size for this
+        root = windmillMech2d.getRoot("WindmillRoot", 30, 30); // Create root at the center
+        windmillLigament = root.append(new MechanismLigament2d("Windmill", 30, 0)); // Create ligament representing the windmill
+
+        SmartDashboard.putData("Windmill Mechanism", windmillMech2d); // Add Mechanism2d to SmartDashboard
 
     }
 
@@ -46,6 +56,7 @@ public class Windmill extends SubsystemBase {
     public void stop() {
         windmillIo.stop();
     }
+    
 
     public void setTargetPosition(double degrees) {
         windmillPID.setGoal(Units.degreesToRadians(degrees)); // mkae sure we know whats happening here, with the degrees at least
@@ -57,6 +68,9 @@ public class Windmill extends SubsystemBase {
             +   windmillFF.calculate(
                 Units.degreesToRadians(degrees),
                 windmillPID.getSetpoint().velocity));
+
+                // Update the windmill ligament angle
+        windmillLigament.setAngle(degrees);
     }
 
 
@@ -72,7 +86,12 @@ public class Windmill extends SubsystemBase {
              windmillPID.getSetpoint().velocity));
     }
 
-    
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+        // Update the Mechanism2d with the current state of the windmill
+        SmartDashboard.putData("Windmill Mechanism", windmillMech2d);
+    }
 
 
 }

@@ -7,6 +7,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
+
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
@@ -27,6 +29,7 @@ public class Elevator extends SubsystemBase{
     private ProfiledPIDController profiledPID;
 
     private Mechanism2d mech2d;
+    
     private MechanismRoot2d root2d;
     private MechanismLigament2d elevatorLig2d;
 

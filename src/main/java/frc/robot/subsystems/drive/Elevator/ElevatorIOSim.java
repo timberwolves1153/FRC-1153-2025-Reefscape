@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 public class ElevatorIOSim implements ElevatorIO{
 
     private ElevatorSim elevatorSim;
-    private PIDController elevatorPID;
+   // private PIDController elevatorPID;
 
     public ElevatorIOSim()  {
         elevatorSim = new ElevatorSim(
@@ -21,7 +21,7 @@ public class ElevatorIOSim implements ElevatorIO{
             true, 
             Units.inchesToMeters(0));
 
-        elevatorPID = new PIDController(0, 0, 0);
+        //elevatorPID = new PIDController(0, 0, 0);
 
     }
 

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.drive.Elevator;
 
+import org.ejml.equation.Variable;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -17,7 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 public class ElevatorIOTalonFX implements ElevatorIO{
     
     private TalonFX leftMotor, rightMotor;
-    private double elevatorEncoder; 
+    private double elevatorEncoder;
 
     private final StatusSignal<Current> leaderCurrentValue = leftMotor.getSupplyCurrent(); 
     private final StatusSignal<Voltage> leaderAppliedVolts = leftMotor.getMotorVoltage();
@@ -33,6 +35,8 @@ public class ElevatorIOTalonFX implements ElevatorIO{
         rightMotor = new TalonFX(42, "rio");
         
         elevatorEncoder = leftMotor.getPosition().getValueAsDouble();
+
+        config();
 
 
     }
@@ -54,8 +58,7 @@ public class ElevatorIOTalonFX implements ElevatorIO{
             0.0,
             leaderCurrentValue, leaderAppliedVolts, 
             leaderPosition, followerAppliedVolts, 
-            followerCurrentValue, followerPosition
-        );
+            followerCurrentValue, followerPosition);
 
         leftMotor.optimizeBusUtilization();
         rightMotor.optimizeBusUtilization();
@@ -64,17 +67,22 @@ public class ElevatorIOTalonFX implements ElevatorIO{
     @Override
     public void updateInputs(ElevatorInputs elevatorInputs) {
         BaseStatusSignal.refreshAll(
-        leaderCurrentValue, leaderAppliedVolts, 
+        leaderCurrentValue, leaderAppliedVolts,
         leaderPosition, followerAppliedVolts, 
         followerCurrentValue, followerPosition);
 
-       // elevatorInputs.heightInches = elevatorEncoder.getAbsolutePosition().getValueAsDouble();
+        //elevatorInputs.heightInches = elevatorEncoder.getEncoder();
         elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
         elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
 
         elevatorInputs.getVoltageOut = leaderAppliedVolts.getValueAsDouble();
         elevatorInputs.getVoltageOut = followerAppliedVolts.getValueAsDouble();
 
+    }
+
+    @Override
+    public void setVoltage(double volts) {
+        leftMotor.setVoltage(volts);
     }
 
     @Override

@@ -14,6 +14,8 @@ public interface WindmillIO {
         public double appliedVolts = 0;
         public double current = 0;
 
+        //check if we need To either keep these empty or add values to it
+
     }
 
     public default void updateInputs(WindmillInputs inputs) {}

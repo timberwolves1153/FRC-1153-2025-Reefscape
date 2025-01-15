@@ -23,7 +23,7 @@ public class WindmillIOSim implements WindmillIO {
         windmillSim = new SingleJointedArmSim(
             DCMotor.getKrakenX60(1), //prototype change 
             134.4, //Could be 100.8 
-            0, 
+            0, //remember to check what this is
             Units.inchesToMeters(27.5), 
             Units.degreesToRadians(15), 
             Units.degreesToRadians(270), 
@@ -46,6 +46,8 @@ public class WindmillIOSim implements WindmillIO {
         windmillSim.update(.02);
 
        getAbsolutePosition();
+
+       //double check if this is all that you need to do in the updateInputs method
     }
 
     @Override

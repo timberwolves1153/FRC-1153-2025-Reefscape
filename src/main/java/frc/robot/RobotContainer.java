@@ -176,6 +176,9 @@ controller.b().whileTrue(Commands.run(() -> windmill.setVoltage(-3), windmill));
 controller.a().onFalse(Commands.runOnce(() -> windmill.setVoltage(0), windmill));
 controller.b().onFalse(Commands.runOnce(() -> windmill.setVoltage(0), windmill));
 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    make sure that all of these are correct on a controller, only for testing*/
+
 // ...existing code...
         
   }

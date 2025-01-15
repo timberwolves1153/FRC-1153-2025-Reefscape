@@ -59,7 +59,7 @@ public class Windmill extends SubsystemBase {
     
 
     public void setTargetPosition(double degrees) {
-        windmillPID.setGoal(Units.degreesToRadians(degrees)); // mkae sure we know whats happening here, with the degrees at least
+        windmillPID.setGoal(Units.degreesToRadians(degrees)); // basically this is telling the windmill "we wanna go here, get there"
         
         windmillIo.setVoltage(
             windmillPID.calculate(

@@ -14,12 +14,14 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class ElevatorIOTalonFX implements ElevatorIO{
     
     private TalonFX leftMotor, rightMotor;
     private double elevatorEncoder;
+    public DigitalInput magnetSwitch;
 
     private final StatusSignal<Current> leaderCurrentValue = leftMotor.getSupplyCurrent(); 
     private final StatusSignal<Voltage> leaderAppliedVolts = leftMotor.getMotorVoltage();
@@ -35,6 +37,8 @@ public class ElevatorIOTalonFX implements ElevatorIO{
         rightMotor = new TalonFX(42, "rio");
         
         elevatorEncoder = leftMotor.getPosition().getValueAsDouble();
+
+        magnetSwitch = new DigitalInput(1);
 
         config();
 
@@ -71,13 +75,25 @@ public class ElevatorIOTalonFX implements ElevatorIO{
         leaderPosition, followerAppliedVolts, 
         followerCurrentValue, followerPosition);
 
-        //elevatorInputs.heightInches = elevatorEncoder.getEncoder();
         elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
         elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
 
         elevatorInputs.getVoltageOut = leaderAppliedVolts.getValueAsDouble();
         elevatorInputs.getVoltageOut = followerAppliedVolts.getValueAsDouble();
 
+    }
+
+    public boolean isSwitchTriggered() {
+        return !magnetSwitch.get();
+    }
+
+    public void moveElevator(double volts) {
+        double adjustedVolts = volts;
+        if (isSwitchTriggered() && adjustedVolts < 0) {
+            adjustedVolts = 0;
+        } else {
+            adjustedVolts = volts;
+        }
     }
 
     @Override

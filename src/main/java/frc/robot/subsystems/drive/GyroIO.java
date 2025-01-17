@@ -24,6 +24,9 @@ public interface GyroIO {
     public double yawVelocityRadPerSec = 0.0;
     public double[] odometryYawTimestamps = new double[] {};
     public Rotation2d[] odometryYawPositions = new Rotation2d[] {};
+    public double gyroAngle = 0.0;
+    public double gyroRate = 0.0;
+    public boolean gyroConnected = false;
   }
 
   public default void updateInputs(GyroIOInputs inputs) {}

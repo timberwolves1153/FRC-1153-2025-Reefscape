@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path3"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Algae Autos",
+  "choreoAuto": false
+}

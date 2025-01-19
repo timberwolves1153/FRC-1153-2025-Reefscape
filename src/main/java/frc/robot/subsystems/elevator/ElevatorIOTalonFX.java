@@ -14,23 +14,22 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class ElevatorIOTalonFX implements ElevatorIO {
 
   private TalonFX leftMotor, rightMotor;
-  private double elevatorEncoder;
   public DigitalInput magnetSwitch;
 
   private final StatusSignal<Current> leaderCurrentValue = leftMotor.getSupplyCurrent();
   private final StatusSignal<Voltage> leaderAppliedVolts = leftMotor.getMotorVoltage();
   private final StatusSignal<Angle> leaderPosition = leftMotor.getPosition();
 
-  private final StatusSignal<Current> followerCurrentValue = leftMotor.getSupplyCurrent();
-  private final StatusSignal<Voltage> followerAppliedVolts = leftMotor.getMotorVoltage();
-  private final StatusSignal<Angle> followerPosition = leftMotor.getPosition();
+  private final StatusSignal<Current> followerCurrentValue = rightMotor.getSupplyCurrent();
+  private final StatusSignal<Voltage> followerAppliedVolts = rightMotor.getMotorVoltage();
+  private final StatusSignal<Angle> followerPosition = rightMotor.getPosition();
 
   public ElevatorIOTalonFX() {
 
     leftMotor = new TalonFX(41, "rio");
     rightMotor = new TalonFX(42, "rio");
 
-    elevatorEncoder = leftMotor.getPosition().getValueAsDouble();
+    // elevatorEncoder = leftMotor.getPosition().getValueAsDouble();
 
     magnetSwitch = new DigitalInput(1);
 
@@ -72,6 +71,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
     elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
+
+    elevatorInputs.heightInches = leaderPosition.getValueAsDouble();
+    elevatorInputs.heightInches = leaderPosition.getValueAsDouble();
 
     elevatorInputs.getVoltageOut = leaderAppliedVolts.getValueAsDouble();
     elevatorInputs.getVoltageOut = followerAppliedVolts.getValueAsDouble();

@@ -21,6 +21,24 @@
           "data": {
             "pathName": "Center To Reef C1A3 Path3"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path6"
+          }
         }
       ]
     }

@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Manipulator.Manipulator;
+import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,10 +30,10 @@ public class RobotContainer {
 
   private final Joystick operator = new Joystick(1);
 
-  private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
+  private final JoystickButton opX = new JoystickButton(operator, XboxController.Button.kA.value);
   private final JoystickButton opB = new JoystickButton(operator, XboxController.Button.kB.value);
 
-  private final Manipulator manipulator = new Manipulator();
+  private final Coral coral = new Coral(new CoralIOSparkMax());
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
@@ -43,9 +44,9 @@ public class RobotContainer {
     // Configure the trigger bindings
 
 
-    NamedCommands.registerCommand("Intake Manipulator", new InstantCommand(() -> manipulator.intakeCoral(), manipulator));
-    NamedCommands.registerCommand("Outtake Manipulator", new InstantCommand(() -> manipulator.outtakeCoral(), manipulator));
-    NamedCommands.registerCommand("Stop Manipulator", new InstantCommand(() -> manipulator.stopCoral(), manipulator));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(4), coral));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-4), coral));
+    NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.stop(), coral));
     
     configureBindings();
   }
@@ -61,11 +62,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
   
-    opA.onTrue(new InstantCommand(() -> manipulator.intakeCoral(), manipulator));
-    opA.onFalse(new InstantCommand(() -> manipulator.stopCoral(), manipulator));
+    opX.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opX.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    opB.onTrue(new InstantCommand(() -> manipulator.outtakeCoral(), manipulator));
-    opB.onFalse(new InstantCommand(() -> manipulator.stopCoral(), manipulator));
+    opB.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opB.onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     

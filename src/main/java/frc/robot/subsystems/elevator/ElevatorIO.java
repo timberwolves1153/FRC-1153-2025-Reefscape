@@ -10,7 +10,7 @@ public interface ElevatorIO {
     public double pidSetpoint = 0.0;
     public double heightInches = 0.0;
     public double getVoltageOut = 0.0;
-    // public double elevatorEncoderValue = 0.0;
+    public double tempCelsius = 0.0;
   }
 
   public default void updateInputs(ElevatorInputs elevatorInputs) {}

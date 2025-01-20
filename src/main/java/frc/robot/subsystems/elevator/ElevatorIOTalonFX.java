@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -19,10 +20,12 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private final StatusSignal<Current> leaderCurrentValue = leftMotor.getSupplyCurrent();
   private final StatusSignal<Voltage> leaderAppliedVolts = leftMotor.getMotorVoltage();
   private final StatusSignal<Angle> leaderPosition = leftMotor.getPosition();
+  private final StatusSignal<Temperature> leaderTemp = leftMotor.getDeviceTemp();
 
   private final StatusSignal<Current> followerCurrentValue = rightMotor.getSupplyCurrent();
   private final StatusSignal<Voltage> followerAppliedVolts = rightMotor.getMotorVoltage();
   private final StatusSignal<Angle> followerPosition = rightMotor.getPosition();
+  private final StatusSignal<Temperature> followerTemp = rightMotor.getDeviceTemp();
 
   public ElevatorIOTalonFX() {
 
@@ -50,13 +53,15 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     rightMotor.setControl(new Follower(41, true));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
-        0.0,
+        50,
         leaderCurrentValue,
         leaderAppliedVolts,
         leaderPosition,
+        leaderTemp,
         followerAppliedVolts,
         followerCurrentValue,
-        followerPosition);
+        followerPosition,
+        followerTemp);
 
     leftMotor.optimizeBusUtilization();
     rightMotor.optimizeBusUtilization();
@@ -66,8 +71,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   public void updateInputs(ElevatorInputs elevatorInputs) {
     BaseStatusSignal.refreshAll(
         leaderCurrentValue, leaderAppliedVolts,
-        leaderPosition, followerAppliedVolts,
-        followerCurrentValue, followerPosition);
+        leaderPosition, leaderTemp, 
+        followerAppliedVolts, followerCurrentValue, 
+        followerPosition, followerTemp);
 
     elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
     elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
@@ -77,6 +83,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     elevatorInputs.getVoltageOut = leaderAppliedVolts.getValueAsDouble();
     elevatorInputs.getVoltageOut = followerAppliedVolts.getValueAsDouble();
+
+    elevatorInputs.tempCelsius = leaderTemp.getValueAsDouble();
+    elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();
   }
 
   public boolean isSwitchTriggered() {

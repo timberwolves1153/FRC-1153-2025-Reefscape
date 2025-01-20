@@ -20,9 +20,6 @@ public class ElevatorIOSim implements ElevatorIO {
             Units.inchesToMeters(63.0),
             true,
             Units.inchesToMeters(0));
-
-    // elevatorPID = new PIDController(0, 0, 0);
-
   }
 
   @Override

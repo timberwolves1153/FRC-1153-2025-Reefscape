@@ -37,21 +37,21 @@ public class Elevator extends SubsystemBase {
         constraints = new TrapezoidProfile.Constraints(0, 0);
         profiledPIDController = new ProfiledPIDController(0, 0, 0, constraints);
         elevatorFF = new ElevatorFeedforward(0, 0, 0);
-        elevatorPID = new PIDController(0, 0, 0);
+      //  elevatorPID = new PIDController(0, 0, 0);
         break;
 
       case SIM:
         constraints = new TrapezoidProfile.Constraints(0, 0);
         profiledPIDController = new ProfiledPIDController(0, 0, 0, constraints);
         elevatorFF = new ElevatorFeedforward(0, 0, 0);
-        elevatorPID = new PIDController(0, 0, 0);
+       // elevatorPID = new PIDController(0, 0, 0);
         break;
 
       default:
         constraints = new TrapezoidProfile.Constraints(0, 0);
         profiledPIDController = new ProfiledPIDController(0, 0, 0, constraints);
         elevatorFF = new ElevatorFeedforward(0, 0, 0);
-        elevatorPID = new PIDController(0, 0, 0);
+      //  elevatorPID = new PIDController(0, 0, 0);
         break;
     }
 

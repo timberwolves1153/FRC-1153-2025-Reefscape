@@ -4,15 +4,16 @@
   "holonomicMode": true,
   "pathFolders": [
     "Center To Left C4",
-    "Center To Reef C1A3"
+    "Center To Reef C1A3",
+    "Left To Reef&Source C3A2"
   ],
   "autoFolders": [
     "Algae Autos",
-    "Coral Autos",
-    "Algae&Coral Autos"
+    "Combination Autos",
+    "Coral Autos"
   ],
-  "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 4.0,
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,

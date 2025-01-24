@@ -7,9 +7,9 @@ public interface ElevatorIO {
   @AutoLog
   public static class ElevatorInputs {
     public double elevatorCurrentAmps = 0.0;
-    public double pidSetpoint = 0.0;
-    public double heightInches = 0.0;
-    public double getVoltageOut = 0.0;
+    // public double pidSetpoint = 0.0;
+    public double heightMeters = 0.0;
+    public double getAppliedVolts = 0.0;
     public double tempCelsius = 0.0;
   }
 

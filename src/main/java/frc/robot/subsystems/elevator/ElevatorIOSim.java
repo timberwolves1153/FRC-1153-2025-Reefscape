@@ -1,5 +1,6 @@
 package frc.robot.subsystems.elevator;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -7,7 +8,7 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 public class ElevatorIOSim implements ElevatorIO {
 
   private ElevatorSim elevatorSim;
-  // private PIDController elevatorPID;
+  private double volts;
 
   public ElevatorIOSim() {
     elevatorSim =
@@ -20,26 +21,35 @@ public class ElevatorIOSim implements ElevatorIO {
             Units.inchesToMeters(63.0),
             true,
             Units.inchesToMeters(0));
+
+    volts = 0.0;
   }
 
   @Override
   public void updateInputs(ElevatorInputs elevatorInputs) {
     elevatorSim.update(0.02);
 
-    elevatorInputs.heightInches = elevatorSim.getPositionMeters();
+    elevatorInputs.heightMeters = elevatorSim.getPositionMeters();
+    elevatorInputs.elevatorCurrentAmps = elevatorSim.getCurrentDrawAmps();
+    elevatorInputs.tempCelsius = 20;
+    elevatorInputs.getAppliedVolts = volts;
   }
 
   @Override
-  public void setVoltage(double volts) {
-    elevatorSim.setInputVoltage(volts);
+  public void setVoltage(final double voltage) {
+    volts = voltage;
+    elevatorSim.setInputVoltage(MathUtil.clamp(voltage, -4, 4));
+
+    // elevatorSim.setInputVoltage(volts);
   }
 
   @Override
   public void stop() {
     elevatorSim.setInputVoltage(0);
+    ;
   }
 
-  //   public double getElevatorHeight() {
-  //     return Units.metersToInches(elevatorSim.getPositionMeters());
-  //   }
+  public double getElevatorHeight() {
+    return Units.metersToInches(elevatorSim.getPositionMeters());
+  }
 }

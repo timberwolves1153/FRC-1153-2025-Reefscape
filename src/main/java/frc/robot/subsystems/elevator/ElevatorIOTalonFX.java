@@ -32,8 +32,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     leftMotor = new TalonFX(41, "rio");
     rightMotor = new TalonFX(42, "rio");
 
-    // elevatorEncoder = leftMotor.getPosition().getValueAsDouble();
-
     magnetSwitch = new DigitalInput(1);
 
     config();
@@ -71,18 +69,18 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   public void updateInputs(ElevatorInputs elevatorInputs) {
     BaseStatusSignal.refreshAll(
         leaderCurrentValue, leaderAppliedVolts,
-        leaderPosition, leaderTemp, 
-        followerAppliedVolts, followerCurrentValue, 
+        leaderPosition, leaderTemp,
+        followerAppliedVolts, followerCurrentValue,
         followerPosition, followerTemp);
 
     elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
     elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
 
-    elevatorInputs.heightInches = leaderPosition.getValueAsDouble();
-    elevatorInputs.heightInches = leaderPosition.getValueAsDouble();
+    elevatorInputs.heightMeters = leaderPosition.getValueAsDouble();
+    elevatorInputs.heightMeters = leaderPosition.getValueAsDouble();
 
-    elevatorInputs.getVoltageOut = leaderAppliedVolts.getValueAsDouble();
-    elevatorInputs.getVoltageOut = followerAppliedVolts.getValueAsDouble();
+    elevatorInputs.getAppliedVolts = leaderAppliedVolts.getValueAsDouble();
+    elevatorInputs.getAppliedVolts = followerAppliedVolts.getValueAsDouble();
 
     elevatorInputs.tempCelsius = leaderTemp.getValueAsDouble();
     elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();

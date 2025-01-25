@@ -59,4 +59,6 @@ public class WindmillIOSim implements WindmillIO {
   public double getAbsolutePosition() {
     return encoder.getAbsolutePosition().getValueAsDouble();
   }
+
+  public void close() {}
 }

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.windmill.WindmillIO.WindmillInputs;
 
-public class Windmill extends SubsystemBase {
+public class Windmill extends SubsystemBase implements AutoCloseable {
 
   private WindmillIO windmillIo;
   private WindmillInputs windmillInputs;
@@ -88,5 +88,10 @@ public class Windmill extends SubsystemBase {
     // This method will be called once per scheduler run
     // Update the Mechanism2d with the current state of the windmill
     SmartDashboard.putData("Windmill Mechanism", windmillMech2d);
+  }
+
+  @Override
+  public void close() throws Exception {
+    windmillIo.close();
   }
 }

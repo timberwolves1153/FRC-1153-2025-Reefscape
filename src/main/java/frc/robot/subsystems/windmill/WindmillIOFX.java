@@ -77,4 +77,9 @@ public class WindmillIOFX implements WindmillIO {
   public double getPositionDegrees() {
     return Units.rotationsToDegrees(getAbsolutePosition());
   }
+
+  public void close() {
+    windmillMotor.close();
+    encoder.close();
+  }
 }

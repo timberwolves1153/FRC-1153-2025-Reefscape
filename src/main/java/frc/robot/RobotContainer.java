@@ -19,7 +19,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -36,6 +39,8 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.util.AxisButton;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -55,9 +60,13 @@ public class RobotContainer {
 
   private final Joystick operator = new Joystick(1);
 
-  private final JoystickButton opX = new JoystickButton(operator, XboxController.Button.kX.value);
-  private final JoystickButton opB = new JoystickButton(operator, XboxController.Button.kB.value);
-  private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
+  private final JoystickButton coralIntake = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+  private final JoystickButton coralPiston = new JoystickButton(operator, XboxController.Button.kLeftStick.value);
+  private final AxisButton coralOuttake = new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
+
+  private final JoystickButton algaeIntake = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+  private final JoystickButton algaePiston = new JoystickButton(operator, XboxController.Button.kRightStick.value);
+  private final AxisButton algaeOuttake = new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -165,21 +174,21 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    opX.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
-    opX.onFalse(new InstantCommand(() -> coral.stop(), coral));
+    coralIntake.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    coralIntake.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    opB.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
-    opB.onFalse(new InstantCommand(() -> coral.stop(), coral));
+    coralOuttake.onTrue(new InstantCommand(() -> coral.runVolts(-4), coral));
+    coralOuttake.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    if (position == true) {
-      position = false;
-      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kForward), coral));
-      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
-    } else {
-      position = true;
-      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kReverse), coral));
-      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
-    }
+    coralPiston.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+
+    // algaeIntake.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
+    // algaeIntake.onTrue(new InstantCommand(() -> algae.stop(), algae));
+
+    // algaeOuttake.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
+    // algaeOuttake.onTrue(new InstantCommand(() -> algae.stop(), algae));
+
+
   }
 
   public Joystick getOperatorController() {

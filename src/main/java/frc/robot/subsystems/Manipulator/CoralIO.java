@@ -19,5 +19,5 @@ public interface CoralIO {
   /** Stop in open loop. */
   public default void stop() {}
 
-  public default void setSolenoid(DoubleSolenoid.Value value) {}
+  public default void setSolenoid() {}
 }

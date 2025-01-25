@@ -40,7 +40,7 @@ public class Coral extends SubsystemBase {
     io.stop();
   }
 
-  public void setSolenoid(DoubleSolenoid.Value value) {
-    io.setSolenoid(value);
+  public void setSolenoid() {
+    io.setSolenoid();
   }
 }

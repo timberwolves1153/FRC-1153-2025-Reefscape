@@ -4,22 +4,27 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 // import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.simulation.DoubleSolenoidSim;
+import edu.wpi.first.wpilibj.simulation.SolenoidSim;
 
 public class CoralIOSim implements CoralIO {
   private final DCMotorSim sim;
   private double appliedVolts = 0.0;
   private DoubleSolenoidSim doubleSolenoid;
+  private SolenoidSim singleSolenoid;
 
   public CoralIOSim(DCMotor motor, double reduction, double momentOfInertia) {
     sim =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
     doubleSolenoid = new DoubleSolenoidSim(PneumaticsModuleType.CTREPCM, 0, 1);
+    doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+
   }
 
   @Override
@@ -44,7 +49,15 @@ public class CoralIOSim implements CoralIO {
   }
 
   @Override
-  public void setSolenoid(DoubleSolenoid.Value value) {
-    doubleSolenoid.set(value);
+  public void setSolenoid() {
+    toggle();
+  }
+
+  private void toggle() {
+    if (doubleSolenoid.get() == Value.kForward) {
+      doubleSolenoid.set(Value.kReverse);
+    } else if (doubleSolenoid.get() == Value.kReverse) {
+      doubleSolenoid.set(Value.kForward);
+    }
   }
 }

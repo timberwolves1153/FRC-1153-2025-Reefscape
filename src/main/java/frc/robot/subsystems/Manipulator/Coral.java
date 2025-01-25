@@ -2,6 +2,7 @@ package frc.robot.subsystems.Manipulator;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -39,5 +40,9 @@ public class Coral extends SubsystemBase{
     public void stop() {
         io.stop();
       }
+
+    public void setSolenoid(DoubleSolenoid.Value value){
+        io.setSolenoid(value);
+    }
 
 }

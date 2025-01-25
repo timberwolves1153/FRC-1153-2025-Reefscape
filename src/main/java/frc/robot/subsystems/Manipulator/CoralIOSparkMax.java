@@ -2,6 +2,10 @@ package frc.robot.subsystems.Manipulator;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -13,10 +17,13 @@ public class CoralIOSparkMax implements CoralIO {
     private SparkMax wheelsC;
     private SparkMaxConfig config;
 
+    private final DoubleSolenoid doubleSolenoid;
+
     public CoralIOSparkMax() {
 
         wheelsC = new SparkMax(10, MotorType.kBrushless);
         config = new SparkMaxConfig();
+        doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
     }
 
     public void configMotors(){
@@ -47,5 +54,8 @@ public class CoralIOSparkMax implements CoralIO {
         wheelsC.setVoltage(0);
     }
 //------------------------------------------
-
+@Override
+    public void setSolenoid(DoubleSolenoid.Value value){
+        doubleSolenoid.set(value);
+    }
 }

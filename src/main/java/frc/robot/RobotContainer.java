@@ -7,6 +7,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,14 +27,17 @@ import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-
+  private boolean position = true;
 
   private final Joystick operator = new Joystick(1);
 
   private final JoystickButton opX = new JoystickButton(operator, XboxController.Button.kA.value);
   private final JoystickButton opB = new JoystickButton(operator, XboxController.Button.kB.value);
+  private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kB.value);
+
 
   private final Coral coral = new Coral(new CoralIOSparkMax());
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
@@ -68,9 +72,20 @@ public class RobotContainer {
     opB.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
     opB.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
+    // opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kForward), coral));
+    // opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    //allows for one button to be used similarly to a toggle
+    if (position == true){
+      position = false;
+      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kForward), coral));
+      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
+    }
+    else{
+      position = true;
+      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kReverse), coral));
+      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
+    }
     
   }
 
@@ -83,8 +98,7 @@ public Joystick getOperatorController(){
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
-}
+  
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return null;} }

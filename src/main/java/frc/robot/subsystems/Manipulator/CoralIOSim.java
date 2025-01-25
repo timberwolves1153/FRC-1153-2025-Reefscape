@@ -20,7 +20,7 @@ public class CoralIOSim implements CoralIO {
     sim =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
-    doubleSolenoid = new DoubleSolenoidSim(PneumaticsModuleType.CTREPCM, 0, 1);
+    doubleSolenoid = new DoubleSolenoidSim(PneumaticsModuleType.REVPH, 0, 1);
     doubleSolenoid.set(DoubleSolenoid.Value.kForward);
   }
 

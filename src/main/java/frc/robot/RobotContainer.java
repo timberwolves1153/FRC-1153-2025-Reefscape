@@ -53,7 +53,6 @@ public class RobotContainer {
   private final Coral coral = new Coral(new CoralIOSparkMax());
   private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
-
   // variables
 
   private final Joystick operator = new Joystick(1);
@@ -191,7 +190,6 @@ public class RobotContainer {
 
     algaeOuttake.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
     algaeOuttake.onTrue(new InstantCommand(() -> algae.stop(), algae));
-
   }
 
   public Joystick getOperatorController() {

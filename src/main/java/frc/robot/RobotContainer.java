@@ -16,14 +16,20 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -39,8 +45,19 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Subsystems
   private final Drive drive;
+  private final Coral coral = new Coral(new CoralIOSparkMax());
+
+  // variables
+  private boolean position = true;
+
+  private final Joystick operator = new Joystick(1);
+
+  private final JoystickButton opX = new JoystickButton(operator, XboxController.Button.kX.value);
+  private final JoystickButton opB = new JoystickButton(operator, XboxController.Button.kB.value);
+  private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -116,6 +133,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
+
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -146,6 +164,26 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
+
+    opX.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opX.onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+    opB.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opB.onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+    if (position == true) {
+      position = false;
+      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kForward), coral));
+      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
+    } else {
+      position = true;
+      opA.onTrue(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kReverse), coral));
+      opA.onFalse(new InstantCommand(() -> coral.setSolenoid(DoubleSolenoid.Value.kOff), coral));
+    }
+  }
+
+  public Joystick getOperatorController() {
+    return operator;
   }
 
   /**

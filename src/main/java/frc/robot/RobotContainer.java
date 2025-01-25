@@ -16,13 +16,9 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Manipulator.Algae;
+import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 import frc.robot.subsystems.drive.Drive;
@@ -40,7 +38,6 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.util.AxisButton;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -54,19 +51,26 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Coral coral = new Coral(new CoralIOSparkMax());
+  private final Algae algae = new Algae(new AlgaeIOSparkMax());
+
 
   // variables
-  private boolean position = true;
 
   private final Joystick operator = new Joystick(1);
 
-  private final JoystickButton coralIntake = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
-  private final JoystickButton coralPiston = new JoystickButton(operator, XboxController.Button.kLeftStick.value);
-  private final AxisButton coralOuttake = new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
+  private final JoystickButton coralIntake =
+      new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+  private final JoystickButton coralPiston =
+      new JoystickButton(operator, XboxController.Button.kLeftStick.value);
+  private final AxisButton coralOuttake =
+      new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
 
-  private final JoystickButton algaeIntake = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
-  private final JoystickButton algaePiston = new JoystickButton(operator, XboxController.Button.kRightStick.value);
-  private final AxisButton algaeOuttake = new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
+  private final JoystickButton algaeIntake =
+      new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+  // private final JoystickButton algaePiston =
+  //     new JoystickButton(operator, XboxController.Button.kRightStick.value);
+  private final AxisButton algaeOuttake =
+      new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -182,12 +186,11 @@ public class RobotContainer {
 
     coralPiston.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    // algaeIntake.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
-    // algaeIntake.onTrue(new InstantCommand(() -> algae.stop(), algae));
+    algaeIntake.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
+    algaeIntake.onTrue(new InstantCommand(() -> algae.stop(), algae));
 
-    // algaeOuttake.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
-    // algaeOuttake.onTrue(new InstantCommand(() -> algae.stop(), algae));
-
+    algaeOuttake.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
+    algaeOuttake.onTrue(new InstantCommand(() -> algae.stop(), algae));
 
   }
 

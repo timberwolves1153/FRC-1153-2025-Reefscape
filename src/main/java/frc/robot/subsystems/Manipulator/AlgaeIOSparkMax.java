@@ -7,22 +7,16 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
-public class CoralIOSparkMax implements CoralIO {
+public class AlgaeIOSparkMax implements AlgaeIO {
 
   private SparkMax wheelsC;
   private SparkMaxConfig config;
 
-  private final DoubleSolenoid doubleSolenoid;
-
-  public CoralIOSparkMax() {
+  public AlgaeIOSparkMax() {
 
     wheelsC = new SparkMax(10, MotorType.kBrushless);
     config = new SparkMaxConfig();
-    doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
-    doubleSolenoid.set(DoubleSolenoid.Value.kForward);
   }
 
   public void configMotors() {
@@ -36,8 +30,8 @@ public class CoralIOSparkMax implements CoralIO {
     wheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  @Override // matches names w/in coralio
-  public void updateInputs(CoralIOInputs inputs) {
+  @Override // matches names w/in algae
+  public void updateInputs(AlgaeIOInputs inputs) {
 
     inputs.appliedVolts = wheelsC.getAppliedOutput() * wheelsC.getBusVoltage();
     inputs.currentAmps = wheelsC.getOutputCurrent();
@@ -51,10 +45,5 @@ public class CoralIOSparkMax implements CoralIO {
   @Override
   public void stop() {
     wheelsC.setVoltage(0);
-  }
-  // ------------------------------------------
-  // @Override
-  public void setSolenoid() {
-    doubleSolenoid.toggle();
   }
 }

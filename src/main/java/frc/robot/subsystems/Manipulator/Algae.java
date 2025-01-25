@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
-public class Coral extends SubsystemBase {
-  private final CoralIO io;
-  private final CoralIOInputsAutoLogged inputs = new CoralIOInputsAutoLogged();
+public class Algae extends SubsystemBase {
+  private final AlgaeIO io;
+  private final AlgaeIOInputsAutoLogged inputs = new AlgaeIOInputsAutoLogged();
 
-  public Coral(CoralIO io) {
+  public Algae(AlgaeIO io) {
     this.io = io;
 
     switch (Constants.currentMode) {
@@ -27,7 +27,7 @@ public class Coral extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Coral", inputs);
+    Logger.processInputs("Algae", inputs);
   }
 
   /** Run open loop at the specified voltage. */
@@ -37,9 +37,5 @@ public class Coral extends SubsystemBase {
 
   public void stop() {
     io.stop();
-  }
-
-  public void setSolenoid() {
-    io.setSolenoid();
   }
 }

@@ -7,7 +7,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -64,14 +63,12 @@ public class Elevator extends SubsystemBase {
     elevatorMech2d = new LoggedMechanism2d(3, Units.feetToMeters(6));
     elevatorRoot2d =
         elevatorMech2d.getRoot(
-            "Elevator",
-            (3.0 / 2.0) + Units.inchesToMeters(9.053),
-            Units.inchesToMeters(12.689));
-    elevatorLig2d = new LoggedMechanismLigament2d("Elevator Lig", Units.inchesToMeters(80), elev_angle.getDegrees());
+            "Elevator", (3.0 / 2.0) + Units.inchesToMeters(9.053), Units.inchesToMeters(12.689));
+    elevatorLig2d =
+        new LoggedMechanismLigament2d(
+            "Elevator Lig", Units.inchesToMeters(80), elev_angle.getDegrees());
 
     elevatorRoot2d.append(elevatorLig2d);
-
-    
   }
 
   public void setVoltage(double volts) {

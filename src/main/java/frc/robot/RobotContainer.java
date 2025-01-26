@@ -164,7 +164,6 @@ public class RobotContainer {
     controller.b().whileTrue(new InstantCommand(() -> windmill.stop(), windmill));
     controller.x().whileTrue(new InstantCommand(() -> windmill.setVoltage(-4), windmill));
     controller.x().whileTrue(new InstantCommand(() -> windmill.stop(), windmill));
-    
   }
 
   /**

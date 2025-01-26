@@ -57,18 +57,18 @@ public class RobotContainer {
 
   private final Joystick operator = new Joystick(1);
 
-  private final JoystickButton coralIntake =
+  private final JoystickButton opLeftBumper =
       new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
-  private final JoystickButton coralPiston =
+  private final JoystickButton opLeftStick =
       new JoystickButton(operator, XboxController.Button.kLeftStick.value);
-  private final AxisButton coralOuttake =
+  private final AxisButton opLeftTrigger =
       new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
 
-  private final JoystickButton algaeIntake =
+  private final JoystickButton opRightBumper =
       new JoystickButton(operator, XboxController.Button.kRightBumper.value);
-  // private final JoystickButton algaePiston =
-  //     new JoystickButton(operator, XboxController.Button.kRightStick.value);
-  private final AxisButton algaeOuttake =
+  private final JoystickButton opRightStick =
+      new JoystickButton(operator, XboxController.Button.kRightStick.value);
+  private final AxisButton opRightTrigger =
       new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
 
   // Controller
@@ -177,19 +177,19 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    coralIntake.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
-    coralIntake.onFalse(new InstantCommand(() -> coral.stop(), coral));
+    opLeftBumper.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opLeftBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    coralOuttake.onTrue(new InstantCommand(() -> coral.runVolts(-4), coral));
-    coralOuttake.onFalse(new InstantCommand(() -> coral.stop(), coral));
+    opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-4), coral));
+    opRightBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    coralPiston.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+    opLeftTrigger.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    algaeIntake.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
-    algaeIntake.onTrue(new InstantCommand(() -> algae.stop(), algae));
+    opLeftStick.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
+    opLeftStick.onFalse(new InstantCommand(() -> algae.stop(), algae));
 
-    algaeOuttake.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
-    algaeOuttake.onTrue(new InstantCommand(() -> algae.stop(), algae));
+    opRightStick.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
+    opRightStick.onFalse(new InstantCommand(() -> algae.stop(), algae));
   }
 
   public Joystick getOperatorController() {

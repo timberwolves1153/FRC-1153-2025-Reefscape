@@ -19,7 +19,7 @@ public class CoralIOSparkMax implements CoralIO {
 
   public CoralIOSparkMax() {
 
-    wheelsC = new SparkMax(10, MotorType.kBrushless);
+    wheelsC = new SparkMax(45, MotorType.kBrushless);
     config = new SparkMaxConfig();
     doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
     doubleSolenoid.set(DoubleSolenoid.Value.kForward);

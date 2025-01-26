@@ -15,7 +15,7 @@ public class AlgaeIOSparkMax implements AlgaeIO {
 
   public AlgaeIOSparkMax() {
 
-    wheelsC = new SparkMax(10, MotorType.kBrushless);
+    wheelsC = new SparkMax(46, MotorType.kBrushless);
     config = new SparkMaxConfig();
   }
 

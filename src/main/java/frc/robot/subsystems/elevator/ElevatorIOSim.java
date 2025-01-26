@@ -18,7 +18,7 @@ public class ElevatorIOSim implements ElevatorIO {
             Units.lbsToKilograms(17.966),
             Units.inchesToMeters(1.7567),
             Units.inchesToMeters(0),
-            Units.inchesToMeters(63.0),
+            Units.inchesToMeters(56.5),
             true,
             Units.inchesToMeters(0));
 
@@ -39,8 +39,6 @@ public class ElevatorIOSim implements ElevatorIO {
   public void setVoltage(final double voltage) {
     volts = voltage;
     elevatorSim.setInputVoltage(MathUtil.clamp(voltage, -4, 4));
-
-    // elevatorSim.setInputVoltage(volts);
   }
 
   @Override

@@ -7,6 +7,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -55,7 +56,6 @@ public class Elevator extends SubsystemBase {
         break;
 
       default:
-        // constraints = new TrapezoidProfile.Constraints(0, 0);
         profiledPIDController = new ProfiledPIDController(0, 0, 0, new Constraints(5, 10));
         elevatorFF = new ElevatorFeedforward(0, 0, 0);
         break;
@@ -64,12 +64,14 @@ public class Elevator extends SubsystemBase {
     elevatorMech2d = new LoggedMechanism2d(3, Units.feetToMeters(6));
     elevatorRoot2d =
         elevatorMech2d.getRoot(
-            "Elevator", (3.0 / 2.0) + Units.inchesToMeters(9.053), Units.inchesToMeters(12.689));
-    elevatorLig2d =
-        new LoggedMechanismLigament2d(
-            "Elevator Lig", Units.inchesToMeters(80), elev_angle.getDegrees());
+            "Elevator",
+            (3.0 / 2.0) + Units.inchesToMeters(9.053),
+            Units.inchesToMeters(12.689));
+    elevatorLig2d = new LoggedMechanismLigament2d("Elevator Lig", Units.inchesToMeters(80), elev_angle.getDegrees());
 
     elevatorRoot2d.append(elevatorLig2d);
+
+    
   }
 
   public void setVoltage(double volts) {
@@ -81,34 +83,24 @@ public class Elevator extends SubsystemBase {
   }
 
   public void updateMech2d() {
-    elevatorLig2d.setLength(Units.inchesToMeters(elevatorInputs.heightMeters));
+    elevatorLig2d.setLength(elevatorInputs.heightMeters);
   }
 
-  // public double inchesToEncoderTicks(double setpoint) {
-  //   double encoderTicks = 2048.0;
-  //   double shaftRadius = Units.metersToInches(0.008);
+  public void setTargetHeight(double inches) {
+    profiledPIDController.setGoal(Units.inchesToMeters(inches));
 
-  //   double distancePerRevolution = shaftRadius * 2 * Math.PI;
-  //   double conversion = distancePerRevolution / encoderTicks;
+    elevatorIO.setVoltage(
+        profiledPIDController.calculate(elevatorInputs.heightMeters)
+            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+  }
 
-  //   return setpoint / conversion;
-  // }
+  public void holdTargetHeight() {
+    profiledPIDController.setGoal(elevatorInputs.heightMeters);
 
-  // public void setTargetHeight(double inches) {
-  //   profiledPIDController.setGoal(inchesToEncoderTicks(inches));
-
-  //   elevatorIO.setVoltage(
-  //       profiledPIDController.calculate(inchesToEncoderTicks(elevatorInputs.heightMeters))
-  //           + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
-  // }
-
-  // public void holdTargetHeight() {
-  //   profiledPIDController.setGoal(inchesToEncoderTicks(elevatorInputs.heightMeters));
-
-  //   elevatorIO.setVoltage(
-  //       profiledPIDController.calculate(inchesToEncoderTicks(elevatorInputs.heightMeters))
-  //           + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
-  // }
+    elevatorIO.setVoltage(
+        profiledPIDController.calculate(elevatorInputs.heightMeters)
+            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+  }
 
   @Override
   public void periodic() {

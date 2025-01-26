@@ -156,11 +156,14 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(6)));
-    controller.y().onFalse(new InstantCommand(() -> elevator.stop()));
+    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    controller.y().onFalse(new InstantCommand(() -> elevator.stop(), elevator));
 
-    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-6)));
-    controller.a().onFalse(new InstantCommand(() -> elevator.stop()));
+    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    controller.a().onFalse(new InstantCommand(() -> elevator.stop(), elevator));
+
+    controller.x().onTrue(new InstantCommand(() -> elevator.setTargetHeight(30.0), elevator));
+    controller.x().onFalse(new InstantCommand(() -> elevator.stop(), elevator));
   }
 
   /**

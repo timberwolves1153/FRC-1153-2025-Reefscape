@@ -181,7 +181,7 @@ public class RobotContainer {
     opLeftBumper.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
     opLeftBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-4), coral));
+    opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
     opRightBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
     opA.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));

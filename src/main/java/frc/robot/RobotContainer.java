@@ -66,6 +66,7 @@ public class RobotContainer {
 
   private final JoystickButton opRightBumper =
       new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+  private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
   private final JoystickButton opRightStick =
       new JoystickButton(operator, XboxController.Button.kRightStick.value);
   private final AxisButton opRightTrigger =
@@ -183,7 +184,7 @@ public class RobotContainer {
     opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-4), coral));
     opRightBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    opLeftTrigger.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+    opA.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
     opLeftStick.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
     opLeftStick.onFalse(new InstantCommand(() -> algae.stop(), algae));

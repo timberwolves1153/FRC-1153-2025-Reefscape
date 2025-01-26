@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
 
-  private TalonFX leftMotor, rightMotor;
+  private TalonFX leftMotor = new TalonFX(41, "rio");
+  private TalonFX rightMotor = new TalonFX(42, "rio");
+
   public DigitalInput magnetSwitch;
 
   private final StatusSignal<Current> leaderCurrentValue = leftMotor.getSupplyCurrent();
@@ -28,9 +30,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private final StatusSignal<Temperature> followerTemp = rightMotor.getDeviceTemp();
 
   public ElevatorIOTalonFX() {
-
-    leftMotor = new TalonFX(41, "rio");
-    rightMotor = new TalonFX(42, "rio");
 
     magnetSwitch = new DigitalInput(1);
 

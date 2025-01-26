@@ -150,7 +150,7 @@ public class RobotContainer {
 
     // Reset gyro to 0° when B button is pressed
     controller
-        .b()
+        .y()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -160,10 +160,10 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Windmill controls
-    controller.b().whileTrue(new InstantCommand(() -> windmill.setVoltage(4), windmill));
-    controller.b().whileTrue(new InstantCommand(() -> windmill.stop(), windmill));
-    controller.x().whileTrue(new InstantCommand(() -> windmill.setVoltage(-4), windmill));
-    controller.x().whileTrue(new InstantCommand(() -> windmill.stop(), windmill));
+    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(4), windmill));
+    controller.b().onFalse(new InstantCommand(() -> windmill.stop(), windmill));
+    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(-4), windmill));
+    controller.x().onFalse(new InstantCommand(() -> windmill.stop(), windmill));
   }
 
   /**

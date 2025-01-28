@@ -51,7 +51,8 @@ public class WindmillIOFX implements WindmillIO {
   public void updateInputs(WindmillInputs inputs) {
     inputs.absolutePosition =
         Rotation2d.fromRotations(encoder.getAbsolutePosition().getValueAsDouble());
-    inputs.absolutePositionRadians = encoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
+    inputs.absolutePositionRadians = getPositionRadians();
+    inputs.absolutePositionDegrees = getPositionDegrees();
     inputs.appliedVolts = windmillAppliedVolts.getValueAsDouble();
     inputs.current = windmillCurrent.getValueAsDouble();
   }
@@ -66,16 +67,26 @@ public class WindmillIOFX implements WindmillIO {
     windmillMotor.setVoltage(0);
   }
 
-  public double getAbsolutePosition() {
+  /**
+   * The position of the windmill adjusted to the standard convention of tracking algae maniupulator
+   * angle.
+   *
+   * @return
+   */
+  private double getCalculatedPosition() {
     return encoder.getAbsolutePosition().getValueAsDouble();
   }
 
-  public double getPositionRadians() {
-    return Units.rotationsToRadians(getAbsolutePosition());
+  private double getAbsolutePositionRotations() {
+    return encoder.getAbsolutePosition().getValueAsDouble();
   }
 
-  public double getPositionDegrees() {
-    return Units.rotationsToDegrees(getAbsolutePosition());
+  private double getPositionRadians() {
+    return Units.rotationsToRadians(getAbsolutePositionRotations());
+  }
+
+  private double getPositionDegrees() {
+    return Units.rotationsToDegrees(getAbsolutePositionRotations());
   }
 
   public void close() {

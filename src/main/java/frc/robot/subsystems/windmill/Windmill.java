@@ -36,8 +36,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
             2, 2); // check up with this, might be needed to change to different constants later
 
     windmillPID =
-        new ProfiledPIDController(0, 0, 0, windmillConstraints); // set to what we need later
-    windmillFF = new ArmFeedforward(0, 0, 0); // Check ^^ (Also what in the world is Ks Kg and Kv)
+        new ProfiledPIDController(5, 0, 0, windmillConstraints); // set to what we need later
+    windmillFF = new ArmFeedforward(2, 2, 0); // Check ^^ (Also what in the world is Ks Kg and Kv)
 
     windmillMech2d = new Mechanism2d(60, 60); // Find the right size for this
     root = windmillMech2d.getRoot("WindmillRoot", 30, 30); // Create root at the center
@@ -45,6 +45,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
         root.append(
             new MechanismLigament2d(
                 "Windmill", 30, 0)); // Create ligament representing the windmill
+
+    windmillInputs = new WindmillInputsAutoLogged();
 
     SmartDashboard.putData(
         "Windmill Mechanism", windmillMech2d); // Add Mechanism2d to SmartDashboard
@@ -58,16 +60,28 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     windmillIo.stop();
   }
 
+  public double getTargetPosition() {
+    return windmillPID.getGoal().position;
+  }
+
   public void setTargetPosition(double degrees) {
+    System.out.println("target degrees: " + degrees);
     windmillPID.setGoal(
         Units.degreesToRadians(
             degrees)); // basically this is telling the windmill "we wanna go here, get there"
 
-    windmillIo.setVoltage(
+    System.out.println("PID goal set to : " + windmillPID.getGoal().position);
+
+    double calculatedVolts =
         windmillPID.calculate(
-                windmillInputs.absolutePositionRadians, Units.degreesToRadians(degrees))
-            + windmillFF.calculate(
-                Units.degreesToRadians(degrees), windmillPID.getSetpoint().velocity));
+            windmillInputs.absolutePositionRadians, Units.degreesToRadians(degrees));
+
+    System.out.println("calculatedVolts set to : " + calculatedVolts);
+    double feedforwardVolts =
+        windmillFF.calculate(Units.degreesToRadians(degrees), windmillPID.getSetpoint().velocity);
+
+    System.out.println("feedforwardVolts set to : " + feedforwardVolts);
+    windmillIo.setVoltage(calculatedVolts + feedforwardVolts);
 
     // Update the windmill ligament angle
     windmillLigament.setAngle(degrees);

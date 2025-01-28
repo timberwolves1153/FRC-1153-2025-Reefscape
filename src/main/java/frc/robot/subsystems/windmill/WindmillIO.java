@@ -1,6 +1,7 @@
 package frc.robot.subsystems.windmill;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface WindmillIO {
@@ -9,6 +10,7 @@ public interface WindmillIO {
     public double positionDegrees = 0;
     public Rotation2d absolutePosition = new Rotation2d();
     public double absolutePositionRadians = 0;
+    public double absolutePositionDegrees = Units.radiansToDegrees(absolutePositionRadians);
     public double appliedVolts = 0;
     public double current = 0;
 

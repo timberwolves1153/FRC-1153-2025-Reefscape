@@ -52,7 +52,7 @@ public class WindmillIOSim implements WindmillIO {
   }
 
   public double getWindmillPosition() {
-    return windmillSim.getAngleRads();
+    return Units.radiansToDegrees(windmillSim.getAngleRads());
   }
 
   public double getAbsolutePosition() {

@@ -53,7 +53,6 @@ public class ElevatorIOSim implements ElevatorIO {
   @Override
   public void stop() {
     elevatorSim.setInputVoltage(0);
-    ;
   }
 
   @Override

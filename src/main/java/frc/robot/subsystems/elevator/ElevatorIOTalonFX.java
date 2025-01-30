@@ -7,13 +7,15 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ElevatorIOTalonFX implements ElevatorIO {
+public class ElevatorIOTalonFX implements ElevatorIO{
 
   private TalonFX leftMotor = new TalonFX(41, "rio");
   private TalonFX rightMotor = new TalonFX(42, "rio");
@@ -50,6 +52,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     rightMotor.setControl(new Follower(41, true));
 
+    config.Feedback.SensorToMechanismRatio = 
+      12 / (2 * Math.PI * Units.inchesToMeters(1.7567));
+
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
         leaderCurrentValue,
@@ -64,28 +69,8 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     leftMotor.optimizeBusUtilization();
     rightMotor.optimizeBusUtilization();
   }
-
+  
   @Override
-  public void updateInputs(ElevatorInputs elevatorInputs) {
-    BaseStatusSignal.refreshAll(
-        leaderCurrentValue, leaderAppliedVolts,
-        leaderPosition, leaderTemp,
-        followerAppliedVolts, followerCurrentValue,
-        followerPosition, followerTemp);
-
-    elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
-    elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
-
-    elevatorInputs.heightMeters = leaderPosition.getValueAsDouble();
-    elevatorInputs.heightMeters = leaderPosition.getValueAsDouble();
-
-    elevatorInputs.getAppliedVolts = leaderAppliedVolts.getValueAsDouble();
-    elevatorInputs.getAppliedVolts = followerAppliedVolts.getValueAsDouble();
-
-    elevatorInputs.tempCelsius = leaderTemp.getValueAsDouble();
-    elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();
-  }
-
   public boolean isSwitchTriggered() {
     return !magnetSwitch.get();
   }
@@ -107,5 +92,27 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   @Override
   public void stop() {
     leftMotor.setVoltage(0);
+  }
+
+  @Override
+  public void updateInputs(ElevatorInputs elevatorInputs) {
+    BaseStatusSignal.refreshAll(
+        leaderCurrentValue, leaderAppliedVolts,
+        leaderPosition, leaderTemp,
+        followerAppliedVolts, followerCurrentValue,
+        followerPosition, followerTemp);
+
+    elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
+    elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
+
+    elevatorInputs.heightMeters = leaderPosition.getValueAsDouble();
+
+    elevatorInputs.getAppliedVolts = leaderAppliedVolts.getValueAsDouble();
+    elevatorInputs.getAppliedVolts = followerAppliedVolts.getValueAsDouble();
+
+    elevatorInputs.tempCelsius = leaderTemp.getValueAsDouble();
+    elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();
+
+    SmartDashboard.putBoolean("Magnet Switch", isSwitchTriggered());
   }
 }

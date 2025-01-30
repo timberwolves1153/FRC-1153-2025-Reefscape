@@ -84,18 +84,16 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setTargetHeight(double inches) {
-    profiledPIDController.setGoal(Units.inchesToMeters(inches));
 
     elevatorIO.setVoltage(
-        profiledPIDController.calculate(elevatorInputs.heightMeters)
+        profiledPIDController.calculate(elevatorInputs.heightMeters, Units.inchesToMeters(inches))
             + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
   }
 
   public void holdTargetHeight() {
-    profiledPIDController.setGoal(elevatorInputs.heightMeters);
 
     elevatorIO.setVoltage(
-        profiledPIDController.calculate(elevatorInputs.heightMeters)
+        profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
             + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
   }
 

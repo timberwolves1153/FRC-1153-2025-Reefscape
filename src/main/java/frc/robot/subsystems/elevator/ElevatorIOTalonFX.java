@@ -15,7 +15,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ElevatorIOTalonFX implements ElevatorIO{
+public class ElevatorIOTalonFX implements ElevatorIO {
 
   private TalonFX leftMotor = new TalonFX(41, "rio");
   private TalonFX rightMotor = new TalonFX(42, "rio");
@@ -34,7 +34,7 @@ public class ElevatorIOTalonFX implements ElevatorIO{
 
   public ElevatorIOTalonFX() {
 
-    magnetSwitch = new DigitalInput(1);
+    magnetSwitch = new DigitalInput(9);
 
     config();
   }
@@ -52,8 +52,7 @@ public class ElevatorIOTalonFX implements ElevatorIO{
 
     rightMotor.setControl(new Follower(41, true));
 
-    config.Feedback.SensorToMechanismRatio = 
-      12 / (2 * Math.PI * Units.inchesToMeters(1.7567));
+    config.Feedback.SensorToMechanismRatio = 12 / (2 * Math.PI * Units.inchesToMeters(1.7567));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -69,7 +68,7 @@ public class ElevatorIOTalonFX implements ElevatorIO{
     leftMotor.optimizeBusUtilization();
     rightMotor.optimizeBusUtilization();
   }
-  
+
   @Override
   public boolean isSwitchTriggered() {
     return !magnetSwitch.get();

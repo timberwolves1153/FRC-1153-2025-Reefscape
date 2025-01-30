@@ -23,5 +23,7 @@ public interface ElevatorIO {
 
   public default void stop() {}
 
-  public default boolean isSwitchTriggered() {return false;}
+  public default boolean isSwitchTriggered() {
+    return false;
+  }
 }

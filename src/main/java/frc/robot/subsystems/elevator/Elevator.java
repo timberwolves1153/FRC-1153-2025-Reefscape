@@ -87,13 +87,13 @@ public class Elevator extends SubsystemBase {
 
     if (elevatorIO.isSwitchTriggered() == true) {
       elevatorIO.setVoltage(
-        profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
-            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+          profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
+              + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
 
     } else {
       elevatorIO.setVoltage(
-        profiledPIDController.calculate(elevatorInputs.heightMeters, Units.inchesToMeters(inches))
-            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+          profiledPIDController.calculate(elevatorInputs.heightMeters, Units.inchesToMeters(inches))
+              + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
     }
   }
 

@@ -10,12 +10,14 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
 
-  private SparkMax wheelsC;
+  private SparkMax outerWheelsC;
+  private SparkMax innerWheelsC;
   private SparkMaxConfig config;
 
   public AlgaeIOSparkMax() {
 
-    wheelsC = new SparkMax(46, MotorType.kBrushless);
+    outerWheelsC = new SparkMax(46, MotorType.kBrushless);
+    innerWheelsC = new SparkMax(47, MotorType.kBrushless);
     config = new SparkMaxConfig();
   }
 
@@ -26,24 +28,41 @@ public class AlgaeIOSparkMax implements AlgaeIO {
     config.smartCurrentLimit(40);
     config.idleMode(IdleMode.kBrake);
 
-    wheelsC.clearFaults();
-    wheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    outerWheelsC.clearFaults();
+    outerWheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    innerWheelsC.clearFaults();
+    innerWheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override // matches names w/in algae
   public void updateInputs(AlgaeIOInputs inputs) {
 
-    inputs.appliedVolts = wheelsC.getAppliedOutput() * wheelsC.getBusVoltage();
-    inputs.currentAmps = wheelsC.getOutputCurrent();
+    inputs.outerAppliedVolts = outerWheelsC.getAppliedOutput() * outerWheelsC.getBusVoltage();
+    inputs.outerCurrentAmps = outerWheelsC.getOutputCurrent();
+
+    inputs.innerAppliedVolts = innerWheelsC.getAppliedOutput() * innerWheelsC.getBusVoltage();
+    inputs.innerCurrentAmps = innerWheelsC.getOutputCurrent();
   }
 
   @Override
-  public void setVoltage(double volts) {
-    wheelsC.setVoltage(volts);
+  public void setVoltageOuter(double volts) {
+    outerWheelsC.setVoltage(volts);
   }
+
+  @Override
+  public void setVoltageInner(double volts) {
+    outerWheelsC.setVoltage(volts);
+  }
+
   // ------------------------------------------
   @Override
-  public void stop() {
-    wheelsC.setVoltage(0);
+  public void stopOuter() {
+    outerWheelsC.setVoltage(0);
+  }
+
+  @Override
+  public void stopInner() {
+    innerWheelsC.setVoltage(0);
   }
 }

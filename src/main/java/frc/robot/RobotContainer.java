@@ -186,11 +186,11 @@ public class RobotContainer {
 
     opA.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    opLeftStick.onTrue(new InstantCommand(() -> algae.runVolts(4), algae));
-    opLeftStick.onFalse(new InstantCommand(() -> algae.stop(), algae));
+    opLeftStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
+    opLeftStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
 
-    opRightStick.onTrue(new InstantCommand(() -> algae.runVolts(-4), algae));
-    opRightStick.onFalse(new InstantCommand(() -> algae.stop(), algae));
+    opRightStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
+    opRightStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
   }
 
   public Joystick getOperatorController() {

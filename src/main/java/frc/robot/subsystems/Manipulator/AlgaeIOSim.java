@@ -8,11 +8,18 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 // import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
 public class AlgaeIOSim implements AlgaeIO {
-  private final DCMotorSim sim;
-  private double appliedVolts = 0.0;
+  private final DCMotorSim simOuter;
+  private final DCMotorSim simInner;
+
+  private double appliedVoltsOuter = 0.0;
+  private double appliedVoltsInner = 0.0;
 
   public AlgaeIOSim(DCMotor motor, double reduction, double momentOfInertia) {
-    sim =
+    simOuter =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
+
+    simInner =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
   }
@@ -20,21 +27,36 @@ public class AlgaeIOSim implements AlgaeIO {
   @Override
   public void updateInputs(AlgaeIOInputs inputs) {
     if (DriverStation.isDisabled()) {
-      setVoltage(0);
+      setVoltageOuter(0);
+      setVoltageInner(0);
     }
 
-    inputs.appliedVolts = appliedVolts;
-    inputs.currentAmps = sim.getCurrentDrawAmps();
+    inputs.outerAppliedVolts = appliedVoltsOuter;
+    inputs.outerCurrentAmps = simOuter.getCurrentDrawAmps();
+
+    inputs.innerAppliedVolts = appliedVoltsInner;
+    inputs.innerCurrentAmps = simInner.getCurrentDrawAmps();
   }
 
   @Override
-  public void setVoltage(double volts) {
-    appliedVolts = MathUtil.clamp(volts, -12, 12); // can be edited
-    sim.setInputVoltage(appliedVolts);
+  public void setVoltageOuter(double volts) {
+    appliedVoltsOuter = MathUtil.clamp(volts, -12, 12); // can be edited
+    simOuter.setInputVoltage(appliedVoltsOuter);
   }
 
   @Override
-  public void stop() {
-    setVoltage(0);
+  public void stopOuter() {
+    setVoltageOuter(0);
+  }
+
+  @Override
+  public void setVoltageInner(double volts) {
+    appliedVoltsInner = MathUtil.clamp(volts, -12, 12); // can be edited
+    simInner.setInputVoltage(appliedVoltsInner);
+  }
+
+  @Override
+  public void stopInner() {
+    setVoltageInner(0);
   }
 }

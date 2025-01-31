@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 5.167,
+        "y": 5.11
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.013282910175676,
-        "y": 6.5274984191074985
+        "x": 5.136148497930667,
+        "y": 5.67523693519564
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.166769560390973,
-        "y": 5.0964860911203305
+        "x": 5.167,
+        "y": 6.24
       },
       "prevControl": {
-        "x": 4.166769560390973,
-        "y": 6.0964860911203305
-      },
-      "nextControl": {
-        "x": 6.166769560390973,
-        "y": 4.0964860911203305
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.0,
-        "y": 1.0
-      },
-      "prevControl": {
-        "x": 6.75,
-        "y": 2.5
+        "x": 4.875513857281135,
+        "y": 5.1807890406502075
       },
       "nextControl": null,
       "isLocked": false,
@@ -58,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center To Reef C1A3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -120.11000000000001
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

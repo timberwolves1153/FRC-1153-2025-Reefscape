@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,6 +10,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -32,24 +34,21 @@ public class Elevator extends SubsystemBase {
   private LoggedMechanismLigament2d elevatorLig2d;
 
   private final Rotation2d elev_angle = Rotation2d.fromDegrees(90);
-  public SysIdRoutine sysIdRoutine;
+  public final SysIdRoutine sysIdRoutine;
 
   public Elevator(ElevatorIO elevatorIO) {
     elevatorInputs = new ElevatorInputsAutoLogged();
     this.elevatorIO = elevatorIO;
 
-    // Create the SysId routine
     sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                null,
-                null,
-                null, // Use default config
-                (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-            new SysIdRoutine.Mechanism(
-                (voltage) -> elevatorIO.setVoltage(voltage.in(Volts)),
-                null, // No log consumer, since data is recorded by AdvantageKit
-                this));
+                null, // Use default ramp rate (1 V/s)
+                Volts.of(4), // Reduce dynamic step voltage to 4 to prevent brownout
+                null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+                (state) -> SignalLogger.writeString("state", state.toString())),
+            new SysIdRoutine.Mechanism((volts) -> elevatorIO.setVoltage(volts), null, this));
 
     switch (Constants.currentMode) {
 
@@ -90,11 +89,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setVoltage(double volts) {
-    elevatorIO.setVoltage(volts);
+    elevatorIO.setVoltage(Voltage.ofBaseUnits(volts, Volts));
   }
 
   public void stop() {
-    elevatorIO.setVoltage(0);
+    elevatorIO.stop();
   }
 
   public void updateMech2d() {
@@ -102,48 +101,22 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setTargetHeight(double inches) {
-
-    if (elevatorIO.isSwitchTriggered() == true) {
-      elevatorIO.setVoltage(
-          profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
-              + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
-
-    } else {
-      elevatorIO.setVoltage(
-          profiledPIDController.calculate(elevatorInputs.heightMeters, Units.inchesToMeters(inches))
-              + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
-    }
+    elevatorIO.setTargetHeight(inches);
   }
 
   public void holdTargetHeight() {
-
-    elevatorIO.setVoltage(
+    double calculatedVolts =
         profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
-            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity);
+    elevatorIO.setVoltage(Voltage.ofBaseUnits(calculatedVolts, Volts));
   }
 
-  public Command runCharacterizationQuasiForward() {
-
-    // The methods below return Command objects
-    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
   }
 
-  public Command runCharacterizationQuasiReserve() {
-
-    // The methods below return Command objects
-    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
-  }
-
-  public Command runCharacterizationDynamForward() {
-
-    // The methods below return Command objects
-    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
-  }
-
-  public Command runCharacterizationDynamReverse() {
-
-    // The methods below return Command objects
-    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
   }
 
   @Override

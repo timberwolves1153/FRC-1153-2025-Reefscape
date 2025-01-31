@@ -1,5 +1,6 @@
 package frc.robot.subsystems.elevator;
 
+import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ElevatorIO {
@@ -15,15 +16,11 @@ public interface ElevatorIO {
 
   public default void updateInputs(ElevatorInputs elevatorInputs) {}
 
-  public default void setVoltage(double volts) {}
+  public default void setVoltage(Voltage volts) {}
 
   public default void resetElevatorEncoder() {}
 
   public default void setTargetHeight(double inches) {}
 
   public default void stop() {}
-
-  public default boolean isSwitchTriggered() {
-    return false;
-  }
 }

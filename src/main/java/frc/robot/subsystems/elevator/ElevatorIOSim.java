@@ -1,17 +1,20 @@
 package frc.robot.subsystems.elevator;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 public class ElevatorIOSim implements ElevatorIO {
 
   private ElevatorSim elevatorSim;
-  private double volts;
+  private Voltage volts;
   TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(5.0, 10.0);
 
   ProfiledPIDController profiledPIDController = new ProfiledPIDController(40, 0, 0.1, constraints);
@@ -31,7 +34,7 @@ public class ElevatorIOSim implements ElevatorIO {
             true,
             0);
 
-    volts = 0.0;
+    volts = Voltage.ofBaseUnits(0.0, Volts);
   }
 
   @Override
@@ -41,13 +44,14 @@ public class ElevatorIOSim implements ElevatorIO {
     elevatorInputs.heightMeters = elevatorSim.getPositionMeters();
     elevatorInputs.elevatorCurrentAmps = elevatorSim.getCurrentDrawAmps();
     elevatorInputs.tempCelsius = 20;
-    elevatorInputs.getAppliedVolts = volts;
+    elevatorInputs.getAppliedVolts = volts.baseUnitMagnitude();
   }
 
   @Override
-  public void setVoltage(final double voltage) {
+  public void setVoltage(final Voltage voltage) {
     volts = voltage;
-    elevatorSim.setInputVoltage(MathUtil.clamp(voltage, -12, 12));
+    double simVolts = voltage.baseUnitMagnitude();
+    elevatorSim.setInputVoltage(MathUtil.clamp(simVolts, -12, 12));
   }
 
   @Override
@@ -57,10 +61,11 @@ public class ElevatorIOSim implements ElevatorIO {
 
   @Override
   public void setTargetHeight(double inches) {
-    setVoltage(
+    double calculatedVolts =
         profiledPIDController.calculate(
                 elevatorSim.getPositionMeters(), Units.inchesToMeters(inches))
-            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+            + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity);
+    setVoltage(Voltage.ofBaseUnits(calculatedVolts, Volts));
   }
 
   public double getElevatorHeight() {

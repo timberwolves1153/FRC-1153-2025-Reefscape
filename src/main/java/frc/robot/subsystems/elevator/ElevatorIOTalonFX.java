@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -10,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -74,18 +77,13 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     return !magnetSwitch.get();
   }
 
-  public void moveElevator(double volts) {
-    double adjustedVolts = volts;
-    if (isSwitchTriggered() && adjustedVolts < 0) {
-      adjustedVolts = 0;
-    } else {
-      adjustedVolts = volts;
-    }
-  }
-
   @Override
   public void setVoltage(double volts) {
-    leftMotor.setVoltage(MathUtil.clamp(volts, -12, 12));
+    if (isSwitchTriggered() && volts < 0) {
+      leftMotor.setVoltage(0.25);
+    } else {
+      leftMotor.setVoltage(MathUtil.clamp(volts, -12, 12));
+    }
   }
 
   @Override
@@ -113,5 +111,10 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();
 
     SmartDashboard.putBoolean("Magnet Switch", isSwitchTriggered());
+  }
+
+  /* Called by the SysIdRoutine */
+  private void voltageDrive(MutVoltage voltage) {
+    leftMotor.setVoltage(voltage.in(Volts));
   }
 }

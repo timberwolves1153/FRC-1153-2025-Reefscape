@@ -51,6 +51,8 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
+  private final CommandXboxController operator = new CommandXboxController(1);
+
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -167,6 +169,14 @@ public class RobotContainer {
 
     //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
     // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+
+    operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
+
+    operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
+
+    operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
+
+    operator.x().whileTrue(elevator.runCharacterizationDynamForward());
   }
 
   /**

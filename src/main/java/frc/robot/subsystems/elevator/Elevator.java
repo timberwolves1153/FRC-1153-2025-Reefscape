@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,7 +9,9 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
@@ -28,17 +32,31 @@ public class Elevator extends SubsystemBase {
   private LoggedMechanismLigament2d elevatorLig2d;
 
   private final Rotation2d elev_angle = Rotation2d.fromDegrees(90);
+  public SysIdRoutine sysIdRoutine;
 
   public Elevator(ElevatorIO elevatorIO) {
     elevatorInputs = new ElevatorInputsAutoLogged();
     this.elevatorIO = elevatorIO;
+
+    // Create the SysId routine
+    sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,
+                null,
+                null, // Use default config
+                (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> elevatorIO.setVoltage(voltage.in(Volts)),
+                null, // No log consumer, since data is recorded by AdvantageKit
+                this));
 
     switch (Constants.currentMode) {
 
         // Check values below to make sure they are accurate; might need to be changed later
       case REAL:
       case REPLAY:
-        constraints = new TrapezoidProfile.Constraints(0, 0);
+        constraints = new TrapezoidProfile.Constraints(5, 10);
         profiledPIDController = new ProfiledPIDController(0, 0, 0, constraints);
         elevatorFF = new ElevatorFeedforward(0, 0, 0);
         break;
@@ -102,6 +120,30 @@ public class Elevator extends SubsystemBase {
     elevatorIO.setVoltage(
         profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
             + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity));
+  }
+
+  public Command runCharacterizationQuasiForward() {
+
+    // The methods below return Command objects
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command runCharacterizationQuasiReserve() {
+
+    // The methods below return Command objects
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
+  }
+
+  public Command runCharacterizationDynamForward() {
+
+    // The methods below return Command objects
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command runCharacterizationDynamReverse() {
+
+    // The methods below return Command objects
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
   }
 
   @Override

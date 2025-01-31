@@ -7,12 +7,13 @@ import org.littletonrobotics.junction.AutoLog;
 public interface WindmillIO {
   @AutoLog
   public class WindmillInputs {
-    public double positionDegrees = 0;
+    public double positionDegrees;
     public Rotation2d absolutePosition = new Rotation2d();
-    public double absolutePositionRadians = 0;
-    public double absolutePositionDegrees = Units.radiansToDegrees(absolutePositionRadians);
-    public double appliedVolts = 0;
-    public double current = 0;
+    public double absolutePositionRadians;
+    public double absolutePositionDegrees;
+    public double appliedVolts;
+    public double current;
+    public double velocityRadPerSec;
 
     // check if we need To either keep these empty or add values to it
 

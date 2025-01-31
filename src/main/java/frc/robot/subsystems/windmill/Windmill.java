@@ -9,17 +9,23 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.windmill.WindmillIO.WindmillInputs;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import static edu.wpi.first.units.Units.Volts;
+
+import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
 
   private WindmillIO windmillIo;
-  private WindmillInputs windmillInputs;
+  private WindmillInputsAutoLogged windmillInputs;
 
   private ProfiledPIDController windmillPID;
   private TrapezoidProfile.Constraints windmillConstraints;
@@ -28,9 +34,27 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   private Mechanism2d windmillMech2d;
   private MechanismRoot2d root;
   private MechanismLigament2d windmillLigament;
+  private SysIdRoutine sysIdRoutine;
 
   public Windmill(WindmillIO io) {
     this.windmillIo = io;
+    windmillInputs = new WindmillInputsAutoLogged();
+
+   sysIdRoutine = new SysIdRoutine(
+      new SysIdRoutine.Config(
+        null, null, null, // Use default config
+        (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+      ),
+      new SysIdRoutine.Mechanism(
+        (voltage) -> this.setVoltage(voltage.in(Volts)),
+        null, // No log consumer, since data is recorded by AdvantageKit
+        this
+      )
+    );
+    
+
+
+
     windmillConstraints =
         new Constraints(
             2, 2); // check up with this, might be needed to change to different constants later
@@ -44,13 +68,14 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     windmillLigament =
         root.append(
             new MechanismLigament2d(
-                "Windmill", 30, 0)); // Create ligament representing the windmill
+                "Windmill", 10, 0)); // Create ligament representing the windmill
 
     windmillInputs = new WindmillInputsAutoLogged();
 
     SmartDashboard.putData(
         "Windmill Mechanism", windmillMech2d); // Add Mechanism2d to SmartDashboard
   }
+
 
   public void setVoltage(double voltage) {
     windmillIo.setVoltage(voltage);
@@ -97,15 +122,44 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
                 windmillInputs.absolutePositionRadians, windmillPID.getSetpoint().velocity));
   }
 
+  public Command runcharaterizationForwardQ(){
+    
+        return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command runcharaterizationReverseQ(){
+    
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
+}
+
+  public Command runcharaterizationForwardD(){
+    
+  return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
+}
+
+public Command runcharaterizationReverseD(){
+    
+  return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
+}
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // Update the Mechanism2d with the current state of the windmill
     SmartDashboard.putData("Windmill Mechanism", windmillMech2d);
+
+    windmillIo.updateInputs(windmillInputs);
+
+    Logger.processInputs("Windmill", windmillInputs);
   }
 
   @Override
   public void close() throws Exception {
     windmillIo.close();
+  }
+
+  public Object runVolts(Voltage voltage) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'runVolts'");
   }
 }

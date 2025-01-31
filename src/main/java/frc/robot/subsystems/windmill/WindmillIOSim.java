@@ -11,9 +11,12 @@ public class WindmillIOSim implements WindmillIO {
   private SingleJointedArmSim windmillSim;
   private PIDController windmillPID;
   private CANcoder encoder;
+  private WindmillInputs windmillInputs;
+
+  private double volts;
 
   public WindmillIOSim() {
-
+    windmillInputs = new WindmillInputs();
     windmillSim =
         new SingleJointedArmSim(
             DCMotor.getKrakenX60(1), // prototype change
@@ -27,7 +30,7 @@ public class WindmillIOSim implements WindmillIO {
 
     // GET ALL OF THESE FROM HE CAD WHEN IT IS DONE
 
-    windmillPID = new PIDController(0.05, 0, 0);
+    windmillPID = new PIDController(2.5, 0.0, 0.5);
 
     encoder = new CANcoder(44);
   }
@@ -36,14 +39,22 @@ public class WindmillIOSim implements WindmillIO {
   public void updateInputs(WindmillInputs inputs) {
     windmillSim.update(.02);
 
+    inputs.appliedVolts = volts;
+
+        inputs.current = windmillSim.getCurrentDrawAmps();
+        inputs.absolutePositionRadians = windmillSim.getAngleRads();
+        inputs.velocityRadPerSec = windmillSim.getVelocityRadPerSec();
+        inputs.positionDegrees = Units.radiansToDegrees(inputs.absolutePositionRadians);
+
     getAbsolutePosition();
 
     // double check if this is all that you need to do in the updateInputs method
   }
 
   @Override
-  public void setVoltage(double volts) {
-    windmillSim.setInputVoltage(volts);
+  public void setVoltage(double voltage) {
+    volts = voltage;
+    windmillSim.setInputVoltage(voltage);
   }
 
   @Override

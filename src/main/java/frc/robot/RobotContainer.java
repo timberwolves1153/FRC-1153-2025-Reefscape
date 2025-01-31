@@ -160,10 +160,17 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Windmill controls
-    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(4), windmill));
-    controller.b().onFalse(new InstantCommand(() -> windmill.stop(), windmill));
-    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(-4), windmill));
-    controller.x().onFalse(new InstantCommand(() -> windmill.stop(), windmill));
+    controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(), windmill));
+    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+
+    controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(), windmill));
+    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    
+    controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(), windmill));
+    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+
+    controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(), windmill));
+    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
   }
 
   /**

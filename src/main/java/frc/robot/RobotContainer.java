@@ -35,6 +35,10 @@ import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOFX;
 import frc.robot.subsystems.windmill.WindmillIOSim;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
+import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -47,9 +51,12 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Windmill windmill;
+  private final Elevator elevator;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+
+  private final CommandXboxController operator = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -68,6 +75,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOFX());
+        elevator = new Elevator(new ElevatorIOTalonFX());
         break;
 
       case SIM:
@@ -81,6 +89,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOSim());
+        elevator = new Elevator(new ElevatorIOSim());
         break;
 
       default:
@@ -94,6 +103,7 @@ public class RobotContainer {
                 new ModuleIO() {});
 
         windmill = new Windmill(new WindmillIO() {});
+        elevator = new Elevator(new ElevatorIO() {});
         break;
     }
 
@@ -160,17 +170,38 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Windmill controls
-    controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(), windmill));
-    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(), windmill));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(), windmill));
-    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(), windmill));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
     
-    controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(), windmill));
-    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(), windmill));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(), windmill));
-    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(), windmill));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+
+    //elevator controls
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+
+    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+
+    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+    // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+
+    //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
+    // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+
+    // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
+
+    // operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
+
+    // operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
+
+    // operator.x().whileTrue(elevator.runCharacterizationDynamForward());
   }
 
   /**

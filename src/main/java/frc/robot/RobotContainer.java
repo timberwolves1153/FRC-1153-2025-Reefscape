@@ -31,6 +31,10 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.windmill.Windmill;
+import frc.robot.subsystems.windmill.WindmillIO;
+import frc.robot.subsystems.windmill.WindmillIOFX;
+import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
@@ -46,6 +50,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Windmill windmill;
   private final Elevator elevator;
 
   // Controller
@@ -68,6 +73,8 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
+
+        windmill = new Windmill(new WindmillIOFX());
         elevator = new Elevator(new ElevatorIOTalonFX());
         break;
 
@@ -80,6 +87,8 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+
+        windmill = new Windmill(new WindmillIOSim());
         elevator = new Elevator(new ElevatorIOSim());
         break;
 
@@ -92,6 +101,8 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+
+        windmill = new Windmill(new WindmillIO() {});
         elevator = new Elevator(new ElevatorIO() {});
         break;
     }
@@ -145,11 +156,11 @@ public class RobotContainer {
                 () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
     controller
-        .b()
+        .y()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -158,25 +169,39 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
-    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    // Windmill controls
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(), windmill));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
-    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(), windmill));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(), windmill));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(), windmill));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+
+    //elevator controls
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+
+    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+
+    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
     // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
+    // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
 
-    operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
+    // operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
 
-    operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
+    // operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
 
-    operator.x().whileTrue(elevator.runCharacterizationDynamForward());
+    // operator.x().whileTrue(elevator.runCharacterizationDynamForward());
   }
 
   /**

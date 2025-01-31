@@ -1,7 +1,6 @@
 package frc.robot.subsystems.windmill;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface WindmillIO {

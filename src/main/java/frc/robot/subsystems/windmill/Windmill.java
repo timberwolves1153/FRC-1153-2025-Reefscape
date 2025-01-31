@@ -4,6 +4,8 @@ package frc.robot.subsystems.windmill;
  *  - They'll rarely be deleted, unless abundant
  *  - Have Fun!
  */
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -17,9 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import static edu.wpi.first.units.Units.Volts;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
@@ -40,20 +39,17 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     this.windmillIo = io;
     windmillInputs = new WindmillInputsAutoLogged();
 
-   sysIdRoutine = new SysIdRoutine(
-      new SysIdRoutine.Config(
-        null, null, null, // Use default config
-        (state) -> Logger.recordOutput("SysIdTestState", state.toString())
-      ),
-      new SysIdRoutine.Mechanism(
-        (voltage) -> this.setVoltage(voltage.in(Volts)),
-        null, // No log consumer, since data is recorded by AdvantageKit
-        this
-      )
-    );
-    
-
-
+    sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,
+                null,
+                null, // Use default config
+                (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> this.setVoltage(voltage.in(Volts)),
+                null, // No log consumer, since data is recorded by AdvantageKit
+                this));
 
     windmillConstraints =
         new Constraints(
@@ -75,7 +71,6 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putData(
         "Windmill Mechanism", windmillMech2d); // Add Mechanism2d to SmartDashboard
   }
-
 
   public void setVoltage(double voltage) {
     windmillIo.setVoltage(voltage);
@@ -122,25 +117,25 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
                 windmillInputs.absolutePositionRadians, windmillPID.getSetpoint().velocity));
   }
 
-  public Command runcharaterizationForwardQ(){
-    
-        return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+  public Command runcharaterizationForwardQ() {
+
+    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
   }
 
-  public Command runcharaterizationReverseQ(){
-    
+  public Command runcharaterizationReverseQ() {
+
     return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
-}
+  }
 
-  public Command runcharaterizationForwardD(){
-    
-  return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
-}
+  public Command runcharaterizationForwardD() {
 
-public Command runcharaterizationReverseD(){
-    
-  return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
-}
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
+  }
+
+  public Command runcharaterizationReverseD() {
+
+    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
+  }
 
   @Override
   public void periodic() {

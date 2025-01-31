@@ -1,7 +1,5 @@
 package frc.robot.subsystems.windmill;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -13,14 +11,13 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class WindmillIOFX implements WindmillIO {
 
   private TalonFX windmillMotor;
   private CANcoder encoder;
   private Windmill windmill;
-  
+
   private final StatusSignal<Angle> windmillPosition;
   private final StatusSignal<Voltage> windmillAppliedVolts;
   private final StatusSignal<Current> windmillCurrent;
@@ -60,8 +57,6 @@ public class WindmillIOFX implements WindmillIO {
     inputs.appliedVolts = windmillAppliedVolts.getValueAsDouble();
     inputs.current = windmillCurrent.getValueAsDouble();
   }
-
- 
 
   @Override
   public void setVoltage(double volts) {

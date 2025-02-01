@@ -148,7 +148,7 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-        controller
+    controller
         .leftBumper()
         .whileTrue(
             new DriveToPose(

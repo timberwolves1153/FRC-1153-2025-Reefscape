@@ -28,9 +28,9 @@ public class ElevatorIOSim implements ElevatorIO {
             DCMotor.getFalcon500(2),
             12,
             Units.lbsToKilograms(17.966),
-            Units.inchesToMeters(1.7567),
+            Units.inchesToMeters(1.751),
             0,
-            Units.inchesToMeters(56.5),
+            Units.inchesToMeters(23),
             true,
             0);
 
@@ -41,10 +41,11 @@ public class ElevatorIOSim implements ElevatorIO {
   public void updateInputs(ElevatorInputs elevatorInputs) {
     elevatorSim.update(0.02);
 
-    elevatorInputs.heightMeters = elevatorSim.getPositionMeters();
+    elevatorInputs.heightInches = Units.metersToInches(elevatorSim.getPositionMeters());
     elevatorInputs.elevatorCurrentAmps = elevatorSim.getCurrentDrawAmps();
     elevatorInputs.tempCelsius = 20;
     elevatorInputs.getAppliedVolts = volts.baseUnitMagnitude();
+    elevatorInputs.leaderRotations = 0;
   }
 
   @Override

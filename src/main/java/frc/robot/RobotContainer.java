@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -37,8 +38,8 @@ import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
-import frc.robot.subsystems.windmill.WindmillIOFX;
 import frc.robot.subsystems.windmill.WindmillIOSim;
+import frc.robot.subsystems.windmill.WindmillIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -74,7 +75,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        windmill = new Windmill(new WindmillIOFX());
+        windmill = new Windmill(new WindmillIOTalonFX());
         elevator = new Elevator(new ElevatorIOTalonFX());
         break;
 
@@ -179,10 +180,10 @@ public class RobotContainer {
      * Joystick B = dynamic forward
      * Joystick X = dyanmic reverse
      */
-    operator.y().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    operator.a().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    operator.b().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    operator.x().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // operator.y().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // operator.a().whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // operator.b().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // operator.x().whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Windmill controls
     // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(),
@@ -202,16 +203,16 @@ public class RobotContainer {
     // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
     // elevator controls
-    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
-    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
-    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(20.0), elevator));
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
+    controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
     // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());

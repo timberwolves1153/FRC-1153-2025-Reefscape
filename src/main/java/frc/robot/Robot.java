@@ -73,7 +73,8 @@ public class Robot extends LoggedRobot {
       case REPLAY:
         // Replaying a log, set up replay source
         setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog();
+        String logPath =
+            "C:\\\\Users\\\\hjsm0\\\\akit_25-02-01_14-22-42.wpilog"; // LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
         break;

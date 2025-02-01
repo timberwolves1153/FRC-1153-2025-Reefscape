@@ -97,7 +97,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void updateMech2d() {
-    elevatorLig2d.setLength(elevatorInputs.heightMeters);
+    elevatorLig2d.setLength(elevatorInputs.heightInches);
   }
 
   public void setTargetHeight(double inches) {
@@ -106,7 +106,7 @@ public class Elevator extends SubsystemBase {
 
   public void holdTargetHeight() {
     double calculatedVolts =
-        profiledPIDController.calculate(elevatorInputs.heightMeters, elevatorInputs.heightMeters)
+        profiledPIDController.calculate(elevatorInputs.heightInches, elevatorInputs.heightInches)
             + elevatorFF.calculate(profiledPIDController.getSetpoint().velocity);
     elevatorIO.setVoltage(Voltage.ofBaseUnits(calculatedVolts, Volts));
   }
@@ -119,11 +119,15 @@ public class Elevator extends SubsystemBase {
     return sysIdRoutine.dynamic(direction);
   }
 
+  // public double getElevatorHeight() {
+  //   return elevatorIO.ge
+  // }
   @Override
   public void periodic() {
     elevatorIO.updateInputs(elevatorInputs);
+    elevatorLig2d.setLength((elevatorInputs.heightInches));
     Logger.processInputs("Elevator", elevatorInputs);
     Logger.recordOutput("Elevator/Mechanism2D", elevatorMech2d);
-    elevatorLig2d.setLength((elevatorInputs.heightMeters));
+    Logger.recordOutput("Elevator Height", elevatorInputs.leaderRotations);
   }
 }

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import frc.robot.subsystems.windmill.Windmill;
-import frc.robot.subsystems.windmill.WindmillIOFX;
+import frc.robot.subsystems.windmill.WindmillIOTalonFX;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class WindmillTest {
     cancoder = new CANcoder(44);
     cancoder_sim = cancoder.getSimState();
 
-    windmill = new Windmill(new WindmillIOFX());
+    windmill = new Windmill(new WindmillIOTalonFX());
 
     /* enable the robot */
     DriverStationSim.setEnabled(true);
@@ -78,6 +78,7 @@ public class WindmillTest {
         DELTA); // make sure that the value set to the motor is equal to the desired voltage
 
     windmill.stop();
+    Timer.delay(0.020);
     /* wait for a fresh duty cycle signal */
     dutyCycle.waitForUpdate(0.100);
     /* verify that the motor output is zero */

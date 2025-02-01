@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -31,14 +30,14 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.windmill.Windmill;
-import frc.robot.subsystems.windmill.WindmillIO;
-import frc.robot.subsystems.windmill.WindmillIOFX;
-import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
+import frc.robot.subsystems.windmill.Windmill;
+import frc.robot.subsystems.windmill.WindmillIO;
+import frc.robot.subsystems.windmill.WindmillIOFX;
+import frc.robot.subsystems.windmill.WindmillIOSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -170,19 +169,23 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Windmill controls
-    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(), windmill));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(),
+    // windmill));
     // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(), windmill));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(),
+    // windmill));
     // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
-    
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(), windmill));
+
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(),
+    // windmill));
     // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(), windmill));
+    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(),
+    // windmill));
     // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    //elevator controls
+    // elevator controls
     // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
     // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 

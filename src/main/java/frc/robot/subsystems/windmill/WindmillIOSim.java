@@ -41,10 +41,10 @@ public class WindmillIOSim implements WindmillIO {
 
     inputs.appliedVolts = volts;
 
-        inputs.current = windmillSim.getCurrentDrawAmps();
-        inputs.absolutePositionRadians = windmillSim.getAngleRads();
-        inputs.velocityRadPerSec = windmillSim.getVelocityRadPerSec();
-        inputs.positionDegrees = Units.radiansToDegrees(inputs.absolutePositionRadians);
+    inputs.current = windmillSim.getCurrentDrawAmps();
+    inputs.absolutePositionRadians = windmillSim.getAngleRads();
+    inputs.velocityRadPerSec = windmillSim.getVelocityRadPerSec();
+    inputs.positionDegrees = Units.radiansToDegrees(inputs.absolutePositionRadians);
 
     getAbsolutePosition();
 

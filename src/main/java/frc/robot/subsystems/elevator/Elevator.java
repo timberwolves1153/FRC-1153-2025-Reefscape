@@ -146,11 +146,21 @@ public class Elevator extends SubsystemBase {
     return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
   }
 
+  public double inchesToRotations(double inches) {
+    return ElevatorConstants.GEAR_RATIO * inches / (Math.PI * 2 * (ElevatorConstants.PITCH_DIAMETER / 2));
+  }
+
+  public double rotationsToInches(double rotations) {
+    return (rotations / ElevatorConstants.GEAR_RATIO) * (Math.PI * 2 * ElevatorConstants.PITCH_DIAMETER);
+  }
+
+  // public double getElevatorHeight() {
+  //   return elevatorIO.ge
+  // }
   @Override
   public void periodic() {
     elevatorIO.updateInputs(elevatorInputs);
     Logger.processInputs("Elevator", elevatorInputs);
     Logger.recordOutput("Elevator/Mechanism2D", elevatorMech2d);
-    elevatorLig2d.setLength((elevatorInputs.heightMeters));
   }
 }

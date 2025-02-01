@@ -6,10 +6,12 @@ public interface ElevatorIO {
 
   @AutoLog
   public static class ElevatorInputs {
-    public double elevatorCurrentAmps = 0.0;
-    public double heightMeters = 0.0;
-    public double getAppliedVolts = 0.0;
-    public double tempCelsius = 0.0;
+    public double positionRots = 0.0;
+    public double positionRad = 0.0;
+    public double velocityRadPerSec = 0.0;
+    public double[] appliedVolts = new double[] {};
+    public double[] currentAmps = new double[] {};
+    public double[] tempCelsius = new double[] {};
     public boolean isSwitchTriggered = false;
   }
 

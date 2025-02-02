@@ -22,7 +22,7 @@ public interface ElevatorIO {
 
   public default void resetElevatorEncoder() {}
 
-  public default void setTargetHeight(double inches) {}
+  public default void setTargetHeight(double rotations) {}
 
   public default void stop() {}
 }

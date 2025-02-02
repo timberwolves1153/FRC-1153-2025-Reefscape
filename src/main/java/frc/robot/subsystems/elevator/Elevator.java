@@ -35,6 +35,8 @@ public class Elevator extends SubsystemBase {
 
   private final Rotation2d elev_angle = Rotation2d.fromDegrees(90);
   public final SysIdRoutine sysIdRoutine;
+  private final double gearRatio = 7.1429;
+  private final double pitchDiameter = 1.751;
 
   public Elevator(ElevatorIO elevatorIO) {
     elevatorInputs = new ElevatorInputsAutoLogged();
@@ -101,7 +103,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setTargetHeight(double inches) {
-    elevatorIO.setTargetHeight(inches);
+    double rots = inchesToRotations(inches);
+    elevatorIO.setTargetHeight(rots);
   }
 
   public void holdTargetHeight() {
@@ -119,9 +122,14 @@ public class Elevator extends SubsystemBase {
     return sysIdRoutine.dynamic(direction);
   }
 
-  // public double getElevatorHeight() {
-  //   return elevatorIO.ge
-  // }
+  public double inchesToRotations(double inches) {
+    return (7.1429 * inches) / (Math.PI * pitchDiameter);
+  }
+
+  public double rotationsToInches(double rotations) {
+    return (rotations / gearRatio) * (Math.PI * 2 * pitchDiameter);
+  }
+
   @Override
   public void periodic() {
     elevatorIO.updateInputs(elevatorInputs);

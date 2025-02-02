@@ -23,8 +23,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private VoltageOut voltageRequest;
   private MotionMagicVoltage positionRequest;
   private final TrapezoidProfile trapezoidProfile;
-  private final double gearRatio = 7.1429;
-  private final double pitchDiameter = 1.751;
 
   public DigitalInput magnetSwitch;
 
@@ -42,6 +40,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     magnetSwitch = new DigitalInput(9);
     voltageRequest = new VoltageOut(0);
     positionRequest = new MotionMagicVoltage(0).withSlot(0);
+    leftMotor.setPosition(0);
 
     trapezoidProfile =
         new TrapezoidProfile( // Units are rotations per second & rotations per seocond^2
@@ -64,7 +63,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
     slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
     slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    slot0Configs.kP = 1; // A position error of 2.5 rotations results in 12 V output
+    slot0Configs.kP = 8; // A position error of 2.5 rotations results in 12 V output
     slot0Configs.kI = 0; // no output for integrated error
     slot0Configs.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
 
@@ -80,7 +79,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     rightMotor.setControl(new Follower(41, true));
 
-    config.Feedback.SensorToMechanismRatio = 7.1429;
+    // config.Feedback.SensorToMechanismRatio = 7.1429;
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -116,16 +115,8 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   }
 
   @Override
-  public void setTargetHeight(double inches) {
-    leftMotor.setControl(positionRequest.withPosition(inches));
-  }
-
-  public double inchesToRotations(double inches) {
-    return gearRatio * inches / (Math.PI * 2 * (pitchDiameter / 2));
-  }
-
-  public double rotationsToInches(double rotations) {
-    return (rotations / gearRatio) * (Math.PI * 2 * pitchDiameter);
+  public void setTargetHeight(double rotations) {
+    leftMotor.setControl(positionRequest.withPosition(rotations));
   }
 
   @Override
@@ -138,8 +129,6 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     elevatorInputs.elevatorCurrentAmps = leaderCurrentValue.getValueAsDouble();
     elevatorInputs.elevatorCurrentAmps = followerCurrentValue.getValueAsDouble();
-
-    elevatorInputs.heightInches = rotationsToInches(leaderPosition.getValueAsDouble());
 
     elevatorInputs.getAppliedVolts = leaderAppliedVolts.getValueAsDouble();
     elevatorInputs.getAppliedVolts = followerAppliedVolts.getValueAsDouble();

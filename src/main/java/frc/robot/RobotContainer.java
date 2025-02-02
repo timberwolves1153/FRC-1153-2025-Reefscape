@@ -194,25 +194,27 @@ public class RobotContainer {
     // windmill));
     // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(),
-    // windmill));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3), windmill));
+    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(),
-    // windmill));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3), windmill));
+    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(-0.25), windmill));
+
+    controller.y().onTrue(Commands.run(() -> windmill.setTargetPosition(0.1), windmill));
+
+    controller.a().onTrue(Commands.run(() -> windmill.setTargetPosition(0), windmill));
 
     // elevator controls
-    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
-    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
-    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(20.0), elevator));
+    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(21), elevator));
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
+    // controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
     // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());

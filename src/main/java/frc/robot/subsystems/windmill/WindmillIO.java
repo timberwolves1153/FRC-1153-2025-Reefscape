@@ -26,7 +26,7 @@ public interface WindmillIO {
 
   public default void holdPosition() {}
 
-  public default void setTargetPosition(double degrees) {}
+  public default void setTargetPosition(double rotations) {}
 
   public default void close() {}
 }

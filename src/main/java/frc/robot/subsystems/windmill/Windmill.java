@@ -85,26 +85,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   }
 
   public void setTargetPosition(double degrees) {
-    System.out.println("target degrees: " + degrees);
-    windmillPID.setGoal(
-        Units.degreesToRadians(
-            degrees)); // basically this is telling the windmill "we wanna go here, get there"
-
-    System.out.println("PID goal set to : " + windmillPID.getGoal().position);
-
-    double calculatedVolts =
-        windmillPID.calculate(
-            windmillInputs.absolutePositionRadians, Units.degreesToRadians(degrees));
-
-    System.out.println("calculatedVolts set to : " + calculatedVolts);
-    double feedforwardVolts =
-        windmillFF.calculate(Units.degreesToRadians(degrees), windmillPID.getSetpoint().velocity);
-
-    System.out.println("feedforwardVolts set to : " + feedforwardVolts);
-    windmillIo.setVoltage(calculatedVolts + feedforwardVolts);
-
-    // Update the windmill ligament angle
-    windmillLigament.setAngle(degrees);
+    // double rotations = Units.degreesToRotations(degrees);
+    windmillIo.setTargetPosition(degrees);
   }
 
   public void holdPosition() {
@@ -144,8 +126,13 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putData("Windmill Mechanism", windmillMech2d);
 
     windmillIo.updateInputs(windmillInputs);
-
+    Logger.recordOutput("windmill position degrees", windmillInputs.absolutePositionDegrees);
+    Logger.recordOutput("windmill position", windmillInputs.absolutePosition);
     Logger.processInputs("Windmill", windmillInputs);
+    SmartDashboard.putNumber("windmill position degrees", windmillInputs.absolutePositionDegrees);
+    SmartDashboard.putNumber(
+        "windmill position rotations",
+        Units.degreesToRotations(windmillInputs.absolutePositionDegrees));
   }
 
   @Override

@@ -14,10 +14,9 @@ public class ClimberIOSparkMax implements ClimberIO {
 
   public ClimberIOSparkMax() {
 
-    climbMotor = new SparkMax(0, MotorType.kBrushless);
+    climbMotor = new SparkMax(51, MotorType.kBrushless);
 
     configMotor();
-    ;
   }
 
   public void configMotor() {

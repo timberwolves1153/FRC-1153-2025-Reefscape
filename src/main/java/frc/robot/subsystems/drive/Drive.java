@@ -50,7 +50,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
-import frc.robot.FieldConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
@@ -371,7 +370,7 @@ public class Drive extends SubsystemBase {
     };
   }
 
-  public Command pathFindCommand() {
-    return AutoBuilder.pathfindToPose(FieldConstants.CoralStation.leftCenterFace, constraints);
+  public Command pathFindCommand(Pose2d targetPose) {
+    return AutoBuilder.pathfindToPose(targetPose, constraints);
   }
 }

@@ -17,13 +17,20 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Manipulator.Algae;
+import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
+import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -38,6 +45,7 @@ import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOFX;
 import frc.robot.subsystems.windmill.WindmillIOSim;
+import frc.robot.util.AxisButton;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -47,10 +55,13 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Subsystems
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
+  private final Coral coral = new Coral(new CoralIOSparkMax());
+  private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -137,6 +148,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
+
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -205,7 +217,37 @@ public class RobotContainer {
     // operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
 
     // operator.x().whileTrue(elevator.runCharacterizationDynamForward());
+
+    private final JoystickButton opLeftBumper =
+    new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+private final JoystickButton opLeftStick =
+    new JoystickButton(operator, XboxController.Button.kLeftStick.value);
+private final AxisButton opLeftTrigger =
+    new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
+
+private final JoystickButton opRightBumper =
+    new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
+private final JoystickButton opRightStick =
+    new JoystickButton(operator, XboxController.Button.kRightStick.value);
+private final AxisButton opRightTrigger =
+    new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
+
+    opLeftBumper.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    opLeftBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+    opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
+    opRightBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+    opA.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+
+    opLeftStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
+    opLeftStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
+
+    opRightStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
+    opRightStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

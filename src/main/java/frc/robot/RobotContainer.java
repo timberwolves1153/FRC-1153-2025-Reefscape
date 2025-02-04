@@ -56,205 +56,167 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
 
-  // Subsystems
-  private final Drive drive;
-  private final Windmill windmill;
-  private final Elevator elevator;
-  private final Coral coral = new Coral(new CoralIOSparkMax());
-  private final Algae algae = new Algae(new AlgaeIOSparkMax());
+    // Subsystems
+    private final Drive drive;
+    private final Windmill windmill;
+    private final Elevator elevator;
+    private final Coral coral = new Coral(new CoralIOSparkMax());
+    private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
-  // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+    // Controller
+    private final CommandXboxController controller = new CommandXboxController(0);
 
-  private final CommandXboxController operator = new CommandXboxController(1);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+    // Dashboard inputs
+    private final LoggedDashboardChooser<Command> autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        drive =
-            new Drive(
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    public RobotContainer() {
+        switch (Constants.currentMode) {
+            case REAL:
+                // Real robot, instantiate hardware IO implementations
+                drive =
+                    new Drive(
+                        new GyroIOPigeon2(),
+                        new ModuleIOTalonFX(TunerConstants.FrontLeft),
+                        new ModuleIOTalonFX(TunerConstants.FrontRight),
+                        new ModuleIOTalonFX(TunerConstants.BackLeft),
+                        new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        windmill = new Windmill(new WindmillIOFX());
-        elevator = new Elevator(new ElevatorIOTalonFX());
-        break;
+                windmill = new Windmill(new WindmillIOFX());
+                elevator = new Elevator(new ElevatorIOTalonFX());
+                break;
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIOSim(TunerConstants.FrontLeft),
-                new ModuleIOSim(TunerConstants.FrontRight),
-                new ModuleIOSim(TunerConstants.BackLeft),
-                new ModuleIOSim(TunerConstants.BackRight));
+            case SIM:
+                // Sim robot, instantiate physics sim IO implementations
+                drive =
+                    new Drive(
+                        new GyroIO() {},
+                        new ModuleIOSim(TunerConstants.FrontLeft),
+                        new ModuleIOSim(TunerConstants.FrontRight),
+                        new ModuleIOSim(TunerConstants.BackLeft),
+                        new ModuleIOSim(TunerConstants.BackRight));
 
-        windmill = new Windmill(new WindmillIOSim());
-        elevator = new Elevator(new ElevatorIOSim());
-        break;
+                windmill = new Windmill(new WindmillIOSim());
+                elevator = new Elevator(new ElevatorIOSim());
+                break;
 
-      default:
-        // Replayed robot, disable IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
+            default:
+                // Replayed robot, disable IO implementations
+                drive =
+                    new Drive(
+                        new GyroIO() {},
+                        new ModuleIO() {},
+                        new ModuleIO() {},
+                        new ModuleIO() {},
+                        new ModuleIO() {});
 
-        windmill = new Windmill(new WindmillIO() {});
-        elevator = new Elevator(new ElevatorIO() {});
-        break;
+                windmill = new Windmill(new WindmillIO() {});
+                elevator = new Elevator(new ElevatorIO() {});
+                break;
+        }
+
+        // Set up auto routines
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+        // Set up SysId routines
+        autoChooser.addOption(
+            "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+        autoChooser.addOption(
+            "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+        autoChooser.addOption(
+            "Drive SysId (Quasistatic Forward)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Quasistatic Reverse)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+        // Configure the button bindings
+        configureButtonBindings();
     }
 
-    // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    /**
+     * Use this method to define your button->command mappings. Buttons can be created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        // Default command, normal field-relative drive
 
-    // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-    // Configure the button bindings
-    configureButtonBindings();
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    // Default command, normal field-relative drive
-
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
-
-    // Lock to 0° when A button is held
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
+        drive.setDefaultCommand(
+            DriveCommands.joystickDrive(
                 drive,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () -> new Rotation2d()));
+                () -> -controller.getRightX()));
 
-    // Switch to X pattern when X button is pressed
-    // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        // Lock to 0° when A button is held
+        controller
+            .a()
+            .whileTrue(
+                DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -controller.getLeftY(),
+                    () -> -controller.getLeftX(),
+                    () -> new Rotation2d()));
 
-    // Reset gyro to 0° when B button is pressed
-    controller
-        .y()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+        // Switch to X pattern when X button is pressed
+        // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Windmill controls
-    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardQ(),
-    // windmill));
-    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+        // Reset gyro to 0° when B button is pressed
+        controller
+            .y()
+            .onTrue(
+                Commands.runOnce(
+                        () ->
+                            drive.setPose(
+                                new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                        drive)
+                    .ignoringDisable(true));
 
-    // controller.b().onTrue(new InstantCommand(() -> windmill.runcharaterizationForwardD(),
-    // windmill));
-    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+        // Windmill controls
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseD(),
-    // windmill));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+        // elevator controls
+        controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+        controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.runcharaterizationReverseQ(),
-    // windmill));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
+        controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+        controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // elevator controls
-    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
-    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+        controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+        controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
-    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+        controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
+        controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
-    // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+        operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+        operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
-    // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+        operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
+        operator.rightBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
+        operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    // operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
+        operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
+        operator.leftStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
 
-    // operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
-
-    // operator.x().whileTrue(elevator.runCharacterizationDynamForward());
-
-    private final JoystickButton opLeftBumper =
-    new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
-private final JoystickButton opLeftStick =
-    new JoystickButton(operator, XboxController.Button.kLeftStick.value);
-private final AxisButton opLeftTrigger =
-    new AxisButton(operator, XboxController.Axis.kLeftTrigger.value, 0.5);
-
-private final JoystickButton opRightBumper =
-    new JoystickButton(operator, XboxController.Button.kRightBumper.value);
-private final JoystickButton opA = new JoystickButton(operator, XboxController.Button.kA.value);
-private final JoystickButton opRightStick =
-    new JoystickButton(operator, XboxController.Button.kRightStick.value);
-private final AxisButton opRightTrigger =
-    new AxisButton(operator, XboxController.Axis.kRightTrigger.value, 0.5);
-
-    opLeftBumper.onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
-    opLeftBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
-
-    opRightBumper.onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
-    opRightBumper.onFalse(new InstantCommand(() -> coral.stop(), coral));
-
-    opA.onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
-
-    opLeftStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
-    opLeftStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
-
-    opRightStick.onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
-    opRightStick.onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
-  }
+        operator.rightStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
+        operator.rightStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
+    }
 
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.get();
+    }
 }

@@ -164,7 +164,7 @@ public class RobotContainer {
     controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
     controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));

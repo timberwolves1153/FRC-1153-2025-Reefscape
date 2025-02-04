@@ -38,17 +38,23 @@ public class Elevator extends SubsystemBase {
   private final double gearRatio = 7.1429;
   private final double pitchDiameter = 1.751;
 
-  public enum Goal {
-    STOW(0),
-    L1(0),
-    L2(0),
-    L3(0);
+  public enum ElevatorGoal {
+    STOW(.25),
+    L1_CORAL(5),
+    L2_CORAL(7),
+    L2_ALGAE(12),
+    L3_CORAL(15),
+    L3_ALGAE(18);
 
-    private double setpoint;
-    private Goal(double setpoint) {
-      this.setpoint = setpoint;
+    private double heightInInches;
+
+    private ElevatorGoal(double heightInInches) {
+      this.heightInInches = heightInInches;
     }
 
+    public double getHeightInInches() {
+      return this.heightInInches;
+    }
   }
 
   public Elevator(ElevatorIO elevatorIO) {
@@ -115,7 +121,11 @@ public class Elevator extends SubsystemBase {
     elevatorLig2d.setLength(elevatorInputs.heightInches);
   }
 
-  public void setTargetHeight(double inches) {
+  public void setTargetHeight(ElevatorGoal heightGoal) {
+    setTargetHeightInches(heightGoal.getHeightInInches());
+  }
+
+  public void setTargetHeightInches(double inches) {
     double rots = inchesToRotations(inches);
     elevatorIO.setTargetHeight(rots);
   }
@@ -150,7 +160,5 @@ public class Elevator extends SubsystemBase {
     Logger.processInputs("Elevator", elevatorInputs);
     Logger.recordOutput("Elevator/Mechanism2D", elevatorMech2d);
     Logger.recordOutput("Elevator Height", elevatorInputs.leaderRotations);
-
-    
   }
 }

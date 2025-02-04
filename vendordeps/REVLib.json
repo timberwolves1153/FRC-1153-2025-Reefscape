@@ -19,7 +19,6 @@
     {
       "groupId": "com.revrobotics.frc",
       "artifactId": "REVLib-driver",
-      "version": "2025.0.1",
       "version": "2025.0.0",
       "skipInvalidPlatforms": true,
       "isJar": false,

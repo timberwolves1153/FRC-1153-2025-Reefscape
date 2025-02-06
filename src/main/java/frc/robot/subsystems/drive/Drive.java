@@ -30,6 +30,7 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -111,6 +112,21 @@ public class Drive extends SubsystemBase {
   private PathConstraints constraints =
       new PathConstraints(3.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
+  public enum TargetReefFace {
+    A(0),
+    B(1),
+    C(2),
+    D(3),
+    E(4),
+    F(5);
+
+    public int index;
+
+    TargetReefFace(int index) {
+      this.index = index;
+    }
+  }
+
   public Drive(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
@@ -128,6 +144,8 @@ public class Drive extends SubsystemBase {
 
     // Start odometry thread
     PhoenixOdometryThread.getInstance().start();
+
+   
 
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configure(
@@ -371,7 +389,9 @@ public class Drive extends SubsystemBase {
     };
   }
 
-  public Command pathFindCommand() {
-    return AutoBuilder.pathfindToPose(FieldConstants.CoralStation.leftCenterFace, constraints);
+  public Command pathFindCommand(TargetReefFace target) {
+    return AutoBuilder.pathfindToPose(FieldConstants.Reef.centerFaces[target.index], constraints);
+    //System.out.println(FieldConstants.Reef.branchPositions);
+    // FieldConstants.Reef.centerFaces[target.index]
   }
 }

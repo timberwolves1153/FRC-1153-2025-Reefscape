@@ -176,7 +176,7 @@ public class RobotContainer {
             new DriveToPose(
                 drive, FieldConstants.Processor.centerFace.getTranslation(), new Rotation2d(0)));
 
-    controller.rightBumper().whileTrue(drive.pathFindCommand());
+    //    controller.rightBumper().whileTrue(drive.pathFindCommand());
   }
 
   /**

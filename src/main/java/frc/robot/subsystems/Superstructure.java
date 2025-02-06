@@ -59,8 +59,8 @@ public class Superstructure extends SubsystemBase {
       }
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
-        //windmill to this angle
-        //piston on coral retracted
+        // windmill to this angle
+        // piston on coral retracted
         break;
       }
       default -> {

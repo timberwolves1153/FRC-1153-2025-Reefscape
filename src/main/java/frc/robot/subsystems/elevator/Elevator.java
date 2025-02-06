@@ -156,9 +156,9 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     elevatorIO.updateInputs(elevatorInputs);
-    elevatorLig2d.setLength((elevatorInputs.heightInches));
     Logger.processInputs("Elevator", elevatorInputs);
     Logger.recordOutput("Elevator/Mechanism2D", elevatorMech2d);
     Logger.recordOutput("Elevator Height", elevatorInputs.leaderRotations);
+    elevatorLig2d.setLength(Units.inchesToMeters(elevatorInputs.heightInches));
   }
 }

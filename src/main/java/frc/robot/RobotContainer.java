@@ -25,12 +25,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -195,9 +195,6 @@ public class RobotContainer {
     controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
     controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
     controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
-
-    controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
-    controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
     operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));

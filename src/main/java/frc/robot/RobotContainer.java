@@ -29,6 +29,8 @@ import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -57,6 +59,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
+  private final Superstructure superstructure;
   private final Coral coral = new Coral(new CoralIOSparkMax());
   private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
@@ -83,6 +86,7 @@ public class RobotContainer {
 
         windmill = new Windmill(new WindmillIOFX());
         elevator = new Elevator(new ElevatorIOTalonFX());
+        superstructure = new Superstructure(elevator);
         break;
 
       case SIM:
@@ -97,6 +101,7 @@ public class RobotContainer {
 
         windmill = new Windmill(new WindmillIOSim());
         elevator = new Elevator(new ElevatorIOSim());
+        superstructure = new Superstructure(elevator);
         break;
 
       default:
@@ -111,6 +116,7 @@ public class RobotContainer {
 
         windmill = new Windmill(new WindmillIO() {});
         elevator = new Elevator(new ElevatorIO() {});
+        superstructure = new Superstructure(elevator);
         break;
     }
 
@@ -186,24 +192,22 @@ public class RobotContainer {
     controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
     controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeight(10.0), elevator));
+    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
+    controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
     controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
-
-    controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
-    controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
     operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
     operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
+    // operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
     operator.rightBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+    // operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
+    // operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
     operator.leftStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
 
-    operator.rightStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
+    // operator.rightStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
     operator.rightStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
   }
 

@@ -52,8 +52,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
+import frc.robot.FieldConstants.ReefHeight;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
+
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -144,8 +148,6 @@ public class Drive extends SubsystemBase {
 
     // Start odometry thread
     PhoenixOdometryThread.getInstance().start();
-
-   
 
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configure(
@@ -390,8 +392,17 @@ public class Drive extends SubsystemBase {
   }
 
   public Command pathFindCommand(TargetReefFace target) {
-    return AutoBuilder.pathfindToPose(FieldConstants.Reef.centerFaces[target.index], constraints);
-    //System.out.println(FieldConstants.Reef.branchPositions);
+    //List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
+    //            6   7 
+    //         5        8
+    //        4          9
+    //         3        10
+    //          2     11
+    //            1 0
+    Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
+    return AutoBuilder.pathfindToPose(pose.toPose2d(), constraints);
+    // System.out.println(FieldConstants.Reef.branchPositions);
     // FieldConstants.Reef.centerFaces[target.index]
+    
   }
 }

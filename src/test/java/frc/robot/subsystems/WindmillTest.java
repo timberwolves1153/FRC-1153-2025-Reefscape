@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import frc.robot.subsystems.windmill.Windmill;
+import frc.robot.subsystems.windmill.Windmill.WindmillGoal;
 import frc.robot.subsystems.windmill.WindmillIOTalonFX;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ public class WindmillTest {
 
   static final double DELTA = 1e-2; // acceptable deviation range
   Windmill windmill;
+  WindmillGoal windmillGoal;
   TalonFX talonFx;
   TalonFXSimState fx_sim;
   CANcoder cancoder;
@@ -98,13 +100,13 @@ public class WindmillTest {
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setTargetPosition(90);
+    windmill.setTargetPositionDegrees(90);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);
 
     System.out.println("Current Position : " + cancoder.getPosition());
-    System.out.println("Target Position : " + windmill.getTargetPosition());
+    // System.out.println("Target Position : " + windmillGoal.setTargetPosition());
     System.out.println("Motor Voltage : " + fx_sim.getMotorVoltage());
     System.out.println("Motor Greater than 0 : " + (fx_sim.getMotorVoltage() > 0));
 
@@ -134,13 +136,13 @@ public class WindmillTest {
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setTargetPosition(-90);
+    windmill.setTargetPositionDegrees(-90);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);
 
     System.out.println("Current Position : " + cancoder.getPosition());
-    System.out.println("Target Position : " + windmill.getTargetPosition());
+    // System.out.println("Target Position : " + windmillGoal.getTargetPosition());
     System.out.println("Motor Voltage : " + fx_sim.getMotorVoltage());
     System.out.println("Motor Less than 0 : " + (fx_sim.getMotorVoltage() < 0));
 

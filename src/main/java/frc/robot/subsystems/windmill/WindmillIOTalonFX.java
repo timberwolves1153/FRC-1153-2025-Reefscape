@@ -2,6 +2,8 @@ package frc.robot.subsystems.windmill;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -31,6 +33,9 @@ public class WindmillIOTalonFX implements WindmillIO {
   // Trapezoid profile with max velocity 80 rps, max accel 160 rps/s
   private final TrapezoidProfile trapezoidProfile;
 
+  private final double WINDMILL_OFFSET_DEGREES = 56.68; // offset is in degrees, 0.1578 rotations
+  private final double WINDMILL_OFFSET_ROTS = 0.1578;
+
   public WindmillIOTalonFX() {
 
     windmillMotor = new TalonFX(43, "rio"); // double CHECK
@@ -47,6 +52,7 @@ public class WindmillIOTalonFX implements WindmillIO {
     windmillCurrent = windmillMotor.getSupplyCurrent();
 
     configMotors();
+    var encoderConfig = new CANcoderConfiguration();
   }
 
   public void configMotors() {
@@ -60,10 +66,10 @@ public class WindmillIOTalonFX implements WindmillIO {
     var slot0Configs = config.Slot0;
     slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
     slot0Configs.kV = 0.25; // A velocity target of 1 rps results in 0.12 V output
-    slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    slot0Configs.kP = 50; // A position error of 2.5 rotations results in 12 V output
+    slot0Configs.kA = 0; // An acceleration of 1 rps/s requires 0.01 V output
+    slot0Configs.kP = 55; // A position error of 2.5 rotations results in 12 V output
     slot0Configs.kI = 0; // no output for integrated error
-    slot0Configs.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    slot0Configs.kD = 0; // A velocity error of 1 rps results in 0.1 V output
 
     // set Motion Magic settings
     var motionMagicConfigs = config.MotionMagic;
@@ -116,19 +122,20 @@ public class WindmillIOTalonFX implements WindmillIO {
    * @return
    */
   private double getCalculatedPosition() {
-    return encoder.getAbsolutePosition().getValueAsDouble();
+    return encoder.getAbsolutePosition().getValueAsDouble() - WINDMILL_OFFSET_ROTS;
   }
 
-  private double getAbsolutePositionRotations() {
-    return encoder.getAbsolutePosition().getValueAsDouble();
-  }
+  // returns rotations without the offset
+  // private double getAbsolutePositionRotations() {
+  //   return encoder.getAbsolutePosition().getValueAsDouble();
+  // }
 
   private double getPositionRadians() {
-    return Units.rotationsToRadians(getAbsolutePositionRotations());
+    return Units.rotationsToRadians(getCalculatedPosition());
   }
 
   private double getPositionDegrees() {
-    return Units.rotationsToDegrees(getAbsolutePositionRotations());
+    return Units.rotationsToDegrees(getCalculatedPosition());
   }
 
   public void close() {

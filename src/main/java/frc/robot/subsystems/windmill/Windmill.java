@@ -35,6 +35,28 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   private MechanismLigament2d windmillLigament;
   private SysIdRoutine sysIdRoutine;
 
+  public enum WindmillGoal {
+    STOW(0),
+    COLLECT_CORAL(5),
+    L1_CORAL(10),
+    L2_CORAL(15),
+    L2_ALGAE(20),
+    L3_CORAL(25),
+    L3_ALGAE(30),
+    ALGAE_PROCESSOR(35),
+    ALGAE_BARGE(40);
+
+    private double angleInDegrees;
+
+    private WindmillGoal(double angleInDegrees) {
+      this.angleInDegrees = angleInDegrees;
+    }
+
+    public double getPositionInDegrees() {
+      return this.angleInDegrees;
+    }
+  }
+
   public Windmill(WindmillIO io) {
     this.windmillIo = io;
     windmillInputs = new WindmillInputsAutoLogged();
@@ -43,7 +65,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null,
-                null,
+                Volts.of(4),
                 null, // Use default config
                 (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
             new SysIdRoutine.Mechanism(
@@ -80,13 +102,13 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     windmillIo.stop();
   }
 
-  public double getTargetPosition() {
-    return windmillPID.getGoal().position;
+  public void setTargetPosition(WindmillGoal degreeGoal) {
+    setTargetPositionDegrees(degreeGoal.getPositionInDegrees());
   }
 
-  public void setTargetPosition(double degrees) {
-    // double rotations = Units.degreesToRotations(degrees);
-    windmillIo.setTargetPosition(degrees);
+  public void setTargetPositionDegrees(double degrees) {
+    double rotations = Units.degreesToRotations(degrees);
+    windmillIo.setTargetPosition(rotations);
   }
 
   public void holdPosition() {
@@ -133,6 +155,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber(
         "windmill position rotations",
         Units.degreesToRotations(windmillInputs.absolutePositionDegrees));
+    SmartDashboard.putNumber("windmill position radians", windmillInputs.absolutePositionRadians);
+    windmillLigament.setAngle(windmillInputs.absolutePositionDegrees);
   }
 
   @Override

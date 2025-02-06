@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.elevator.Elevator;
@@ -57,6 +58,10 @@ public class Superstructure extends SubsystemBase {
         // coral retract
         break;
       }
+      case SCORE_L1_CORAL -> {
+        elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+        break;
+      }
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         // windmill to this angle
@@ -67,5 +72,6 @@ public class Superstructure extends SubsystemBase {
         elevator.setTargetHeight(ElevatorGoal.STOW);
       }
     }
+    SmartDashboard.putString("Goal", desiredGoal.toString());
   }
 }

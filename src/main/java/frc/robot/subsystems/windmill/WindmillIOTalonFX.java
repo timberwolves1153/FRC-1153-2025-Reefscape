@@ -33,7 +33,7 @@ public class WindmillIOTalonFX implements WindmillIO {
   private final TrapezoidProfile trapezoidProfile;
 
   private final double WINDMILL_OFFSET_DEGREES = 56.68; // offset is in degrees, 0.1578 rotations
-  private final double WINDMILL_OFFSET_ROTS = -0.1578;
+  private final double WINDMILL_OFFSET_ROTS = 0.1578;
 
   public WindmillIOTalonFX() {
 

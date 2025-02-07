@@ -33,6 +33,8 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -61,7 +63,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
-  // private final Superstructure superstructure;
+  private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
 
@@ -90,7 +92,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
-        // superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       case SIM:
@@ -107,7 +109,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOSim());
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
-        // superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       default:
@@ -124,7 +126,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {});
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
-        // superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
     }
 
@@ -197,8 +199,8 @@ public class RobotContainer {
     // controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
     // controller.b().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    // controller.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-    // controller.x().onFalse(superstructure.setGoalCommand(Goal.STOW));
+    controller.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    controller.x().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
     controller.leftBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
     controller.leftBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));

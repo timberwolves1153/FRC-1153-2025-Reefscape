@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -169,19 +168,6 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-
-    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3), windmill));
-    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0), windmill));
-
-    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-2), windmill));
-    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0.), windmill));
-
-    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
-    // controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-
-    controller.y().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(10), windmill));
-
-    controller.a().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(0), windmill));
 
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 

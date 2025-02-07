@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.CANcoderSimState;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
@@ -58,24 +60,28 @@ public class WindmillTest {
 
   @Test // marks this method as a test
   void motorPower() {
-    double desiredVolts = 4;
+    double desiredVoltsMag = 4;
+    // Voltage desiredVolts = Voltage.ofBaseUnits(desiredVoltsMag, Volts);
     fx_sim.setSupplyVoltage(RobotController.getBatteryVoltage());
 
     StatusSignal<Double> dutyCycle = talonFx.getDutyCycle();
 
+    /* wait for the control to apply */
+    Timer.delay(0.020);
     /* wait for a fresh duty cycle signal */
     dutyCycle.waitForUpdate(0.100);
     /* verify that the motor output is zero */
+    System.out.println("motor power test starting value: " + dutyCycle.getValue());
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setVoltage(desiredVolts);
+    windmill.setVoltage(Voltage.ofBaseUnits(desiredVoltsMag, Volts));
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);
 
     assertEquals(
-        RobotController.getBatteryVoltage() / desiredVolts,
+        RobotController.getBatteryVoltage() / desiredVoltsMag,
         fx_sim.getMotorVoltage(),
         DELTA); // make sure that the value set to the motor is equal to the desired voltage
 
@@ -87,20 +93,23 @@ public class WindmillTest {
     assertEquals(fx_sim.getMotorVoltage(), 0.0, DELTA);
   }
 
-  @Test // Ensure that the motor has postive voltage when setting the algae desired position postive
+  @Test // Ensure that the motor has postive voltage when setting the algae desired position
+  // postive
   void AlgaePostive() {
     // double desiredVolts = 4;
     fx_sim.setSupplyVoltage(RobotController.getBatteryVoltage());
 
     StatusSignal<Double> dutyCycle = talonFx.getDutyCycle();
 
+    /* wait for the control to apply */
+    Timer.delay(0.020);
     /* wait for a fresh duty cycle signal */
     dutyCycle.waitForUpdate(0.100);
     /* verify that the motor output is zero to start*/
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setTargetPositionDegrees(90);
+    windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);
@@ -123,7 +132,8 @@ public class WindmillTest {
     assertEquals(fx_sim.getMotorVoltage(), 0.0, DELTA);
   }
 
-  @Test // Ensure that the motor has postive voltage when setting the algae desired position postive
+  @Test // Ensure that the motor has negative voltage when setting the algae desired position
+  // negative
   void AlgaeNegative() {
     // double desiredVolts = 4;
     fx_sim.setSupplyVoltage(RobotController.getBatteryVoltage());
@@ -136,7 +146,7 @@ public class WindmillTest {
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setTargetPositionDegrees(-90);
+    windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);

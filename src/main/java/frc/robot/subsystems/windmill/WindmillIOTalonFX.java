@@ -11,9 +11,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.geometry.Rotation2d;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -34,7 +33,7 @@ public class WindmillIOTalonFX implements WindmillIO {
   private final TrapezoidProfile trapezoidProfile;
 
   private final double WINDMILL_OFFSET_DEGREES = 56.68; // offset is in degrees, 0.1578 rotations
-  private final double WINDMILL_OFFSET_ROTS = 0.1578;
+  private final double WINDMILL_OFFSET_ROTS = -0.1578;
 
   public WindmillIOTalonFX() {
 
@@ -53,6 +52,12 @@ public class WindmillIOTalonFX implements WindmillIO {
 
     configMotors();
     var encoderConfig = new CANcoderConfiguration();
+    var magnetSensorConfigs = new MagnetSensorConfigs();
+    magnetSensorConfigs
+        .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+        .withMagnetOffset(WINDMILL_OFFSET_ROTS);
+    encoderConfig.withMagnetSensor(magnetSensorConfigs);
+    encoder.getConfigurator().apply(encoderConfig);
   }
 
   public void configMotors() {
@@ -92,16 +97,14 @@ public class WindmillIOTalonFX implements WindmillIO {
 
   @Override
   public void updateInputs(WindmillInputs inputs) {
-    inputs.absolutePosition =
-        Rotation2d.fromRotations(encoder.getAbsolutePosition().getValueAsDouble());
-    inputs.absolutePositionRadians = getPositionRadians();
-    inputs.absolutePositionDegrees = getPositionDegrees();
+    inputs.rotations = encoder.getAbsolutePosition().getValueAsDouble();
     inputs.appliedVolts = windmillAppliedVolts.getValueAsDouble();
-    inputs.current = windmillCurrent.getValueAsDouble();
+    inputs.currentAmps = windmillCurrent.getValueAsDouble();
+    inputs.tempCelsius = windmillMotor.getDeviceTemp().getValueAsDouble();
   }
 
   @Override
-  public void setVoltage(double volts) {
+  public void setVoltage(Voltage volts) {
     windmillMotor.setControl(voltageRequest.withOutput(volts));
   }
 
@@ -115,30 +118,8 @@ public class WindmillIOTalonFX implements WindmillIO {
     windmillMotor.setControl(positionRequest.withPosition(rotations));
   }
 
-  /**
-   * The position of the windmill adjusted to the standard convention of tracking algae maniupulator
-   * angle.
-   *
-   * @return
-   */
-  private double getCalculatedPosition() {
-    return encoder.getAbsolutePosition().getValueAsDouble() - WINDMILL_OFFSET_ROTS;
-  }
-
-  // returns rotations without the offset
-  // private double getAbsolutePositionRotations() {
-  //   return encoder.getAbsolutePosition().getValueAsDouble();
-  // }
-
-  private double getPositionRadians() {
-    return Units.rotationsToRadians(getCalculatedPosition());
-  }
-
-  private double getPositionDegrees() {
-    return Units.rotationsToDegrees(getCalculatedPosition());
-  }
-
   public void close() {
+    stop();
     windmillMotor.close();
     encoder.close();
   }

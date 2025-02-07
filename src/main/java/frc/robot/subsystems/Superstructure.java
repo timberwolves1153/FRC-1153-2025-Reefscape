@@ -52,7 +52,7 @@ public class Superstructure extends SubsystemBase {
   public void periodic() {
 
     if (DriverStation.isDisabled()) {
-      setDefaultCommand(setGoalCommand(Goal.STOW));
+      //  setDefaultCommand(setGoalCommand(Goal.STOW));
     }
 
     switch (desiredGoal) {

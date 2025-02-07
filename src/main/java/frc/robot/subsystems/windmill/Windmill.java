@@ -4,10 +4,10 @@ package frc.robot.subsystems.windmill;
  *  - They'll rarely be deleted, unless abundant
  *  - Have Fun!
  */
-import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
@@ -33,7 +31,6 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   private Mechanism2d windmillMech2d;
   private MechanismRoot2d root;
   private MechanismLigament2d windmillLigament;
-  private SysIdRoutine sysIdRoutine;
 
   public enum WindmillGoal {
     STOW(0),
@@ -43,7 +40,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     L2_ALGAE(20),
     L3_CORAL(25),
     L3_ALGAE(30),
-    ALGAE_PROCESSOR(35),
+    ALGAE_PROCESSOR(-80),
     ALGAE_BARGE(40);
 
     private double angleInDegrees;
@@ -61,18 +58,6 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     this.windmillIo = io;
     windmillInputs = new WindmillInputsAutoLogged();
 
-    sysIdRoutine =
-        new SysIdRoutine(
-            new SysIdRoutine.Config(
-                null,
-                Volts.of(4),
-                null, // Use default config
-                (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-            new SysIdRoutine.Mechanism(
-                (voltage) -> this.setVoltage(voltage.in(Volts)),
-                null, // No log consumer, since data is recorded by AdvantageKit
-                this));
-
     windmillConstraints =
         new Constraints(
             2, 2); // check up with this, might be needed to change to different constants later
@@ -87,14 +72,9 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
         root.append(
             new MechanismLigament2d(
                 "Windmill", 10, 0)); // Create ligament representing the windmill
-
-    windmillInputs = new WindmillInputsAutoLogged();
-
-    SmartDashboard.putData(
-        "Windmill Mechanism", windmillMech2d); // Add Mechanism2d to SmartDashboard
   }
 
-  public void setVoltage(double voltage) {
+  public void setVoltage(Voltage voltage) {
     windmillIo.setVoltage(voltage);
   }
 
@@ -106,66 +86,38 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     setTargetPositionDegrees(degreeGoal.getPositionInDegrees());
   }
 
-  public void setTargetPositionDegrees(double degrees) {
+  private void setTargetPositionDegrees(double degrees) {
     double rotations = Units.degreesToRotations(degrees);
     windmillIo.setTargetPosition(rotations);
-  }
-
-  public void holdPosition() {
-    windmillPID.setGoal(windmillInputs.absolutePositionRadians);
-
-    windmillIo.setVoltage(
-        windmillPID.calculate(
-                windmillInputs.absolutePositionRadians, windmillInputs.absolutePositionRadians)
-            + windmillFF.calculate(
-                windmillInputs.absolutePositionRadians, windmillPID.getSetpoint().velocity));
-  }
-
-  public Command runcharaterizationForwardQ() {
-
-    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
-  }
-
-  public Command runcharaterizationReverseQ() {
-
-    return sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse);
-  }
-
-  public Command runcharaterizationForwardD() {
-
-    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward);
-  }
-
-  public Command runcharaterizationReverseD() {
-
-    return sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // Update the Mechanism2d with the current state of the windmill
-    SmartDashboard.putData("Windmill Mechanism", windmillMech2d);
-
+    // Update and process our inputs
     windmillIo.updateInputs(windmillInputs);
-    Logger.recordOutput("windmill position degrees", windmillInputs.absolutePositionDegrees);
-    Logger.recordOutput("windmill position", windmillInputs.absolutePosition);
     Logger.processInputs("Windmill", windmillInputs);
-    SmartDashboard.putNumber("windmill position degrees", windmillInputs.absolutePositionDegrees);
-    SmartDashboard.putNumber(
-        "windmill position rotations",
-        Units.degreesToRotations(windmillInputs.absolutePositionDegrees));
-    SmartDashboard.putNumber("windmill position radians", windmillInputs.absolutePositionRadians);
-    windmillLigament.setAngle(windmillInputs.absolutePositionDegrees);
+
+    // conversions
+    double degrees = Units.rotationsToDegrees(windmillInputs.rotations);
+    double rads = Units.rotationsToRadians(windmillInputs.rotations);
+    Rotation2d position = Rotation2d.fromRotations(windmillInputs.rotations);
+
+    // Record our outputs
+    Logger.recordOutput("windmill position degrees", degrees);
+    Logger.recordOutput("windmill position", windmillInputs.rotations);
+
+    // Add values to smart Dashboard
+    SmartDashboard.putNumber("windmill position degrees", degrees);
+    SmartDashboard.putNumber("windmill position rotations", windmillInputs.rotations);
+    SmartDashboard.putNumber("windmill position radians", rads);
+
+    // Update the simulation ligaments
+    windmillLigament.setAngle(position);
   }
 
   @Override
   public void close() throws Exception {
     windmillIo.close();
-  }
-
-  public Object runVolts(Voltage voltage) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'runVolts'");
   }
 }

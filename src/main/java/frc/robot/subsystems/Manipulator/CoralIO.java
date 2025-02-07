@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Manipulator;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface CoralIO {
@@ -19,4 +20,6 @@ public interface CoralIO {
   public default void stop() {}
 
   public default void setSolenoid() {}
+
+  public default void setSolenoidState(Value position) {}
 }

@@ -5,6 +5,8 @@ package frc.robot.subsystems.windmill;
  *  - Have Fun!
  */
 
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -74,8 +76,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
                 "Windmill", 10, 0)); // Create ligament representing the windmill
   }
 
-  public void setVoltage(Voltage voltage) {
-    windmillIo.setVoltage(voltage);
+  public void setVoltage(double voltage) {
+    windmillIo.setVoltage(Voltage.ofBaseUnits(voltage, Volts));
   }
 
   public void stop() {

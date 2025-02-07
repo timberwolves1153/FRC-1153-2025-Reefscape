@@ -14,21 +14,21 @@ public class AlgaeIOSim implements AlgaeIO {
   private double appliedVoltsOuter = 0.0;
   private double appliedVoltsInner = 0.0;
 
-  public AlgaeIOSim(DCMotor motor, double reduction, double momentOfInertia) {
+  public AlgaeIOSim() {
     simOuter =
         new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 1, 1), DCMotor.getNEO(1));
 
     simInner =
         new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(motor, momentOfInertia, reduction), motor);
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 1, 1), DCMotor.getNEO(1));
   }
 
   @Override
   public void updateInputs(AlgaeIOInputs inputs) {
     if (DriverStation.isDisabled()) {
-      setVoltageOuter(0);
-      setVoltageInner(0);
+      setVoltageHolding(0);
+      setVoltageLauncher(0);
     }
 
     inputs.outerAppliedVolts = appliedVoltsOuter;
@@ -39,24 +39,24 @@ public class AlgaeIOSim implements AlgaeIO {
   }
 
   @Override
-  public void setVoltageOuter(double volts) {
+  public void setVoltageLauncher(double volts) {
     appliedVoltsOuter = MathUtil.clamp(volts, -12, 12); // can be edited
     simOuter.setInputVoltage(appliedVoltsOuter);
   }
 
   @Override
   public void stopOuter() {
-    setVoltageOuter(0);
+    setVoltageLauncher(0);
   }
 
   @Override
-  public void setVoltageInner(double volts) {
+  public void setVoltageHolding(double volts) {
     appliedVoltsInner = MathUtil.clamp(volts, -12, 12); // can be edited
     simInner.setInputVoltage(appliedVoltsInner);
   }
 
   @Override
   public void stopInner() {
-    setVoltageInner(0);
+    setVoltageHolding(0);
   }
 }

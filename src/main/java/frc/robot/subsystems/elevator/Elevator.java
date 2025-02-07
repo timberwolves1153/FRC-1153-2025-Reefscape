@@ -44,7 +44,8 @@ public class Elevator extends SubsystemBase {
     L2_CORAL(7),
     L2_ALGAE(12),
     L3_CORAL(15),
-    L3_ALGAE(18);
+    L3_ALGAE(18),
+    COLLECT_CORAL(5);
 
     private double heightInInches;
 

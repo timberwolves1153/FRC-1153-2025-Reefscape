@@ -8,18 +8,19 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class CoralIOSparkMax implements CoralIO {
 
-  private SparkMax wheelsC;
+  private SparkMax coralMotor;
   private SparkMaxConfig config;
 
   private final DoubleSolenoid doubleSolenoid;
 
   public CoralIOSparkMax() {
 
-    wheelsC = new SparkMax(45, MotorType.kBrushless);
+    coralMotor = new SparkMax(45, MotorType.kBrushless);
     config = new SparkMaxConfig();
     doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
     doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -32,29 +33,34 @@ public class CoralIOSparkMax implements CoralIO {
     config.smartCurrentLimit(40);
     config.idleMode(IdleMode.kBrake);
 
-    wheelsC.clearFaults();
-    wheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    coralMotor.clearFaults();
+    coralMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override // matches names w/in coralio
   public void updateInputs(CoralIOInputs inputs) {
 
-    inputs.appliedVolts = wheelsC.getAppliedOutput() * wheelsC.getBusVoltage();
-    inputs.currentAmps = wheelsC.getOutputCurrent();
+    inputs.appliedVolts = coralMotor.getAppliedOutput() * coralMotor.getBusVoltage();
+    inputs.currentAmps = coralMotor.getOutputCurrent();
   }
 
   @Override
   public void setVoltage(double volts) {
-    wheelsC.setVoltage(volts);
+    coralMotor.setVoltage(volts);
   }
   // ------------------------------------------
   @Override
   public void stop() {
-    wheelsC.setVoltage(0);
+    coralMotor.setVoltage(0);
   }
   // ------------------------------------------
-  // @Override
+  @Override
   public void setSolenoid() {
     doubleSolenoid.toggle();
+  }
+
+  @Override
+  public void setSolenoidState(Value position) {
+    doubleSolenoid.set(position);
   }
 }

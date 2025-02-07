@@ -16,12 +16,12 @@ public interface AlgaeIO {
   public default void updateInputs(AlgaeIOInputs inputs) {}
 
   /** Run open loop at the specified voltage. */
-  public default void setVoltageOuter(double volts) {}
+  public default void setVoltageLauncher(double volts) {}
 
   /** Stop in open loop. */
   public default void stopOuter() {}
 
-  public default void setVoltageInner(double volts) {}
+  public default void setVoltageHolding(double volts) {}
 
   /** Stop in open loop. */
   public default void stopInner() {}

@@ -24,15 +24,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
-import frc.robot.data.BranchLocation;
-import frc.robot.data.DesiredReefPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Manipulator.Algae;
+import frc.robot.subsystems.Manipulator.AlgaeIO;
+import frc.robot.subsystems.Manipulator.AlgaeIOSim;
 import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
 import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.Manipulator.CoralIO;
+import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -47,9 +47,6 @@ import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.windmill.WindmillIOTalonFX;
-import java.util.HashMap;
-import java.util.Map;
-import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -62,21 +59,19 @@ public class RobotContainer {
 
   // Subsystems
   private final Drive drive;
-  private final Elevator elevator;
   private final Windmill windmill;
-  private final Superstructure superstructure;
-  private final Coral coral = new Coral(new CoralIOSparkMax());
-  private final Algae algae = new Algae(new AlgaeIOSparkMax());
+  private final Elevator elevator;
+  // private final Superstructure superstructure;
+  private final Coral coral;
+  private final Algae algae;
 
   // Controller
-  private final CommandXboxController driver = new CommandXboxController(0);
+  private final CommandXboxController controller = new CommandXboxController(0);
 
   private final CommandXboxController operator = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-
-  private final Map<DesiredReefPosition, Pose2d> reefmap = buildReefMap();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -90,9 +85,12 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        elevator = new Elevator(new ElevatorIOTalonFX());
+
         windmill = new Windmill(new WindmillIOTalonFX());
-        superstructure = new Superstructure(elevator, windmill);
+        elevator = new Elevator(new ElevatorIOTalonFX());
+        coral = new Coral(new CoralIOSparkMax());
+        algae = new Algae(new AlgaeIOSparkMax());
+        // superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       case SIM:
@@ -104,9 +102,12 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        elevator = new Elevator(new ElevatorIOSim());
+
         windmill = new Windmill(new WindmillIOSim());
-        superstructure = new Superstructure(elevator, windmill);
+        elevator = new Elevator(new ElevatorIOSim());
+        coral = new Coral(new CoralIOSim());
+        algae = new Algae(new AlgaeIOSim());
+        // superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       default:
@@ -118,9 +119,12 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        elevator = new Elevator(new ElevatorIO() {});
+
         windmill = new Windmill(new WindmillIO() {});
-        superstructure = new Superstructure(elevator, windmill);
+        elevator = new Elevator(new ElevatorIO() {});
+        coral = new Coral(new CoralIO() {});
+        algae = new Algae(new AlgaeIO() {});
+        // superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
     }
 
@@ -158,21 +162,27 @@ public class RobotContainer {
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> -driver.getRightX()));
+            drive,
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
+            () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
-    driver
+    controller
         .a()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
-                drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> new Rotation2d()));
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
-    driver.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when left stick is pressed
-    driver
-        .leftStick()
+    // Reset gyro to 0° when B button is pressed
+    controller
+        .y()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -181,28 +191,20 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
     // Windmill controls
 
     // elevator controls
-    // operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+    // controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    // controller.b().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    operator.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
-    operator.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-    operator.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-    operator.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
+    // controller.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    // controller.x().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
-    operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
+    controller.leftBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    controller.leftBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-    operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
-    operator.rightBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
-
-    // operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
-    operator.leftStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
-
-    // operator.rightStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
-    operator.rightStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
+    controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
   }
 
   /**
@@ -212,120 +214,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
-  }
-
-  private Map<DesiredReefPosition, Pose2d> buildReefMap() {
-
-    FieldConstants.Reef reef = new FieldConstants.Reef();
-    //       3 d
-    //       __
-    // 2 c  /  \ 4 e
-    // 1 b  \__/ 5 f
-    //       0 a
-    Map<DesiredReefPosition, Pose2d> reefMap = new HashMap<>();
-
-    DesiredReefPosition aLeft = new DesiredReefPosition(0, BranchLocation.LEFT);
-    DesiredReefPosition aRight = new DesiredReefPosition(0, BranchLocation.RIGHT);
-    DesiredReefPosition aCenter = new DesiredReefPosition(0, BranchLocation.CENTER);
-
-    DesiredReefPosition bLeft = new DesiredReefPosition(1, BranchLocation.LEFT);
-    DesiredReefPosition bRight = new DesiredReefPosition(1, BranchLocation.RIGHT);
-    DesiredReefPosition bCenter = new DesiredReefPosition(1, BranchLocation.CENTER);
-
-    DesiredReefPosition cLeft = new DesiredReefPosition(2, BranchLocation.LEFT);
-    DesiredReefPosition cRight = new DesiredReefPosition(2, BranchLocation.RIGHT);
-    DesiredReefPosition cCenter = new DesiredReefPosition(2, BranchLocation.CENTER);
-
-    DesiredReefPosition dLeft = new DesiredReefPosition(3, BranchLocation.LEFT);
-    DesiredReefPosition dRight = new DesiredReefPosition(3, BranchLocation.RIGHT);
-    DesiredReefPosition dCenter = new DesiredReefPosition(3, BranchLocation.CENTER);
-
-    DesiredReefPosition eLeft = new DesiredReefPosition(4, BranchLocation.LEFT);
-    DesiredReefPosition eRight = new DesiredReefPosition(4, BranchLocation.RIGHT);
-    DesiredReefPosition eCenter = new DesiredReefPosition(4, BranchLocation.CENTER);
-
-    DesiredReefPosition fLeft = new DesiredReefPosition(5, BranchLocation.LEFT);
-    DesiredReefPosition fRight = new DesiredReefPosition(5, BranchLocation.RIGHT);
-    DesiredReefPosition fCenter = new DesiredReefPosition(5, BranchLocation.CENTER);
-
-    // lower number always on right for field constants
-    //       78
-    //       __
-    // 6 5  /  \ 9 10
-    // 4 3  \__/ 11 12
-    //       2 1
-    reefMap.put(
-        aLeft,
-        FieldConstants.Reef.branchPositions.get(1).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        aRight,
-        FieldConstants.Reef.branchPositions.get(0).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(aCenter, FieldConstants.Reef.centerFaces[0]);
-
-    reefMap.put(
-        bLeft,
-        FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        bRight,
-        FieldConstants.Reef.branchPositions.get(2).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(bCenter, FieldConstants.Reef.centerFaces[1]);
-
-    reefMap.put(
-        cLeft,
-        FieldConstants.Reef.branchPositions.get(5).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        cRight,
-        FieldConstants.Reef.branchPositions.get(4).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(cCenter, FieldConstants.Reef.centerFaces[2]);
-
-    reefMap.put(
-        dLeft,
-        FieldConstants.Reef.branchPositions.get(6).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        dRight,
-        FieldConstants.Reef.branchPositions.get(7).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(dCenter, FieldConstants.Reef.centerFaces[3]);
-
-    reefMap.put(
-        eLeft,
-        FieldConstants.Reef.branchPositions.get(8).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        eRight,
-        FieldConstants.Reef.branchPositions.get(9).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(eCenter, FieldConstants.Reef.centerFaces[4]);
-
-    reefMap.put(
-        fLeft,
-        FieldConstants.Reef.branchPositions.get(10).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(
-        fRight,
-        FieldConstants.Reef.branchPositions.get(11).get(FieldConstants.ReefHeight.L2).toPose2d());
-    reefMap.put(fCenter, FieldConstants.Reef.centerFaces[5]);
-
-    Logger.recordOutput("aLeft", reefMap.get(aLeft));
-    Logger.recordOutput("aRight", reefMap.get(aRight));
-    Logger.recordOutput("aCenter", reefMap.get(aCenter));
-
-    Logger.recordOutput("bLeft", reefMap.get(bLeft));
-    Logger.recordOutput("bRight", reefMap.get(bRight));
-    Logger.recordOutput("bCenter", reefMap.get(bCenter));
-
-    Logger.recordOutput("cLeft", reefMap.get(cLeft));
-    Logger.recordOutput("cRight", reefMap.get(cRight));
-    Logger.recordOutput("cCenter", reefMap.get(cCenter));
-
-    Logger.recordOutput("dLeft", reefMap.get(dLeft));
-    Logger.recordOutput("dRight", reefMap.get(dRight));
-    Logger.recordOutput("dCenter", reefMap.get(dCenter));
-
-    Logger.recordOutput("eLeft", reefMap.get(eLeft));
-    Logger.recordOutput("eRight", reefMap.get(eRight));
-    Logger.recordOutput("eCenter", reefMap.get(eCenter));
-
-    Logger.recordOutput("fLeft", reefMap.get(fLeft));
-    Logger.recordOutput("fRight", reefMap.get(fRight));
-    Logger.recordOutput("fCenter", reefMap.get(fCenter));
-
-    return reefMap;
   }
 }

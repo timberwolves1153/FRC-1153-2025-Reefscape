@@ -31,19 +31,19 @@ public class Algae extends SubsystemBase {
   }
 
   /** Run open loop at the specified voltage. */
-  public void runVoltsOuter(double volts) {
-    io.setVoltageOuter(volts);
+  public void setVoltageLauncher(double volts) {
+    io.setVoltageLauncher(volts);
   }
 
-  public void stopOuter() {
+  public void stopLauncher() {
     io.stopOuter();
   }
 
-  public void runVoltsInner(double volts) {
-    io.setVoltageInner(volts);
+  public void setVoltageHolding(double volts) {
+    io.setVoltageHolding(volts);
   }
 
-  public void stopInner() {
+  public void stopHolding() {
     io.stopInner();
   }
 }

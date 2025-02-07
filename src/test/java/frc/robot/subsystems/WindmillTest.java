@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Volts;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +9,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.CANcoderSimState;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.hal.HAL;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
@@ -75,7 +73,7 @@ public class WindmillTest {
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setVoltage(Voltage.ofBaseUnits(desiredVoltsMag, Volts));
+    windmill.setVoltage(desiredVoltsMag);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);

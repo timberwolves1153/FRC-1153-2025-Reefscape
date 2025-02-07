@@ -10,14 +10,14 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
 
-  private SparkMax outerWheelsC;
-  private SparkMax innerWheelsC;
+  private SparkMax launchMotor;
+  private SparkMax holdMotor;
   private SparkMaxConfig config;
 
   public AlgaeIOSparkMax() {
 
-    outerWheelsC = new SparkMax(46, MotorType.kBrushless);
-    innerWheelsC = new SparkMax(47, MotorType.kBrushless);
+    launchMotor = new SparkMax(46, MotorType.kBrushless);
+    holdMotor = new SparkMax(47, MotorType.kBrushless);
     config = new SparkMaxConfig();
   }
 
@@ -28,41 +28,41 @@ public class AlgaeIOSparkMax implements AlgaeIO {
     config.smartCurrentLimit(40);
     config.idleMode(IdleMode.kBrake);
 
-    outerWheelsC.clearFaults();
-    outerWheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    launchMotor.clearFaults();
+    launchMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    innerWheelsC.clearFaults();
-    innerWheelsC.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    holdMotor.clearFaults();
+    holdMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override // matches names w/in algae
   public void updateInputs(AlgaeIOInputs inputs) {
 
-    inputs.outerAppliedVolts = outerWheelsC.getAppliedOutput() * outerWheelsC.getBusVoltage();
-    inputs.outerCurrentAmps = outerWheelsC.getOutputCurrent();
+    inputs.outerAppliedVolts = launchMotor.getAppliedOutput() * launchMotor.getBusVoltage();
+    inputs.outerCurrentAmps = launchMotor.getOutputCurrent();
 
-    inputs.innerAppliedVolts = innerWheelsC.getAppliedOutput() * innerWheelsC.getBusVoltage();
-    inputs.innerCurrentAmps = innerWheelsC.getOutputCurrent();
+    inputs.innerAppliedVolts = holdMotor.getAppliedOutput() * holdMotor.getBusVoltage();
+    inputs.innerCurrentAmps = holdMotor.getOutputCurrent();
   }
 
   @Override
-  public void setVoltageOuter(double volts) {
-    outerWheelsC.setVoltage(volts);
+  public void setVoltageLauncher(double volts) {
+    launchMotor.setVoltage(volts);
   }
 
   @Override
-  public void setVoltageInner(double volts) {
-    outerWheelsC.setVoltage(volts);
+  public void setVoltageHolding(double volts) {
+    holdMotor.setVoltage(volts);
   }
 
   // ------------------------------------------
   @Override
   public void stopOuter() {
-    outerWheelsC.setVoltage(0);
+    launchMotor.setVoltage(0);
   }
 
   @Override
   public void stopInner() {
-    innerWheelsC.setVoltage(0);
+    holdMotor.setVoltage(0);
   }
 }

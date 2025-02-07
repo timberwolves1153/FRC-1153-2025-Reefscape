@@ -52,13 +52,14 @@ public class Superstructure extends SubsystemBase {
   public void periodic() {
 
     if (DriverStation.isDisabled()) {
-      //  setDefaultCommand(setGoalCommand(Goal.STOW));
+      setDefaultCommand(setGoalCommand(Goal.STOW));
     }
 
     switch (desiredGoal) {
       case STOW -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
+        // windmill go to this angle
         // coral retract
         break;
       }
@@ -70,6 +71,7 @@ public class Superstructure extends SubsystemBase {
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
+        // windmill to this angle
         // piston on coral retracted
         break;
       }

@@ -20,12 +20,19 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Manipulator.Algae;
+import frc.robot.subsystems.Manipulator.AlgaeIOSparkMax;
+import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -52,11 +59,14 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Subsystems
   private final Drive drive;
   private final Elevator elevator;
   private final Windmill windmill;
-  // private final Superstructure superstructure;
+  private final Superstructure superstructure;
+  private final Coral coral = new Coral(new CoralIOSparkMax());
+  private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -82,7 +92,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         elevator = new Elevator(new ElevatorIOTalonFX());
         windmill = new Windmill(new WindmillIOTalonFX());
-        // superstructure = new Superstructure(elevator, windmill);
+        superstructure = new Superstructure(elevator, windmill);
         break;
 
       case SIM:
@@ -96,7 +106,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackRight));
         elevator = new Elevator(new ElevatorIOSim());
         windmill = new Windmill(new WindmillIOSim());
-        // superstructure = new Superstructure(elevator, windmill);
+        superstructure = new Superstructure(elevator, windmill);
         break;
 
       default:
@@ -110,7 +120,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         elevator = new Elevator(new ElevatorIO() {});
         windmill = new Windmill(new WindmillIO() {});
-        // superstructure = new Superstructure(elevator, windmill);
+        superstructure = new Superstructure(elevator, windmill);
         break;
     }
 
@@ -145,6 +155,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
+
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -177,17 +188,32 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+    // Windmill controls
 
-    //  controller.b().onTrue(Commands.run(() -> elevator.setTargetHeight(0.0), elevator));
-    // controller.b().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+    // elevator controls
+    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
+    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // operator.y().whileTrue(elevator.runCharacterizationQuasiForward());
+    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
+    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
 
-    // operator.a().whileTrue(elevator.runCharacterizationQuasiReserve());
+    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
+    controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
 
-    // operator.b().whileTrue(elevator.runCharacterizationDynamReverse());
+    operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
+    operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    // operator.x().whileTrue(elevator.runCharacterizationDynamForward());
+    // operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
+    operator.rightBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
+
+    // operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
+
+    // operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
+    operator.leftStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
+
+    // operator.rightStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(-4), algae));
+    operator.rightStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));
   }
 
   /**

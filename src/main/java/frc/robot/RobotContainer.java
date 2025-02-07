@@ -64,7 +64,7 @@ public class RobotContainer {
   private final Algae algae = new Algae(new AlgaeIOSparkMax());
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driver = new CommandXboxController(0);
 
   private final CommandXboxController operator = new CommandXboxController(1);
 
@@ -154,27 +154,21 @@ public class RobotContainer {
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> -driver.getRightX()));
 
     // Lock to 0° when A button is held
-    controller
+    driver
         .a()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> new Rotation2d()));
+                drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
     // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
-    controller
-        .y()
+    // Reset gyro to 0° when left stick is pressed
+    driver
+        .leftStick()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -186,23 +180,18 @@ public class RobotContainer {
     // Windmill controls
 
     // elevator controls
-    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3), elevator));
-    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
+    // operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
-    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-2), elevator));
-    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25), elevator));
-
-    controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(10.0), elevator));
-    controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-    controller.x().onFalse(new InstantCommand(() -> elevator.holdTargetHeight(), elevator));
+    operator.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
+    operator.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    operator.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    operator.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
 
     operator.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(4), coral));
     operator.leftBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
 
-    // operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
+    operator.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-6), coral));
     operator.rightBumper().onFalse(new InstantCommand(() -> coral.stop(), coral));
-
-    // operator.a().onTrue(new InstantCommand(() -> coral.setSolenoid(), coral));
 
     // operator.leftStick().onTrue(new InstantCommand(() -> algae.runVoltsOuter(4), algae));
     operator.leftStick().onFalse(new InstantCommand(() -> algae.stopOuter(), algae));

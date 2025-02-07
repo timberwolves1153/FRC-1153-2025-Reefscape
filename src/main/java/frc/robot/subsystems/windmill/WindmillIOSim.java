@@ -1,9 +1,12 @@
 package frc.robot.subsystems.windmill;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class WindmillIOSim implements WindmillIO {
@@ -13,7 +16,7 @@ public class WindmillIOSim implements WindmillIO {
   private CANcoder encoder;
   private WindmillInputs windmillInputs;
 
-  private double volts;
+  private Voltage volts;
 
   public WindmillIOSim() {
     windmillInputs = new WindmillInputs();
@@ -33,18 +36,17 @@ public class WindmillIOSim implements WindmillIO {
     windmillPID = new PIDController(2.5, 0.0, 0.5);
 
     encoder = new CANcoder(44);
+    volts = Voltage.ofBaseUnits(0.0, Volts);
   }
 
   @Override
   public void updateInputs(WindmillInputs inputs) {
     windmillSim.update(.02);
 
-    inputs.appliedVolts = volts;
-
-    inputs.current = windmillSim.getCurrentDrawAmps();
-    inputs.absolutePositionRadians = windmillSim.getAngleRads();
-    inputs.velocityRadPerSec = windmillSim.getVelocityRadPerSec();
-    inputs.positionDegrees = Units.radiansToDegrees(inputs.absolutePositionRadians);
+    inputs.currentAmps = windmillSim.getCurrentDrawAmps();
+    inputs.tempCelsius = 20;
+    inputs.appliedVolts = volts.baseUnitMagnitude();
+    inputs.rotations = 0;
 
     getAbsolutePosition();
 
@@ -52,9 +54,9 @@ public class WindmillIOSim implements WindmillIO {
   }
 
   @Override
-  public void setVoltage(double voltage) {
+  public void setVoltage(Voltage voltage) {
     volts = voltage;
-    windmillSim.setInputVoltage(voltage);
+    windmillSim.setInputVoltage(volts.baseUnitMagnitude());
   }
 
   @Override

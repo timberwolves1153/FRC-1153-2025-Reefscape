@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.Elevator.ElevatorGoal;
+import frc.robot.subsystems.windmill.Windmill;
+import frc.robot.subsystems.windmill.Windmill.WindmillGoal;
 
 public class Superstructure extends SubsystemBase {
 
@@ -25,11 +27,13 @@ public class Superstructure extends SubsystemBase {
   private Goal desiredGoal = Goal.STOW;
 
   private Elevator elevator;
+  private Windmill windmill;
 
   private Timer goalTimer = new Timer();
 
-  public Superstructure(Elevator elevator) {
+  public Superstructure(Elevator elevator, Windmill windmill) {
     this.elevator = elevator;
+    this.windmill = windmill;
   }
 
   private void setGoal(Goal goal) {
@@ -54,18 +58,21 @@ public class Superstructure extends SubsystemBase {
     switch (desiredGoal) {
       case STOW -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
+        windmill.setTargetPosition(WindmillGoal.STOW);
         // windmill go to this angle
         // coral retract
         break;
       }
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+        windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
         // windmill to this angle
         // piston on coral retracted
         break;
       }
       case SCORE_L1_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+        windmill.setTargetPosition(WindmillGoal.L1_CORAL);
         break;
       }
       case SCORE_L2_CORAL -> {
@@ -74,6 +81,7 @@ public class Superstructure extends SubsystemBase {
       }
       default -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
+        windmill.setTargetPosition(WindmillGoal.STOW);
       }
     }
     SmartDashboard.putString("Goal", desiredGoal.toString());

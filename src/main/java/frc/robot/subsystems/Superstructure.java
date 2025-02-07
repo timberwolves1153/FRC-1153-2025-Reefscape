@@ -63,16 +63,20 @@ public class Superstructure extends SubsystemBase {
         // coral retract
         break;
       }
-      case SCORE_L1_CORAL -> {
-        elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
-        windmill.setTargetPosition(WindmillGoal.L1_CORAL);
-        break;
-      }
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
         // windmill to this angle
         // piston on coral retracted
+        break;
+      }
+      case SCORE_L1_CORAL -> {
+        elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+        windmill.setTargetPosition(WindmillGoal.L1_CORAL);
+        break;
+      }
+      case SCORE_L2_CORAL -> {
+        elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
         break;
       }
       default -> {

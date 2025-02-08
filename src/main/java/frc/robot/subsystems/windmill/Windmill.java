@@ -36,9 +36,9 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
 
   public enum WindmillGoal {
     STOW(0),
-    COLLECT_CORAL(143),
+    COLLECT_CORAL(-81.66),
     L1_CORAL(10),
-    L2_CORAL(15),
+    L2_CORAL(-86.66),
     L2_ALGAE(20),
     L3_CORAL(25),
     L3_ALGAE(30),
@@ -88,7 +88,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     setTargetPositionDegrees(degreeGoal.getPositionInDegrees());
   }
 
-  private void setTargetPositionDegrees(double degrees) {
+  public void setTargetPositionDegrees(double degrees) {
     double rotations = Units.degreesToRotations(degrees);
     windmillIo.setTargetPosition(rotations);
   }

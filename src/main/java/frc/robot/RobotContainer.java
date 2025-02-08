@@ -196,14 +196,26 @@ public class RobotContainer {
     // Windmill controls
 
     // elevator controls
-    // controller.b().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-    // controller.b().onFalse(superstructure.setGoalCommand(Goal.STOW));
+    controller.b().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    controller.b().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    controller.x().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     controller.x().onFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    controller.leftBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    controller.a().onTrue(new InstantCommand(() -> coral.runVolts(-6)));
+    controller.a().onFalse(new InstantCommand(() -> coral.runVolts(-0.25)));
+    // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+
+    // controller.x().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(-75), windmill));
+    // controller.x().onTrue(new InstantCommand(() -> coral.runVolts(6)));
+
+    // controller.x().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(4), elevator));
+    // controller.b().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(5), windmill));
+    // controller.b().onTrue(Commands.run(() -> elevator.setTargetHeightInches(0.25), elevator));
+
+    controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(8)));
+    controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
     controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));

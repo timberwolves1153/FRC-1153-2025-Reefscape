@@ -65,8 +65,8 @@ public class Superstructure extends SubsystemBase {
       case STOW -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
-        coralManip.setSolenoidState(Value.kForward);
-        coralManip.runVolts(0.25);
+        coralManip.setSolenoidState(Value.kReverse);
+        // coralManip.runVolts(0.25);
         algaeManip.setVoltageHolding(0.25);
         // algaeManip.setVoltageLauncher(0);
 
@@ -77,8 +77,8 @@ public class Superstructure extends SubsystemBase {
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-        coralManip.setSolenoidState(Value.kForward);
-        coralManip.runVolts(6);
+        coralManip.setSolenoidState(Value.kReverse);
+        // coralManip.runVolts(6);
         algaeManip.setVoltageHolding(0.25);
         // windmill to this angle
         // piston on coral retracted
@@ -94,8 +94,9 @@ public class Superstructure extends SubsystemBase {
       case SCORE_L2_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
         windmill.setTargetPosition(WindmillGoal.L2_CORAL);
-        coralManip.setSolenoidState(Value.kReverse);
+        coralManip.setSolenoidState(Value.kForward);
         algaeManip.setVoltageHolding(0.25);
+
         break;
       }
       case GRAB_L2_ALGAE -> {

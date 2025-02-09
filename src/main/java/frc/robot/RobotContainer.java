@@ -35,14 +35,6 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.elevator.ElevatorIOSim;
-import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
-import frc.robot.subsystems.windmill.Windmill;
-import frc.robot.subsystems.windmill.WindmillIO;
-import frc.robot.subsystems.windmill.WindmillIOFX;
-import frc.robot.subsystems.windmill.WindmillIOSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -54,8 +46,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Windmill windmill;
-  private final Elevator elevator;
+
   private final Climber climber;
 
   // Controller
@@ -79,8 +70,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        windmill = new Windmill(new WindmillIOFX());
-        elevator = new Elevator(new ElevatorIOTalonFX());
         climber = new Climber(new ClimberIOSparkMax());
         break;
 
@@ -94,8 +83,6 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
 
-        windmill = new Windmill(new WindmillIOSim());
-        elevator = new Elevator(new ElevatorIOSim());
         climber = new Climber(new ClimberIOSim());
         break;
 
@@ -109,8 +96,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
-        windmill = new Windmill(new WindmillIO() {});
-        elevator = new Elevator(new ElevatorIO() {});
         climber = new Climber(new ClimberIO() {});
         break;
     }

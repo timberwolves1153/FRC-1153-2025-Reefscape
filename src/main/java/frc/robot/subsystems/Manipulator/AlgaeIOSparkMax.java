@@ -5,18 +5,20 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
+
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
 
-  private SparkMax outerWheelsC;
+  private SparkFlex outerWheelsC;
   private SparkMax innerWheelsC;
   private SparkMaxConfig config;
 
   public AlgaeIOSparkMax() {
 
-    outerWheelsC = new SparkMax(46, MotorType.kBrushless);
+    outerWheelsC = new SparkFlex(46,MotorType.kBrushless);
     innerWheelsC = new SparkMax(47, MotorType.kBrushless);
     config = new SparkMaxConfig();
   }

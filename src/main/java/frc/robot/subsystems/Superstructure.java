@@ -29,6 +29,8 @@ public class Superstructure extends SubsystemBase {
 
   private Goal desiredGoal = Goal.STOW;
 
+  private Goal previousGoal = desiredGoal;
+
   private Elevator elevator;
   private Windmill windmill;
   private Coral coralManip;
@@ -54,18 +56,31 @@ public class Superstructure extends SubsystemBase {
         .withName("Superstructure " + goal);
   }
 
+  public void actuateCoralWhenAtPosition(Value pistonPosition, WindmillGoal goal) {
+    if (windmill.isAtGoal(goal)) {
+      coralManip.setSolenoidState(pistonPosition);
+    }
+  }
+
+  public void rotateWindmillWhenAtPosition(Value pistonPosition, WindmillGoal goal) {
+    if (coralManip.isAtGoal(pistonPosition)) {
+      windmill.setTargetPosition(goal);
+    }
+  }
+
   @Override
   public void periodic() {
 
     if (DriverStation.isDisabled()) {
-      setDefaultCommand(setGoalCommand(Goal.STOW));
+      setDefaultCommand(setGoalCommand(previousGoal));
     }
 
     switch (desiredGoal) {
       case STOW -> {
+        coralManip.setSolenoidState(Value.kReverse);
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
-        coralManip.setSolenoidState(Value.kReverse);
+        SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.STOW));
         // coralManip.runVolts(0.25);
         algaeManip.setVoltageHolding(0.25);
         // algaeManip.setVoltageLauncher(0);
@@ -77,7 +92,8 @@ public class Superstructure extends SubsystemBase {
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-        coralManip.setSolenoidState(Value.kReverse);
+        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.COLLECT_CORAL);
+
         // coralManip.runVolts(6);
         algaeManip.setVoltageHolding(0.25);
         // windmill to this angle
@@ -88,13 +104,16 @@ public class Superstructure extends SubsystemBase {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         windmill.setTargetPosition(WindmillGoal.L1_CORAL);
         algaeManip.setVoltageHolding(0.25);
-        coralManip.setSolenoidState(Value.kForward);
+        SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
+        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L1_CORAL);
+
         break;
       }
       case SCORE_L2_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
         windmill.setTargetPosition(WindmillGoal.L2_CORAL);
-        coralManip.setSolenoidState(Value.kForward);
+        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L2_CORAL);
+
         algaeManip.setVoltageHolding(0.25);
 
         break;
@@ -112,7 +131,7 @@ public class Superstructure extends SubsystemBase {
       case SCORE_L3_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
         windmill.setTargetPosition(WindmillGoal.L3_CORAL);
-        coralManip.setSolenoidState(Value.kReverse);
+        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L3_CORAL);
         algaeManip.setVoltageHolding(0.25);
 
         break;
@@ -127,7 +146,7 @@ public class Superstructure extends SubsystemBase {
       default -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
-        coralManip.setSolenoidState(Value.kForward);
+        coralManip.setSolenoidState(Value.kReverse);
         coralManip.runVolts(0.25);
         algaeManip.setVoltageHolding(0.25);
 

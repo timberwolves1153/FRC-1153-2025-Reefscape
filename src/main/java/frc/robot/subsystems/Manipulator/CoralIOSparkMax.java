@@ -63,4 +63,9 @@ public class CoralIOSparkMax implements CoralIO {
   public void setSolenoidState(Value position) {
     doubleSolenoid.set(position);
   }
+
+  @Override
+  public Value getSolenoidState() {
+    return doubleSolenoid.get();
+  }
 }

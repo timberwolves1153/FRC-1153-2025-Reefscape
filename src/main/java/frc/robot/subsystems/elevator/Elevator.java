@@ -11,6 +11,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -35,15 +36,15 @@ public class Elevator extends SubsystemBase {
 
   private final Rotation2d elev_angle = Rotation2d.fromDegrees(90);
   public final SysIdRoutine sysIdRoutine;
-  private final double gearRatio = 7.1429;
-  private final double pitchDiameter = 1.751;
+  public final double gearRatio = 7.1429;
+  public final double pitchDiameter = 1.751;
 
   public enum ElevatorGoal {
     STOW(.25),
-    L1_CORAL(5),
+    L1_CORAL(0.25),
     L2_CORAL(0.25),
     L2_ALGAE(12),
-    L3_CORAL(15),
+    L3_CORAL(16.5),
     L3_ALGAE(18),
     COLLECT_CORAL(0.25);
 
@@ -161,5 +162,6 @@ public class Elevator extends SubsystemBase {
     Logger.recordOutput("Elevator/Mechanism2D", elevatorMech2d);
     Logger.recordOutput("Elevator Height", elevatorInputs.leaderRotations);
     elevatorLig2d.setLength(Units.inchesToMeters(elevatorInputs.heightInches));
+    SmartDashboard.putNumber("elevator height", elevatorInputs.heightInches);
   }
 }

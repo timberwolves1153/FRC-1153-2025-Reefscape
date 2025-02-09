@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -35,12 +36,12 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   private MechanismLigament2d windmillLigament;
 
   public enum WindmillGoal {
-    STOW(0),
-    COLLECT_CORAL(-81.66),
-    L1_CORAL(10),
-    L2_CORAL(-86.66),
+    STOW(56),
+    COLLECT_CORAL(185),
+    L1_CORAL(-31.46),
+    L2_CORAL(-77.5),
     L2_ALGAE(20),
-    L3_CORAL(25),
+    L3_CORAL(-77.5),
     L3_ALGAE(30),
     ALGAE_PROCESSOR(-80),
     ALGAE_BARGE(40);
@@ -91,6 +92,17 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   public void setTargetPositionDegrees(double degrees) {
     double rotations = Units.degreesToRotations(degrees);
     windmillIo.setTargetPosition(rotations);
+  }
+
+  public Command setTargetPositionCommand(WindmillGoal degreeGoal) {
+    return startEnd(() -> setTargetPosition(degreeGoal), () -> setTargetPosition(WindmillGoal.STOW))
+        .withName("windmill " + degreeGoal);
+  }
+
+  public boolean isAtGoal(WindmillGoal goal) {
+    double currentDegrees = Units.rotationsToDegrees(windmillInputs.rotations);
+    double error = Math.abs(currentDegrees - goal.angleInDegrees);
+    return error < 1;
   }
 
   @Override

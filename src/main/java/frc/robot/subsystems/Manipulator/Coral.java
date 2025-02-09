@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Manipulator;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -11,6 +12,8 @@ public class Coral extends SubsystemBase {
 
   public Coral(CoralIO io) {
     this.io = io;
+
+    SmartDashboard.putNumber("output speed", -3);
 
     switch (Constants.currentMode) {
         // allows to edit formats/vars for each mode
@@ -40,11 +43,15 @@ public class Coral extends SubsystemBase {
     io.stop();
   }
 
-  public void setSolenoid() {
+  public void toggleSolenoid() {
     io.setSolenoid();
   }
 
   public void setSolenoidState(Value position) {
     io.setSolenoidState(position);
+  }
+
+  public boolean isAtGoal(Value position) {
+    return position == io.getSolenoidState();
   }
 }

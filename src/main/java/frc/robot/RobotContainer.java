@@ -33,8 +33,6 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -63,7 +61,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
-  private final Superstructure superstructure;
+  // private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
 
@@ -92,7 +90,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       case SIM:
@@ -109,7 +107,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOSim());
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       default:
@@ -126,7 +124,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {});
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
     }
 
@@ -184,7 +182,7 @@ public class RobotContainer {
 
     // Reset gyro to 0° when B button is pressed
     controller
-        .y()
+        .back()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -196,14 +194,17 @@ public class RobotContainer {
     // Windmill controls
 
     // elevator controls
-    controller.b().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-    controller.b().onFalse(superstructure.setGoalCommand(Goal.STOW));
+    // controller.b().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
 
-    controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-    controller.x().onFalse(superstructure.setGoalCommand(Goal.STOW));
+    // controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
 
-    controller.a().onTrue(new InstantCommand(() -> coral.runVolts(-6)));
-    controller.a().onFalse(new InstantCommand(() -> coral.runVolts(-0.25)));
+    // controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    // controller.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
+
+    // controller.start().onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+
+    // controller.a().onTrue(new InstantCommand(() -> coral.runVolts(-6)));
+    // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(-0.25)));
     // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
     // controller.x().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(-75), windmill));
@@ -214,11 +215,33 @@ public class RobotContainer {
     // controller.b().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(5), windmill));
     // controller.b().onTrue(Commands.run(() -> elevator.setTargetHeightInches(0.25), elevator));
 
-    controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(8)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(8)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+
+    // controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    // controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+
+    // tuning controls
+    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+
+    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+
+    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
+    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+
+    controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(6)));
     controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
+
+    controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+
+    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }
 
   /**

@@ -36,6 +36,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private final StatusSignal<Angle> followerPosition = rightMotor.getPosition();
   private final StatusSignal<Temperature> followerTemp = rightMotor.getDeviceTemp();
 
+  public final double gearRatio = 7.1429;
+  public final double pitchDiameter = 1.751;
+
   public ElevatorIOTalonFX() {
     magnetSwitch = new DigitalInput(9);
     voltageRequest = new VoltageOut(0);
@@ -137,7 +140,12 @@ public class ElevatorIOTalonFX implements ElevatorIO {
     elevatorInputs.tempCelsius = followerTemp.getValueAsDouble();
     elevatorInputs.isSwitchTriggered = isSwitchTriggered();
     elevatorInputs.leaderRotations = leaderPosition.getValueAsDouble();
+    elevatorInputs.heightInches = rotationsToInches(leaderPosition.getValueAsDouble());
 
     SmartDashboard.putBoolean("Magnet Switch", isSwitchTriggered());
+  }
+
+  public double rotationsToInches(double rotations) {
+    return (rotations / gearRatio) * (Math.PI * 2 * pitchDiameter);
   }
 }

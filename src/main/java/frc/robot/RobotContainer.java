@@ -17,12 +17,15 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.GamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Manipulator.Algae;
@@ -67,8 +70,22 @@ public class RobotContainer {
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final Joystick opBoard = new Joystick(1);
+  private final CommandXboxController opOverride = new CommandXboxController(2);
 
-  private final CommandXboxController operator = new CommandXboxController(1);
+  private final JoystickButton atariButton1 = new JoystickButton(opBoard, 1);
+  private final JoystickButton atariButton2 = new JoystickButton(opBoard, 2);
+  private final JoystickButton atariButton3 = new JoystickButton(opBoard, 3);
+  private final JoystickButton atariButton4 = new JoystickButton(opBoard, 4);
+  private final JoystickButton atariButton5 = new JoystickButton(opBoard, 5);
+  private final JoystickButton atariButton6 = new JoystickButton(opBoard, 6);
+  private final JoystickButton atariButton7 = new JoystickButton(opBoard, 7);
+  private final JoystickButton atariButton8 = new JoystickButton(opBoard, 8);
+  private final JoystickButton atariButton9 = new JoystickButton(opBoard, 9);
+  private final JoystickButton atariButton10 = new JoystickButton(opBoard, 10);
+  private final JoystickButton atariButton11 = new JoystickButton(opBoard, 11);
+  private final JoystickButton atariButton12 = new JoystickButton(opBoard, 12);
+  private final JoystickButton atariButton13 = new JoystickButton(opBoard, 13);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -191,9 +208,13 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // Windmill controls
-
-    // elevator controls
+  
+     if (atariButton13.getAsBoolean()) {
+            coral.setCurrentGamePiece(GamePiece.CORAL);
+            
+        } else {
+            coral.setCurrentGamePiece(GamePiece.ALGAE);
+        }
     // controller.b().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
 
     // controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
@@ -221,7 +242,13 @@ public class RobotContainer {
     // controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-    // tuning controls
+
+
+
+
+
+
+    // tuning/manual controls
     // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
@@ -234,12 +261,12 @@ public class RobotContainer {
     // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
     // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
 
-    controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(6)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(6)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
+    // controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
 
-    controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
+    // controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
     // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }

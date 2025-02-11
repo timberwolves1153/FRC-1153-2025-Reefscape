@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.GamePiece;
 import org.littletonrobotics.junction.Logger;
 
 public class Coral extends SubsystemBase {
   private final CoralIO io;
   private final CoralIOInputsAutoLogged inputs = new CoralIOInputsAutoLogged();
+  private GamePiece currentGamePiece;
 
   public Coral(CoralIO io) {
     this.io = io;
@@ -53,5 +55,17 @@ public class Coral extends SubsystemBase {
 
   public boolean isAtGoal(Value position) {
     return position == io.getSolenoidState();
+  }
+
+  public Value getSolenoidState() {
+    return io.getSolenoidState();
+  }
+
+  public GamePiece getCurrentGamePiece() {
+    return this.currentGamePiece;
+  }
+
+  public void setCurrentGamePiece(GamePiece gamePiece) {
+    this.currentGamePiece = gamePiece;
   }
 }

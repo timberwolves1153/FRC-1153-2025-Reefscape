@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,18 +19,20 @@ public class Superstructure extends SubsystemBase {
   public enum Goal {
     STOW,
     COLLECT_CORAL,
+    PRESTAGE_ALGAE,
     SCORE_L1_CORAL,
     SCORE_L2_CORAL,
     GRAB_L2_ALGAE,
     SCORE_L3_CORAL,
     GRAB_L3_ALGAE,
     SCORE_ALGAE_PROCESSOR,
-    SCORE_ALGAE_BARGE;
+    SCORE_ALGAE_BARGE,
+    STAY_STILL;
   }
 
-  private Goal desiredGoal = Goal.STOW;
+  private Goal desiredGoal = Goal.STAY_STILL;
 
-  private Goal previousGoal = desiredGoal;
+  
 
   private Elevator elevator;
   private Windmill windmill;
@@ -49,6 +52,10 @@ public class Superstructure extends SubsystemBase {
       return; // The new goal is already our goal, do nothing
     }
     desiredGoal = goal; // Update the desired goal to be the new goal
+  }
+
+  public Goal getCurrentGoal() {
+    return desiredGoal;
   }
 
   public Command setGoalCommand(Goal goal) {
@@ -72,7 +79,7 @@ public class Superstructure extends SubsystemBase {
   public void periodic() {
 
     if (DriverStation.isDisabled()) {
-      setDefaultCommand(setGoalCommand(previousGoal));
+      setDefaultCommand(setGoalCommand(desiredGoal));
     }
 
     switch (desiredGoal) {
@@ -93,17 +100,11 @@ public class Superstructure extends SubsystemBase {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
         actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.COLLECT_CORAL);
-
-        // coralManip.runVolts(6);
-        algaeManip.setVoltageHolding(0.25);
-        // windmill to this angle
-        // piston on coral retracted
         break;
       }
       case SCORE_L1_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         windmill.setTargetPosition(WindmillGoal.L1_CORAL);
-        algaeManip.setVoltageHolding(0.25);
         SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
         actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L1_CORAL);
 
@@ -114,17 +115,13 @@ public class Superstructure extends SubsystemBase {
         windmill.setTargetPosition(WindmillGoal.L2_CORAL);
         actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L2_CORAL);
 
-        algaeManip.setVoltageHolding(0.25);
-
         break;
       }
       case GRAB_L2_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L2_ALGAE);
         windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
-        // algaeManip.setVoltageLauncher(6);
-        algaeManip.setVoltageHolding(6);
         coralManip.setSolenoidState(Value.kForward);
-        coralManip.runVolts(0.25);
+       
 
         break;
       }
@@ -132,23 +129,24 @@ public class Superstructure extends SubsystemBase {
         elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
         windmill.setTargetPosition(WindmillGoal.L3_CORAL);
         actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L3_CORAL);
-        algaeManip.setVoltageHolding(0.25);
-
+       
         break;
       }
       case GRAB_L3_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L3_ALGAE);
         windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
-        coralManip.runVolts(0.25);
-        algaeManip.setVoltageHolding(6);
+      
         break;
+      }
+      case STAY_STILL -> {
+        elevator.setTargetHeightInches(elevator.elevatorInputs.heightInches);
+        windmill.setTargetPositionDegrees(Units.rotationsToDegrees(windmill.windmillInputs.rotations));
+        coralManip.setSolenoidState(coralManip.getSolenoidState());
       }
       default -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
         coralManip.setSolenoidState(Value.kReverse);
-        coralManip.runVolts(0.25);
-        algaeManip.setVoltageHolding(0.25);
 
         break;
       }

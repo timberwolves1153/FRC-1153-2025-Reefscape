@@ -25,7 +25,7 @@ import org.littletonrobotics.junction.Logger;
 public class Windmill extends SubsystemBase implements AutoCloseable {
 
   private WindmillIO windmillIo;
-  private WindmillInputsAutoLogged windmillInputs;
+  public WindmillInputsAutoLogged windmillInputs;
 
   private ProfiledPIDController windmillPID;
   private TrapezoidProfile.Constraints windmillConstraints;
@@ -38,6 +38,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   public enum WindmillGoal {
     STOW(56),
     COLLECT_CORAL(185),
+    PRESTAGE_ALGAE(0),
     L1_CORAL(-31.46),
     L2_CORAL(-77.5),
     L2_ALGAE(20),

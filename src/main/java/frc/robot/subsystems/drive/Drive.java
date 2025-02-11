@@ -32,6 +32,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -52,12 +53,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
-import frc.robot.FieldConstants.ReefHeight;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
-
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -392,17 +389,24 @@ public class Drive extends SubsystemBase {
   }
 
   public Command pathFindCommand(TargetReefFace target) {
-    //List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
-    //            6   7 
+    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
+    //            6   7
     //         5        8
     //        4          9
     //         3        10
     //          2     11
     //            1 0
     Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
+    Pose2d reefFace = FieldConstants.Reef.centerFaces[0];
+    Transform2d robotTransform =
+        new Transform2d(
+            /*x*/ -Units.inchesToMeters(13),
+            /*y*/ -Units.inchesToMeters(15),
+            /*rotation*/ new Rotation2d());
+    reefFace.transformBy(robotTransform);
     return AutoBuilder.pathfindToPose(pose.toPose2d(), constraints);
     // System.out.println(FieldConstants.Reef.branchPositions);
     // FieldConstants.Reef.centerFaces[target.index]
-    
+
   }
 }

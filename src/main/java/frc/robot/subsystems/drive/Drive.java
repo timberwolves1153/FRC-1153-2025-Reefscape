@@ -48,16 +48,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.FieldConstants;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.Reefmap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
@@ -119,6 +122,8 @@ public class Drive extends SubsystemBase {
       };
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+  private PathConstraints constraints =
+      new PathConstraints(3.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
 
   private Map<DesiredReefPosition, Pose2d> reefmap = new Reefmap().getReefMap();
 
@@ -409,11 +414,8 @@ public class Drive extends SubsystemBase {
     return this.desiredFace;
   }
 
-  public Command pathFindCommand(
-      Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
+  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
 
-    PathConstraints constraints =
-        new PathConstraints(3.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
     // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
     //            6   7
     //         5        8
@@ -421,20 +423,47 @@ public class Drive extends SubsystemBase {
     //         3        10
     //          2     11
     //            1 0
-
-    DesiredReefPosition goalPosition =
-        new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
-    SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
-    SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
-    Pose2d goalPose = reefmap.get(goalPosition);
+    return new DeferredCommand(
+        () -> {
+          DesiredReefPosition goalPosition =
+              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
+          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
+          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+          Pose2d goalPose = reefmap.get(goalPosition);
+          return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+        },
+        Set.of(this));
 
     // Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
     // Pose2d reefFace = FieldConstants.Reef.centerFaces[3];
     // Pose2d coralStation = FieldConstants.CoralStation.leftCenterFace;
 
-    return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-
     // System.out.println(FieldConstants.Reef.branchPositions);
     // FieldConstants.Reef.centerFaces[target.index]
+  }
+
+  public Command driveToStation() {
+    return new DeferredCommand(
+        () -> {
+          Pose2d nearestStation = FieldConstants.getNearestCoralStation(getPose());
+
+          return AutoBuilder.pathfindToPose(
+              nearestStation.transformBy(robotTransform), constraints);
+        },
+        Set.of(this));
+  }
+
+  public Command driveToBarge() {
+    return new DeferredCommand(
+        () -> {
+          Pose2d targetPose =
+              new Pose2d(
+                  FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
+                  getPose().getY(),
+                  new Rotation2d());
+
+          return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform), constraints);
+        },
+        Set.of(this));
   }
 }

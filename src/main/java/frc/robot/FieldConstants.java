@@ -173,4 +173,21 @@ public class FieldConstants {
 
   public static final double aprilTagWidth = Units.inchesToMeters(6.50);
   public static final int aprilTagCount = 22;
+
+  public static Pose2d getNearestCoralStation(Pose2d currentPose) {
+    double distanceToLeftStation =
+        currentPose
+            .getTranslation()
+            .getDistance(FieldConstants.CoralStation.leftCenterFace.getTranslation());
+    double distanceToRightStation =
+        currentPose
+            .getTranslation()
+            .getDistance(FieldConstants.CoralStation.rightCenterFace.getTranslation());
+
+    if (distanceToLeftStation > distanceToRightStation) {
+      return FieldConstants.CoralStation.rightCenterFace;
+    } else {
+      return FieldConstants.CoralStation.leftCenterFace;
+    }
+  }
 }

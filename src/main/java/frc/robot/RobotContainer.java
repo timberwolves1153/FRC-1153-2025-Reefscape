@@ -207,14 +207,14 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> new Rotation2d()));
+    // controller
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDriveAtAngle(
+    //             drive,
+    //             () -> -controller.getLeftY(),
+    //             () -> -controller.getLeftX(),
+    //             () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -237,13 +237,19 @@ public class RobotContainer {
     // atariButton3.whileTrue(drive.pathFindCommand(() -> 3, BranchLocation.LEFT));
     atariButton1.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     atariButton2.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
+    atariButton3.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.C)));
+    atariButton4.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
+    atariButton5.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
+    atariButton6.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
     controller
         .leftBumper()
-        .whileTrue(drive.pathFindCommand(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
-    // controller
-    //     .rightBumper()
-    //     .whileTrue(
-    //         drive.pathFindCommand(() -> drive.getDesiredReefFace().index, BranchLocation.RIGHT));
+        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
+    controller
+        .rightBumper()
+        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
+
+    controller.a().whileTrue(drive.driveToStation());
+    controller.b().whileTrue(drive.driveToBarge());
     // controller
     //     .start()
     //     .whileTrue(

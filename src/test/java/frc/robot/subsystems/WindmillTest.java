@@ -144,7 +144,7 @@ public class WindmillTest {
     assertEquals(dutyCycle.getValue(), 0.0, DELTA);
 
     // Set the windmill voltage to the desired volts
-    windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR);
+    windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
     /* wait for the control to apply */
     Timer.delay(0.020);
     dutyCycle.waitForUpdate(0.100);

@@ -36,6 +36,8 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -64,7 +66,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
-  // private final Superstructure superstructure;
+  private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
 
@@ -107,7 +109,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
-        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       case SIM:
@@ -124,7 +126,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOSim());
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
-        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
 
       default:
@@ -141,7 +143,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {});
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
-        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         break;
     }
 
@@ -163,6 +165,39 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+    // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
+    // NamedCommands.registerCommand(
+    //     "Stop Coral Collector", new InstantCommand(() -> coral.runVolts(0)));
+    // NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-6)));
+    // NamedCommands.registerCommand(
+    //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    // NamedCommands.registerCommand(
+    //     "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    // NamedCommands.registerCommand(
+    //     "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    // NamedCommands.registerCommand(
+    //     "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(-12)));
+    // NamedCommands.registerCommand(
+    //     "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // NamedCommands.registerCommand(
+    //     "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(0)));
+
+    // NamedCommands.registerCommand("Stow Position", superstructure.setGoalCommand(Goal.STOW));
+    // NamedCommands.registerCommand(
+    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    // NamedCommands.registerCommand(
+    //     "Score L1 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    // NamedCommands.registerCommand(
+    //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
+    // NamedCommands.registerCommand(
+    //     "Score L3 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+    // NamedCommands.registerCommand(
+    //     "Grab L2 Algae Position", superstructure.setGoalCommand(Goal.GRAB_L2_ALGAE));
+    // NamedCommands.registerCommand(
+    //     "Grab L3 Algae Position", superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE));
+    // NamedCommands.registerCommand(
+    //     "Shoot Algae Position", superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -208,14 +243,34 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-  
-     if (atariButton13.getAsBoolean()) {
-            coral.setCurrentGamePiece(GamePiece.CORAL);
-            
-        } else {
-            coral.setCurrentGamePiece(GamePiece.ALGAE);
-        }
-    // controller.b().onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    if (atariButton13.getAsBoolean()) {
+      coral.setCurrentGamePiece(GamePiece.CORAL);
+
+    } else {
+      coral.setCurrentGamePiece(GamePiece.ALGAE);
+    }
+
+    if (coral.getCurrentGamePiece().equals(GamePiece.CORAL)) {
+        atariButton1.onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+        atariButton2.onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
+        atariButton3.onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+        atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
+        atariButton5.onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+        atariButton4.onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+
+    } else {
+
+        atariButton1.onTrue(superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE));
+        atariButton2.onTrue(superstructure.setGoalCommand(Goal.GRAB_L2_ALGAE));
+        atariButton3.onTrue(superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE));
+        atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
+        atariButton5.onTrue(superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE));
+        atariButton4.onTrue(superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE));
+
+    }
+    
+   // atariButton7.onTrue(getAutonomousCommand())
+   
 
     // controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
 
@@ -242,18 +297,12 @@ public class RobotContainer {
     // controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-
-
-
-
-
-
     // tuning/manual controls
-    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
-
-    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+
+    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
     // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
     // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
@@ -265,10 +314,21 @@ public class RobotContainer {
     // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
     // controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
-
     // controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+
+    // controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    // controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(6)));
+    // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+
+    //controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+
+
   }
 
   /**

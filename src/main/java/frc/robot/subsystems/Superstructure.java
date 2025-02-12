@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,20 +19,18 @@ public class Superstructure extends SubsystemBase {
   public enum Goal {
     STOW,
     COLLECT_CORAL,
-    PRESTAGE_ALGAE,
+    // PRESTAGE_ALGAE,
     SCORE_L1_CORAL,
     SCORE_L2_CORAL,
     GRAB_L2_ALGAE,
     SCORE_L3_CORAL,
     GRAB_L3_ALGAE,
-    SCORE_ALGAE_PROCESSOR,
+    ALGAE_PROCESSOR_AND_PRESTAGE,
     SCORE_ALGAE_BARGE,
     STAY_STILL;
   }
 
-  private Goal desiredGoal = Goal.STAY_STILL;
-
-  
+  private Goal desiredGoal = Goal.STOW;
 
   private Elevator elevator;
   private Windmill windmill;
@@ -84,12 +82,11 @@ public class Superstructure extends SubsystemBase {
 
     switch (desiredGoal) {
       case STOW -> {
-        coralManip.setSolenoidState(Value.kReverse);
+        coralManip.setSolenoidState(Value.kForward);
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
         SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.STOW));
         // coralManip.runVolts(0.25);
-        algaeManip.setVoltageHolding(0.25);
         // algaeManip.setVoltageLauncher(0);
 
         // windmill go to this angle
@@ -98,55 +95,69 @@ public class Superstructure extends SubsystemBase {
       }
       case COLLECT_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-        windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.COLLECT_CORAL);
+        coralManip.setSolenoidState(Value.kForward);
+        rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.COLLECT_CORAL);
         break;
       }
       case SCORE_L1_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
         windmill.setTargetPosition(WindmillGoal.L1_CORAL);
         SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
-        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L1_CORAL);
+        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
 
         break;
       }
       case SCORE_L2_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
         windmill.setTargetPosition(WindmillGoal.L2_CORAL);
-        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L2_CORAL);
+        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L2_CORAL);
 
         break;
       }
       case GRAB_L2_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L2_ALGAE);
         windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
-        coralManip.setSolenoidState(Value.kForward);
-       
 
         break;
       }
       case SCORE_L3_CORAL -> {
         elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
         windmill.setTargetPosition(WindmillGoal.L3_CORAL);
-        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L3_CORAL);
-       
+        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L3_CORAL);
+
         break;
       }
       case GRAB_L3_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L3_ALGAE);
         windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
-      
+
         break;
       }
+      case SCORE_ALGAE_BARGE -> {
+        elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
+        windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+
+        break;
+      }
+      case ALGAE_PROCESSOR_AND_PRESTAGE -> {
+        elevator.setTargetHeight(ElevatorGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+        windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+
+        break;
+      }
+
       case STAY_STILL -> {
         elevator.setTargetHeightInches(elevator.elevatorInputs.heightInches);
-        windmill.setTargetPositionDegrees(Units.rotationsToDegrees(windmill.windmillInputs.rotations));
+        windmill.setTargetPositionDegrees(
+            Units.rotationsToDegrees(windmill.windmillInputs.rotations));
         coralManip.setSolenoidState(coralManip.getSolenoidState());
+
+        break;
       }
       default -> {
         elevator.setTargetHeight(ElevatorGoal.STOW);
         windmill.setTargetPosition(WindmillGoal.STOW);
-        coralManip.setSolenoidState(Value.kReverse);
+        coralManip.setSolenoidState(Value.kForward);
 
         break;
       }

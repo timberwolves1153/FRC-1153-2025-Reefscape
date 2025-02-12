@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -330,8 +331,9 @@ public class RobotContainer {
     // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+    
 
+    controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }
 
   /**

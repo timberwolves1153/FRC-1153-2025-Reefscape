@@ -103,7 +103,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   public boolean isAtGoal(WindmillGoal goal) {
     double currentDegrees = Units.rotationsToDegrees(windmillInputs.rotations);
     double error = Math.abs(currentDegrees - goal.angleInDegrees);
-    return error < 1;
+    return error < 5;
   }
 
   @Override

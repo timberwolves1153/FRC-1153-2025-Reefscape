@@ -47,9 +47,9 @@ public class ScoreGamePiece extends Command {
   }
 
   @Override
-    public void end(boolean interrupted) {
-      algae.setVoltageHolding(0);
-      algae.setVoltageLauncher(0);
-      coral.runVolts(0);
-    }
+  public void end(boolean interrupted) {
+    algae.setVoltageHolding(0);
+    algae.setVoltageLauncher(0);
+    coral.runVolts(0);
+  }
 }

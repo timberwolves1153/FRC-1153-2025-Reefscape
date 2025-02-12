@@ -43,6 +43,10 @@ public class ScoreGamePiece extends Command {
           > 11.7 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
         algae.setVoltageHolding(-6);
       }
+    } else {
+      algae.setVoltageHolding(0);
+      algae.setVoltageLauncher(0);
+      coral.runVolts(0);
     }
   }
 

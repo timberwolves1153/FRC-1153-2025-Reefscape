@@ -25,8 +25,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.GamePiece;
+import frc.robot.commands.CollectFromStation;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.GoToL2;
+import frc.robot.commands.GoToL3;
+import frc.robot.commands.GoToStowPosition;
+import frc.robot.commands.GoToL1OrProcessor;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Manipulator.Algae;
@@ -233,7 +238,7 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
+    // Reset gyro to 0° when Back button is pressed
     controller
         .back()
         .onTrue(
@@ -252,28 +257,14 @@ public class RobotContainer {
       coral.setCurrentGamePiece(GamePiece.CORAL);
     }
 
-    if (coral.getCurrentGamePiece().equals(GamePiece.CORAL)) {
-      atariButton1.onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-      atariButton2.onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-      // atariButton3.onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-      atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
-      atariButton5.onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-      atariButton4.onTrue(superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-
-    } else {
-
-      atariButton1.onTrue(superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE));
-      atariButton2.onTrue(superstructure.setGoalCommand(Goal.GRAB_L2_ALGAE));
-      atariButton3.onTrue(superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE));
-      atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
-      atariButton5.onTrue(superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE));
-      atariButton4.onTrue(superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE));
-    }
-
-    atariButton3.onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-
+    
+    atariButton1.onTrue(new GoToL1OrProcessor(superstructure));
+    atariButton2.onTrue(new GoToL2(superstructure));
+    atariButton3.onTrue(new GoToL3(superstructure));
+    atariButton4.onTrue(new CollectFromStation(superstructure));
+    atariButton5.onTrue(new CollectFromStation(superstructure));
+    atariButton6.onTrue(new GoToStowPosition(superstructure));
     atariButton7.whileTrue(new CollectGamePiece(coral, algae));
-
     atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));

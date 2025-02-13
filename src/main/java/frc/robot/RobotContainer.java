@@ -21,17 +21,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.GamePiece;
-import frc.robot.commands.CollectFromStation;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.GoToL2;
-import frc.robot.commands.GoToL3;
-import frc.robot.commands.GoToStowPosition;
-import frc.robot.commands.GoToL1OrProcessor;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Manipulator.Algae;
@@ -249,7 +245,7 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    if (atariButton13.getAsBoolean()) {
+    if (controller.b().getAsBoolean()) {
       coral.setCurrentGamePiece(GamePiece.ALGAE);
 
     } else {
@@ -257,22 +253,46 @@ public class RobotContainer {
       coral.setCurrentGamePiece(GamePiece.CORAL);
     }
 
-    
-    atariButton1.onTrue(new GoToL1OrProcessor(superstructure));
-    atariButton2.onTrue(new GoToL2(superstructure));
-    atariButton3.onTrue(new GoToL3(superstructure));
-    atariButton4.onTrue(new CollectFromStation(superstructure));
-    atariButton5.onTrue(new CollectFromStation(superstructure));
-    atariButton6.onTrue(new GoToStowPosition(superstructure));
-    atariButton7.whileTrue(new CollectGamePiece(coral, algae));
-    atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    // atariButton1.onTrue(new GoToL1OrProcessor(superstructure));
+    // atariButton2.onTrue(new GoToL2(superstructure));
+    // atariButton3.onTrue(new GoToL3(superstructure));
+    // atariButton4.onTrue(new CollectFromStation(superstructure));
+    // atariButton5.onTrue(new CollectFromStation(superstructure));
+    // atariButton6.onTrue(new GoToStowPosition(superstructure));
+    // atariButton7.whileTrue(new CollectGamePiece(coral, algae));
+    // atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
-    // controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
+    controller
+        .y()
+        .onTrue(
+            new ConditionalCommand(
+                superstructure.setGoalCommand(Goal.SCORE_L3_CORAL),
+                superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
+                controller.b()));
+    controller
+        .a()
+        .onTrue(
+            new ConditionalCommand(
+                superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
+                superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
+                controller.b()));
 
+    controller
+        .x()
+        .onTrue(
+            new ConditionalCommand(
+                superstructure.setGoalCommand(Goal.COLLECT_CORAL),
+                superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE),
+                controller.b()));
+
+    controller.leftBumper().whileTrue(new CollectGamePiece(coral, algae));
+    controller.rightBumper().whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+
+    //  controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
     // controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
     // controller.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
 
-    // controller.start().onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+    // controller.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
 
     // controller.a().onTrue(new InstantCommand(() -> coral.runVolts(-6)));
     // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(-0.25)));

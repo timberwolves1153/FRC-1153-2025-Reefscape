@@ -116,7 +116,7 @@ public class Superstructure extends SubsystemBase {
       }
       case GRAB_L2_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L2_ALGAE);
-        //windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
+        // windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L3_ALGAE);
 
         break;
@@ -130,21 +130,21 @@ public class Superstructure extends SubsystemBase {
       }
       case GRAB_L3_ALGAE -> {
         elevator.setTargetHeight(ElevatorGoal.L3_ALGAE);
-        //windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
+        // windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L3_ALGAE);
 
         break;
       }
       case SCORE_ALGAE_BARGE -> {
         elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
-        //windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+        // windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.ALGAE_BARGE);
 
         break;
       }
       case ALGAE_PROCESSOR_AND_PRESTAGE -> {
         elevator.setTargetHeight(ElevatorGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
-        //windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+        // windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
 
         break;

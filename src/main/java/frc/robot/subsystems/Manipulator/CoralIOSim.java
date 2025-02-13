@@ -29,7 +29,7 @@ public class CoralIOSim implements CoralIO {
       setVoltage(0);
     }
 
-    inputs.appliedVolts = appliedVolts;
+    inputs.appliedVolts = sim.getInputVoltage();
     inputs.currentAmps = sim.getCurrentDrawAmps();
   }
 

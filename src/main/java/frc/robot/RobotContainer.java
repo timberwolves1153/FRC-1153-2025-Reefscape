@@ -341,8 +341,9 @@ public class RobotContainer {
     // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+    
 
+    controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }
 
   /**

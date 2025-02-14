@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Superstructure;
@@ -23,25 +24,28 @@ public class ScoreGamePiece extends Command {
   @Override
   public void execute() {
     Goal currentGoal = superstructure.getCurrentGoal();
+    GamePiece currentGamePiece = superstructure.getGamePiece();
 
-    if (currentGoal.equals(Goal.SCORE_L1_CORAL)) {
-      coral.runVolts(-6);
+    if (currentGamePiece.equals(GamePiece.CORAL)) {
+      if (currentGoal.equals(Goal.L1)) {
+        coral.runVolts(-6);
 
-    } else if (currentGoal.equals(Goal.SCORE_L2_CORAL)) {
-      coral.runVolts(6);
+      } else if (currentGoal.equals(Goal.L2)) {
+        coral.runVolts(6);
 
-    } else if (currentGoal.equals(Goal.SCORE_L3_CORAL)) {
-      coral.runVolts(6);
-
-    } else if (currentGoal.equals(Goal.ALGAE_PROCESSOR_AND_PRESTAGE)) {
-      algae.setVoltageLauncher(-6);
-      algae.setVoltageHolding(-6);
-
-    } else if ((currentGoal.equals(Goal.SCORE_ALGAE_BARGE))) {
-      algae.setVoltageLauncher(-12);
-      if (algae.inputs.outerAppliedVolts
-          > 11.7 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
-        algae.setVoltageHolding(-6);
+      } else if (currentGoal.equals(Goal.L3)) {
+        coral.runVolts(6);
+      }
+    } else if (currentGamePiece.equals(GamePiece.ALGAE)) {
+      if (currentGoal.equals(Goal.L1)) {
+        algae.setVoltageLauncher(6);
+        algae.setVoltageHolding(6);
+      } else if ((currentGoal.equals(Goal.BARGE))) {
+        algae.setVoltageLauncher(12);
+        if (algae.inputs.outerAppliedVolts
+            > 11.7 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
+          algae.setVoltageHolding(6);
+        }
       }
     } else {
       algae.setVoltageHolding(0);

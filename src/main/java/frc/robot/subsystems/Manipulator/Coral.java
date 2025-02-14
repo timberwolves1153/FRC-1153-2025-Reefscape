@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.Logger;
 public class Coral extends SubsystemBase {
   private final CoralIO io;
   private final CoralIOInputsAutoLogged inputs = new CoralIOInputsAutoLogged();
-  private GamePiece currentGamePiece;
+  private GamePiece currentGamePiece = GamePiece.CORAL;
 
   public Coral(CoralIO io) {
     this.io = io;
@@ -34,6 +34,7 @@ public class Coral extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Coral", inputs);
+    SmartDashboard.putString("SolenoidPosition", getSolenoidState().toString());
   }
 
   /** Run open loop at the specified voltage. */

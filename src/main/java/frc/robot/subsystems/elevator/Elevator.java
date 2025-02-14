@@ -135,6 +135,10 @@ public class Elevator extends SubsystemBase {
     elevatorIO.setTargetHeight(rots);
   }
 
+  public void setTargetHeightRotations(double rotations) {
+    elevatorIO.setTargetHeight(rotations);
+  }
+
   public void holdTargetHeight() {
     double calculatedVolts =
         profiledPIDController.calculate(elevatorInputs.heightInches, elevatorInputs.heightInches)
@@ -166,5 +170,6 @@ public class Elevator extends SubsystemBase {
     Logger.recordOutput("Elevator Height", elevatorInputs.leaderRotations);
     elevatorLig2d.setLength(Units.inchesToMeters(elevatorInputs.heightInches));
     SmartDashboard.putNumber("elevator height", elevatorInputs.heightInches);
+    SmartDashboard.putNumber("elevator rotations", elevatorInputs.leaderRotations);
   }
 }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.elevator.Elevator;
@@ -18,19 +19,18 @@ public class Superstructure extends SubsystemBase {
 
   public enum Goal {
     STOW,
-    COLLECT_CORAL,
+    COLLECT,
     // PRESTAGE_ALGAE,
-    SCORE_L1_CORAL,
-    SCORE_L2_CORAL,
-    GRAB_L2_ALGAE,
-    SCORE_L3_CORAL,
-    GRAB_L3_ALGAE,
-    ALGAE_PROCESSOR_AND_PRESTAGE,
-    SCORE_ALGAE_BARGE,
+    L1,
+    L2,
+    L3,
+    // PROCESSOR_AND_PRESTAGE,
+    BARGE,
     STAY_STILL;
   }
 
   private Goal desiredGoal = Goal.STOW;
+  private GamePiece currentGamePiece = GamePiece.CORAL;
 
   private Elevator elevator;
   private Windmill windmill;
@@ -57,8 +57,24 @@ public class Superstructure extends SubsystemBase {
   }
 
   public Command setGoalCommand(Goal goal) {
-    return startEnd(() -> setGoal(goal), () -> setGoal(Goal.STOW))
+    return startEnd(() -> setGoal(goal), () -> setGoal(getCurrentGoal()))
         .withName("Superstructure " + goal);
+  }
+
+  private void setGamepiece(GamePiece gamePiece) {
+    if (currentGamePiece == gamePiece) {
+      return; // The new gamepiece is already our state, do nothing
+    }
+    currentGamePiece = gamePiece; // Update the desired goal to be the new goal
+  }
+
+  public GamePiece getGamePiece() {
+    return currentGamePiece;
+  }
+
+  public Command setGamepieceCommand(GamePiece gamePiece) {
+    return startEnd(() -> setGamepiece(gamePiece), () -> setGamepiece(getGamePiece()))
+        .withName("Superstructure Gamepiece" + gamePiece);
   }
 
   public void actuateCoralWhenAtPosition(Value pistonPosition, WindmillGoal goal) {
@@ -93,59 +109,71 @@ public class Superstructure extends SubsystemBase {
         // coral retract
         break;
       }
-      case COLLECT_CORAL -> {
+      case COLLECT -> {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         coralManip.setSolenoidState(Value.kForward);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.COLLECT_CORAL);
         break;
       }
-      case SCORE_L1_CORAL -> {
-        elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
-        windmill.setTargetPosition(WindmillGoal.L1_CORAL);
-        SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
-        actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
-
+      case L1 -> {
+        if (GamePiece.CORAL.equals(getGamePiece())) {
+          elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L1_CORAL);
+          SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
+          actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
+        } else if ((GamePiece.ALGAE.equals(getGamePiece()))) {
+          elevator.setTargetHeight(ElevatorGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+          coralManip.setSolenoidState(Value.kForward);
+          // windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+          rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+        } else { // default is coral
+          elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L1_CORAL);
+          SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
+          actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
+        }
         break;
       }
-      case SCORE_L2_CORAL -> {
-        elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
-        windmill.setTargetPosition(WindmillGoal.L2_CORAL);
-        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L2_CORAL);
-
+      case L2 -> {
+        if (GamePiece.CORAL.equals(getGamePiece())) {
+          elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L2_CORAL);
+          actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L2_CORAL);
+        } else if ((GamePiece.ALGAE.equals(getGamePiece()))) {
+          elevator.setTargetHeight(ElevatorGoal.L2_ALGAE);
+          // windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
+          coralManip.setSolenoidState(Value.kForward);
+          rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L2_ALGAE);
+        } else {
+          elevator.setTargetHeight(ElevatorGoal.L2_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L2_CORAL);
+          actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L2_CORAL);
+        }
         break;
       }
-      case GRAB_L2_ALGAE -> {
-        elevator.setTargetHeight(ElevatorGoal.L2_ALGAE);
-        // windmill.setTargetPosition(WindmillGoal.L2_ALGAE);
-        rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L3_ALGAE);
+      case L3 -> {
+        if (GamePiece.CORAL.equals(getGamePiece())) {
+          elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L3_CORAL);
+          actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L3_CORAL);
 
+        } else if ((GamePiece.ALGAE.equals(getGamePiece()))) {
+          elevator.setTargetHeight(ElevatorGoal.L3_ALGAE);
+          coralManip.setSolenoidState(Value.kForward);
+          // windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
+          rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L3_ALGAE);
+        } else {
+          elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
+          windmill.setTargetPosition(WindmillGoal.L3_CORAL);
+          actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L3_CORAL);
+        }
         break;
       }
-      case SCORE_L3_CORAL -> {
-        elevator.setTargetHeight(ElevatorGoal.L3_CORAL);
-        windmill.setTargetPosition(WindmillGoal.L3_CORAL);
-        actuateCoralWhenAtPosition(Value.kReverse, WindmillGoal.L3_CORAL);
-
-        break;
-      }
-      case GRAB_L3_ALGAE -> {
-        elevator.setTargetHeight(ElevatorGoal.L3_ALGAE);
-        // windmill.setTargetPosition(WindmillGoal.L3_ALGAE);
-        rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.L3_ALGAE);
-
-        break;
-      }
-      case SCORE_ALGAE_BARGE -> {
+      case BARGE -> {
         elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
         // windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+        coralManip.setSolenoidState(Value.kForward);
         rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.ALGAE_BARGE);
-
-        break;
-      }
-      case ALGAE_PROCESSOR_AND_PRESTAGE -> {
-        elevator.setTargetHeight(ElevatorGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
-        // windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
-        rotateWindmillWhenAtPosition(Value.kForward, WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
 
         break;
       }
@@ -167,5 +195,6 @@ public class Superstructure extends SubsystemBase {
       }
     }
     SmartDashboard.putString("Goal", desiredGoal.toString());
+    SmartDashboard.putString("Gamepiece", getGamePiece().toString());
   }
 }

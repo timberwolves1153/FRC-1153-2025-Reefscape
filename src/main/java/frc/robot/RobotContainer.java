@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -29,6 +29,7 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ScoreGamePiece;
+import frc.robot.data.BranchLocation;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.AlgaeIO;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.Drive.TargetReefFace;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -50,6 +52,11 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionConstants;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOPhotonVision;
+import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOSim;
@@ -71,6 +78,7 @@ public class RobotContainer {
   private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
+  private final Vision vision;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -112,6 +120,15 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVision(
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                new VisionIOPhotonVision(
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1),
+                new VisionIOPhotonVision(
+                    VisionConstants.camera2Name, VisionConstants.robotToCamera2));
         break;
 
       case SIM:
@@ -129,6 +146,15 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
         break;
 
       default:
@@ -146,6 +172,14 @@ public class RobotContainer {
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIO() {},
+                new VisionIO() {},
+                new VisionIO() {});
+
         break;
     }
 
@@ -245,48 +279,85 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    if (controller.b().getAsBoolean()) {
-      coral.setCurrentGamePiece(GamePiece.ALGAE);
-
-    } else {
-
-      coral.setCurrentGamePiece(GamePiece.CORAL);
-    }
-
-    // atariButton1.onTrue(new GoToL1OrProcessor(superstructure));
-    // atariButton2.onTrue(new GoToL2(superstructure));
-    // atariButton3.onTrue(new GoToL3(superstructure));
-    // atariButton4.onTrue(new CollectFromStation(superstructure));
-    // atariButton5.onTrue(new CollectFromStation(superstructure));
-    // atariButton6.onTrue(new GoToStowPosition(superstructure));
-    // atariButton7.whileTrue(new CollectGamePiece(coral, algae));
-    // atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
-
     controller
-        .y()
-        .onTrue(
-            new ConditionalCommand(
-                superstructure.setGoalCommand(Goal.SCORE_L3_CORAL),
-                superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
-                controller.b()));
+        .leftBumper()
+        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
     controller
-        .a()
-        .onTrue(
-            new ConditionalCommand(
-                superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
-                superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
-                controller.b()));
-
+        .rightBumper()
+        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller
-        .x()
-        .onTrue(
-            new ConditionalCommand(
-                superstructure.setGoalCommand(Goal.COLLECT_CORAL),
-                superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE),
-                controller.b()));
+        .start()
+        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
+    controller.x().whileTrue(drive.driveToStation());
 
-    controller.leftBumper().whileTrue(new CollectGamePiece(coral, algae));
-    controller.rightBumper().whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
+    atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
+
+    atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
+    atariButton12.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
+
+    // if (atariButton13.getAsBoolean()) {
+    //   coral.setCurrentGamePiece(GamePiece.ALGAE);
+
+    // } else {
+
+    //   coral.setCurrentGamePiece(GamePiece.CORAL);
+    // }
+    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+
+    atariButton1.onTrue(superstructure.setGoalCommand(Goal.L1));
+    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L2));
+    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L3));
+    atariButton4.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
+
+    // atariButton1.onTrue(
+    //     new ConditionalCommand(
+    //         superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
+    //         superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
+    //         () -> atariButton13.getAsBoolean()));
+    // atariButton2.onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
+    // atariButton3.onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+    // atariButton4.onTrue(
+    //     new ConditionalCommand(
+    //         superstructure.setGoalCommand(Goal.COLLECT_CORAL),
+    //         superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
+    //         () -> atariButton13.getAsBoolean()));
+    // // atariButton5.onTrue(new CollectFromStation(superstructure));
+    // atariButton6.onTrue(
+    //     new ConditionalCommand(
+    //         superstructure.setGoalCommand(Goal.STOW),
+    //         superstructure.setGoalCommand(Goal.STOW),
+    //         () -> atariButton13.getAsBoolean()));
+    atariButton7.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+
+    // controller
+    //     .y()
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             superstructure.setGoalCommand(Goal.SCORE_L3_CORAL),
+    //             superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
+    //             controller.b()));
+    // controller
+    //     .a()
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
+    //             superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
+    //             controller.b()));
+
+    // controller
+    //     .x()
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             superstructure.setGoalCommand(Goal.COLLECT_CORAL),
+    //             superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE),
+    //             controller.b()));
+
+    // controller.leftBumper().whileTrue(new CollectGamePiece(coral, algae));
+    // controller.rightBumper().whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     //  controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
     // controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
@@ -341,9 +412,7 @@ public class RobotContainer {
     // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    
-
-    controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }
 
   /**

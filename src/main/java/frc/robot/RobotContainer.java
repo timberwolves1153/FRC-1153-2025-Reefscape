@@ -14,6 +14,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -203,9 +205,8 @@ public class RobotContainer {
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
-    // NamedCommands.registerCommand(
-    //     "Stop Coral Collector", new InstantCommand(() -> coral.runVolts(0)));
-    // NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-6)));
+    NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-5)));
     // NamedCommands.registerCommand(
     //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
     // NamedCommands.registerCommand(
@@ -222,8 +223,10 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Stow Position", superstructure.setGoalCommand(Goal.STOW));
     // NamedCommands.registerCommand(
     //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-    // NamedCommands.registerCommand(
-    //     "Score L1 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
+    NamedCommands.registerCommand(
+        "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
+    NamedCommands.registerCommand(
+        "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(

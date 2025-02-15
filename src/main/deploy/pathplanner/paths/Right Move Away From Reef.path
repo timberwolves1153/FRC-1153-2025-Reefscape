@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.548494318181818,
-        "y": 3.002911931818182
+        "x": 5.09,
+        "y": 2.63
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.229230599254691,
-        "y": 2.9695206763759048
+        "x": 4.984046052631578,
+        "y": 2.331578947368421
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.09,
-        "y": 2.63
+        "x": 4.685773026315789,
+        "y": 1.1865953947368417
       },
       "prevControl": {
-        "x": 5.806841246005266,
-        "y": 2.631506849819212
+        "x": 4.945559210526316,
+        "y": 1.9563322368421052
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Score 1 Right Coral Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -45.0
   },
   "useDefaultConstraints": true
 }

@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Manipulator.Algae;
@@ -12,17 +13,26 @@ public class ScoreGamePiece extends Command {
   private Coral coral;
   private Algae algae;
   private Superstructure superstructure;
+  private Timer timer;
 
   public ScoreGamePiece(Coral coral, Algae algae, Superstructure superstructure) {
     this.coral = coral;
     this.algae = algae;
     this.superstructure = superstructure;
-
+    timer = new Timer();
+    timer.reset();
     addRequirements(coral, algae);
   }
 
   @Override
+  public void initialize() {
+    timer.reset();
+  }
+
+  @Override
   public void execute() {
+
+    timer.start();
     Goal currentGoal = superstructure.getCurrentGoal();
     GamePiece currentGamePiece = superstructure.getGamePiece();
 
@@ -41,9 +51,12 @@ public class ScoreGamePiece extends Command {
         algae.setVoltageLauncher(6);
         algae.setVoltageHolding(6);
       } else if ((currentGoal.equals(Goal.BARGE))) {
+
         algae.setVoltageLauncher(12);
-        if (algae.inputs.outerAppliedVolts
-            > 11.7 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
+
+        if (algae.inputs.outerAppliedVolts > 11.95
+            && timer.get()
+                > 2 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
           algae.setVoltageHolding(6);
         }
       }
@@ -56,6 +69,7 @@ public class ScoreGamePiece extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    timer.reset();
     algae.setVoltageHolding(0);
     algae.setVoltageLauncher(0);
     coral.runVolts(0);

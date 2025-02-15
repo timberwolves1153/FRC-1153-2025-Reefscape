@@ -5,7 +5,8 @@
   "pathFolders": [
     "Center To Left C4",
     "Center To Reef C1A3",
-    "Left To Reef&Source C3A2"
+    "Left To Reef&Source C3A2",
+    "1 L1 Coral Paths"
   ],
   "autoFolders": [
     "Algae Autos",
@@ -18,7 +19,7 @@
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 74.088,
-  "robotMOI": 6.883,
+  "robotMOI": 9.583,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.048,
   "driveGearing": 5.143,

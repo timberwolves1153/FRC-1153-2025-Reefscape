@@ -5,6 +5,7 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 
 public class CollectGamePiece extends Command {
 
@@ -23,9 +24,15 @@ public class CollectGamePiece extends Command {
   @Override
   public void execute() {
     GamePiece selectedPiece = superstructure.getGamePiece();
+    Goal currentGoal = superstructure.getCurrentGoal();
 
     if (GamePiece.CORAL.equals(selectedPiece)) {
-      coral.runVolts(6);
+      if (currentGoal.equals(Goal.L2) || currentGoal.equals(Goal.L3)) {
+        coral.runVolts(-2);
+      } else {
+        coral.runVolts(6);
+      }
+
     } else if (GamePiece.ALGAE.equals(selectedPiece)) {
       algae.setVoltageHolding(-6);
       algae.setVoltageLauncher(-6);

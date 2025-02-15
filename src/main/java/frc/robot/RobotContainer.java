@@ -289,11 +289,12 @@ public class RobotContainer {
         .start()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     controller.x().whileTrue(drive.driveToStation());
+    controller.b().whileTrue(drive.driveToBarge());
 
     atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
-    atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
+    atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
 
-    atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
+    atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.C)));
     atariButton12.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
 
     // if (atariButton13.getAsBoolean()) {
@@ -306,11 +307,12 @@ public class RobotContainer {
     atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
     atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
 
-    atariButton1.onTrue(superstructure.setGoalCommand(Goal.L1));
-    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L2));
-    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L3));
-    atariButton4.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    atariButton6.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
+    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
+    atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
+    atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
+    atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
 
     // atariButton1.onTrue(
     //     new ConditionalCommand(
@@ -330,8 +332,8 @@ public class RobotContainer {
     //         superstructure.setGoalCommand(Goal.STOW),
     //         superstructure.setGoalCommand(Goal.STOW),
     //         () -> atariButton13.getAsBoolean()));
-    atariButton7.whileTrue(new CollectGamePiece(coral, algae, superstructure));
-    atariButton8.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // controller
     //     .y()

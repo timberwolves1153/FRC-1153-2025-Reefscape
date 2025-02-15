@@ -21,6 +21,8 @@ import java.util.Map;
 public class FieldConstants {
   public static final double fieldLength = Units.inchesToMeters(690.876);
   public static final double fieldWidth = Units.inchesToMeters(317);
+  public static final Translation2d fieldCenter =
+      new Translation2d(fieldLength / 2, fieldWidth / 2);
   public static final double startingLineX =
       Units.inchesToMeters(299.438); // Measured from the inside of starting line
   public static final double algaeDiameter = Units.inchesToMeters(16);
@@ -184,7 +186,7 @@ public class FieldConstants {
             .getTranslation()
             .getDistance(FieldConstants.CoralStation.rightCenterFace.getTranslation());
 
-    if (distanceToLeftStation > distanceToRightStation) {
+    if (distanceToLeftStation < distanceToRightStation) {
       return FieldConstants.CoralStation.rightCenterFace;
     } else {
       return FieldConstants.CoralStation.leftCenterFace;

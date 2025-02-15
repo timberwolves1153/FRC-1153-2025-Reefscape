@@ -81,14 +81,19 @@ public class Drive extends SubsystemBase {
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
 
   // PathPlanner config constants
-  private static final double ROBOT_MASS_KG = 74.088;
-  private static final double ROBOT_MOI = 6.883;
+  private static final double ROBOT_MASS_KG = 58.988;
+  private static final double ROBOT_MOI = 9.583;
   private static final double WHEEL_COF = 1.2;
   private static final Transform2d robotTransform =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(16),
+          /*x*/ Units.inchesToMeters(22),
           /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ new Rotation2d());
+          /*rotation*/ Rotation2d.fromDegrees(192));
+  private static final Transform2d stationRobotTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(22),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(2));
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
           ROBOT_MASS_KG,
@@ -123,7 +128,7 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
   private PathConstraints constraints =
-      new PathConstraints(3.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
+      new PathConstraints(3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720));
 
   private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
 
@@ -169,7 +174,7 @@ public class Drive extends SubsystemBase {
         this::getChassisSpeeds,
         this::runVelocity,
         new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+            new PIDConstants(18.0, 0.0, 0.0), new PIDConstants(18.0, 0.0, 0.0)),
         PP_CONFIG,
         () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
         this);
@@ -430,7 +435,18 @@ public class Drive extends SubsystemBase {
           SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
           Pose2d goalPose = reefmap.get(goalPosition);
-          return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+            return AutoBuilder.pathfindToPose(
+                goalPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+          }
         },
         Set.of(this));
 
@@ -447,8 +463,19 @@ public class Drive extends SubsystemBase {
         () -> {
           Pose2d nearestStation = FieldConstants.getNearestCoralStation(getPose());
 
-          return AutoBuilder.pathfindToPose(
-              nearestStation.transformBy(robotTransform), constraints);
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+            return AutoBuilder.pathfindToPose(
+                nearestStation
+                    .transformBy(stationRobotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(
+                nearestStation.transformBy(robotTransform), constraints);
+          }
         },
         Set.of(this));
   }
@@ -462,7 +489,19 @@ public class Drive extends SubsystemBase {
                   getPose().getY(),
                   new Rotation2d());
 
-          return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform), constraints);
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+
+            return AutoBuilder.pathfindToPose(
+                targetPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform), constraints);
+          }
         },
         Set.of(this));
   }

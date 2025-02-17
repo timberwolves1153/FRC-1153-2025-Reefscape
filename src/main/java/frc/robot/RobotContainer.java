@@ -15,7 +15,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -26,13 +25,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber.Climber;
+import frc.robot.subsystems.Climber.ClimberIO;
+import frc.robot.subsystems.Climber.ClimberIOSim;
+import frc.robot.subsystems.Climber.ClimberIOSparkMax;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.AlgaeIO;
 import frc.robot.subsystems.Manipulator.AlgaeIOSim;
@@ -81,6 +83,7 @@ public class RobotContainer {
   private final Coral coral;
   private final Algae algae;
   private final Vision vision;
+  private final Climber climber;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -100,6 +103,8 @@ public class RobotContainer {
   private final JoystickButton atariButton11 = new JoystickButton(opBoard, 11);
   private final JoystickButton atariButton12 = new JoystickButton(opBoard, 12);
   private final JoystickButton atariButton13 = new JoystickButton(opBoard, 13);
+  private final JoystickButton atariButton14 = new JoystickButton(opBoard, 14);
+  private final JoystickButton atariButton15 = new JoystickButton(opBoard, 15);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -121,6 +126,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
+        climber = new Climber(new ClimberIOSparkMax());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
         vision =
             new Vision(
@@ -148,6 +154,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+        climber = new Climber(new ClimberIOSim());
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -173,6 +180,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {});
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
+        climber = new Climber(new ClimberIO() {});
         superstructure = new Superstructure(elevator, windmill, coral, algae);
 
         vision =
@@ -189,20 +197,20 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+    // autoChooser.addOption(
+    //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Forward)",
+    //     drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Reverse)",
+    //     drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
@@ -294,11 +302,19 @@ public class RobotContainer {
     controller.x().whileTrue(drive.driveToStation());
     controller.b().whileTrue(drive.driveToBarge());
 
+    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
+    controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+
+    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(-10)));
+    controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+
     atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
 
     atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.C)));
     atariButton12.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
+    atariButton14.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
+    atariButton15.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
 
     // if (atariButton13.getAsBoolean()) {
     //   coral.setCurrentGamePiece(GamePiece.ALGAE);
@@ -316,6 +332,8 @@ public class RobotContainer {
     atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // atariButton1.onTrue(
     //     new ConditionalCommand(
@@ -335,8 +353,6 @@ public class RobotContainer {
     //         superstructure.setGoalCommand(Goal.STOW),
     //         superstructure.setGoalCommand(Goal.STOW),
     //         () -> atariButton13.getAsBoolean()));
-    atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // controller
     //     .y()

@@ -439,11 +439,12 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
-            return AutoBuilder.pathfindToPose(
-                goalPose
-                    .transformBy(robotTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                constraints);
+            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            // return AutoBuilder.pathfindToPose(
+            //     goalPose
+            //         .transformBy(robotTransform)
+            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+            //     constraints);
           } else {
             return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
           }
@@ -467,11 +468,13 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
+            // return AutoBuilder.pathfindToPose(
+            //     nearestStation
+            //         .transformBy(stationRobotTransform)
+            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+            //     constraints);
             return AutoBuilder.pathfindToPose(
-                nearestStation
-                    .transformBy(stationRobotTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                constraints);
+                nearestStation.transformBy(robotTransform), constraints);
           } else {
             return AutoBuilder.pathfindToPose(
                 nearestStation.transformBy(robotTransform), constraints);

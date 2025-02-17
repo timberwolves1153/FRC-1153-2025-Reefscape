@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.042,
-        "y": 5.276
+        "x": 7.18063524590164,
+        "y": 7.24969262295082
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.830098684210526,
-        "y": 5.689555921052631
+        "x": 6.931534491974952,
+        "y": 7.228507382967382
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.329769736842105,
-        "y": 6.882648026315789
+        "x": 5.4903688524590155,
+        "y": 7.24969262295082
       },
       "prevControl": {
-        "x": 4.570312499999999,
-        "y": 6.507401315789473
+        "x": 6.035457061873584,
+        "y": 7.259225704914989
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Score 1 Left Coral Paths",
+  "folder": "Drive straight paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -145.38
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

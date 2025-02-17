@@ -186,7 +186,7 @@ public class FieldConstants {
             .getTranslation()
             .getDistance(FieldConstants.CoralStation.rightCenterFace.getTranslation());
 
-    if (distanceToLeftStation < distanceToRightStation) {
+    if (distanceToLeftStation > distanceToRightStation) {
       return FieldConstants.CoralStation.rightCenterFace;
     } else {
       return FieldConstants.CoralStation.leftCenterFace;

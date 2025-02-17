@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Score L1 Coral Position"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right L1 Path"

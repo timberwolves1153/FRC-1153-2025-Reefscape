@@ -234,6 +234,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
     NamedCommands.registerCommand(
+        "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    NamedCommands.registerCommand(
         "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));

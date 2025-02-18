@@ -268,7 +268,7 @@ public class RobotContainer {
 
     // Lock to 0° when A button is held
     controller
-        .a()
+        .start()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
@@ -297,7 +297,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller
-        .start()
+        .a()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     controller.x().whileTrue(drive.driveToStation());
     controller.b().whileTrue(drive.driveToBarge());

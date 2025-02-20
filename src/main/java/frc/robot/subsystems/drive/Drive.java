@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
+import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -117,7 +118,7 @@ public class Drive extends SubsystemBase {
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
-  private Rotation2d rawGyroRotation = new Rotation2d();
+  public Rotation2d rawGyroRotation = new Rotation2d();
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -439,14 +440,16 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
-            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            new AdjustToPose(goalPose.transformBy(robotTransform), this);
             // return AutoBuilder.pathfindToPose(
             //     goalPose
             //         .transformBy(robotTransform)
             //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
             //     constraints);
           } else {
-            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            new AdjustToPose(goalPose.transformBy(robotTransform), this);
           }
         },
         Set.of(this));

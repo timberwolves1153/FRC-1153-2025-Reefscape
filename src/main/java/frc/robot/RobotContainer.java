@@ -35,6 +35,7 @@ import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIO;
 import frc.robot.subsystems.Climber.ClimberIOSim;
 import frc.robot.subsystems.Climber.ClimberIOSparkMax;
+import frc.robot.subsystems.LEDs.LED;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.AlgaeIO;
 import frc.robot.subsystems.Manipulator.AlgaeIOSim;
@@ -84,7 +85,7 @@ public class RobotContainer {
   private final Algae algae;
   private final Vision vision;
   private final Climber climber;
-
+  private final LED led;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
   private final Joystick opBoard = new Joystick(1);
@@ -128,6 +129,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+        led = new LED();
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -155,6 +157,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIOSim());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
         climber = new Climber(new ClimberIOSim());
+        led = new LED();
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -182,6 +185,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIO() {});
         climber = new Climber(new ClimberIO() {});
         superstructure = new Superstructure(elevator, windmill, coral, algae);
+        led = new LED();
 
         vision =
             new Vision(
@@ -293,6 +297,7 @@ public class RobotContainer {
     controller
         .leftBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
+
     controller
         .rightBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
@@ -301,6 +306,11 @@ public class RobotContainer {
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     controller.x().whileTrue(drive.driveToStation());
     controller.b().whileTrue(drive.driveToBarge());
+    
+    //LEDS AUTO DRIVE
+    controller.leftBumper().whileTrue(led.runAutoPattern());
+    controller.rightBumper().whileTrue(led.runCoralPattern());
+    controller.a().whileTrue(led.runAlgaePattern());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
@@ -324,7 +334,9 @@ public class RobotContainer {
     //   coral.setCurrentGamePiece(GamePiece.CORAL);
     // }
     atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    atariButton13.onTrue(led.runAlgaePattern());
     atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    atariButton13.onFalse(led.runCoralPattern());
 
     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));

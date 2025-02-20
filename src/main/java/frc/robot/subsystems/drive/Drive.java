@@ -102,7 +102,7 @@ public class Drive extends SubsystemBase {
   private static final Transform2d coralTransform =
       new Transform2d(
           /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-1),
           /*rotation*/ Rotation2d.fromDegrees(0));
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(

@@ -40,6 +40,10 @@ public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double ANGLE_KP = 5.0;
   private static final double ANGLE_KD = 0.4;
+  private static final double XY_KP = 5.0;
+  private static final double XY_KD = 0.0;
+  private static final double positionKS = 0.02;
+
   private static final double ANGLE_MAX_VELOCITY = 8.0;
   private static final double ANGLE_MAX_ACCELERATION = 20.0;
   private static final double FF_START_DELAY = 2.0; // Secs
@@ -155,6 +159,29 @@ public class DriveCommands {
         // Reset PID controller when command starts
         .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
   }
+
+  /*
+   * Attempts to drive to the selected reef face
+   *
+   */
+
+  //  public static Command alignToReefFace(Supplier<Pose2d> targetPose, Drive drive) {
+
+  //   // Create PID controller
+  //   ProfiledPIDController angleController =
+  //       new ProfiledPIDController(
+  //           ANGLE_KP,
+  //           0.0,
+  //           ANGLE_KD,
+  //           new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
+  //   angleController.enableContinuousInput(-Math.PI, Math.PI);
+
+  //   PIDController xController = new PIDController(XY_KP, 0, XY_KD);
+  //   PIDController yController = new PIDController(XY_KP, 0, XY_KD);
+
+  //   xController.calculate(targetPose.get().getX());
+
+  //  }
 
   /**
    * Measures the velocity feedforward constants for the drive motors.

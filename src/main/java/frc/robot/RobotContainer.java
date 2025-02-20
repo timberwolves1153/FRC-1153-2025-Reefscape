@@ -193,28 +193,9 @@ public class RobotContainer {
         break;
     }
 
-    // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up SysId routines
-    // autoChooser.addOption(
-    //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    // autoChooser.addOption(
-    //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Forward)",
-    //     drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Reverse)",
-    //     drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
-    // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
-    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-5)));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-6)));
     // NamedCommands.registerCommand(
     //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
     // NamedCommands.registerCommand(
@@ -230,13 +211,13 @@ public class RobotContainer {
 
     // NamedCommands.registerCommand("Stow Position", superstructure.setGoalCommand(Goal.STOW));
     // NamedCommands.registerCommand(
-    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
     NamedCommands.registerCommand(
         "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
+    // NamedCommands.registerCommand(
+    //     "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
     NamedCommands.registerCommand(
-        "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    NamedCommands.registerCommand(
-        "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
+        "Score L1 Coral Position", superstructure.setAutoGoalCommand(Goal.L1));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(
@@ -247,6 +228,9 @@ public class RobotContainer {
     //     "Grab L3 Algae Position", superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE));
     // NamedCommands.registerCommand(
     //     "Shoot Algae Position", superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE));
+
+    // Set up auto routines
+    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -445,5 +429,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public void stopIntakes() {
+    algae.stopHolding();
+    algae.stopLauncher();
+    coral.stop();
   }
 }

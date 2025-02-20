@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 7.13,
-        "y": 3.81
+        "y": 4.05
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.851504683453015,
-        "y": 3.806157064337877
+        "x": 6.086388551376528,
+        "y": 4.078480595183705
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.78,
-        "y": 3.81
+        "x": 5.88,
+        "y": 4.05
       },
       "prevControl": {
-        "x": 6.851798274448843,
-        "y": 3.8093323670306622
+        "x": 6.721179435066349,
+        "y": 3.9997864491396844
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,22 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Outtake Coral",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Outtake Coral"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.7,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 34.81
   },
   "reversed": false,
   "folder": "Center To Right C4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

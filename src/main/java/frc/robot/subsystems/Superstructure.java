@@ -61,6 +61,10 @@ public class Superstructure extends SubsystemBase {
         .withName("Superstructure " + goal);
   }
 
+  public Command setAutoGoalCommand(Goal goal) {
+    return startEnd(() -> setGoal(goal), () -> setGoal(getCurrentGoal()));
+  }
+
   private void setGamepiece(GamePiece gamePiece) {
     if (currentGamePiece == gamePiece) {
       return; // The new gamepiece is already our state, do nothing

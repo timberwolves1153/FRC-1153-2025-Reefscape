@@ -441,7 +441,11 @@ public class Drive extends SubsystemBase {
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(goalPose.transformBy(robotTransform), this);
+            new AdjustToPose(
+                goalPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                this);
             // return AutoBuilder.pathfindToPose(
             //     goalPose
             //         .transformBy(robotTransform)
@@ -449,7 +453,11 @@ public class Drive extends SubsystemBase {
             //     constraints);
           } else {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(goalPose.transformBy(robotTransform), this);
+            new AdjustToPose(
+                goalPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                this);
           }
         },
         Set.of(this));

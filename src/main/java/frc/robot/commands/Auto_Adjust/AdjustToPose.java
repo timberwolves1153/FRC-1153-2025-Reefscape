@@ -23,7 +23,7 @@ public class AdjustToPose extends Command {
 
     autoAdjustXYController =
         new TranslationAutoAdjustController(
-            () -> drive.getPose(), () -> 0.0, () -> 0.0, targetPose);
+            () -> drive.getPose(), () -> drive.getRotation().getDegrees(), () -> 0.0, targetPose);
 
     addRequirements(drive);
   }

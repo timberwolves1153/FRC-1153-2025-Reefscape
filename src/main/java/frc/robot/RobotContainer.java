@@ -304,6 +304,8 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
+    controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(), drive));
+
     controller
         .leftBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));

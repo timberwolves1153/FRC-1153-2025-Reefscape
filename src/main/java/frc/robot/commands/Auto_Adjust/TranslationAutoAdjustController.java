@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 public class TranslationAutoAdjustController implements SwerveController {
 
   private Supplier<Pose2d> currentPoseSupplier;
-  private PIDController xController = new PIDController(5, 0, 0);
-  private PIDController yController = new PIDController(5, 0, 0);
+  private PIDController xController = new PIDController(10, 0, 0.5);
+  private PIDController yController = new PIDController(10, 0, 0.5);
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
 
   private boolean isFieldRelativ = true;
@@ -30,8 +30,8 @@ public class TranslationAutoAdjustController implements SwerveController {
     gyromMeasurment = robotAngle;
     this.gyroOffset = gyroOffset;
 
-    xController.setTolerance(0.01);
-    yController.setTolerance(0.01);
+    xController.setTolerance(0.05);
+    yController.setTolerance(0.05);
 
     updateSetPoint(setPoint);
     isFieldRelativ = true;

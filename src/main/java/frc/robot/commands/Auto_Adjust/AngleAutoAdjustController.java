@@ -13,18 +13,18 @@ public class AngleAutoAdjustController implements SwerveController {
   /**
    * @param getMeasurment Must be absolute.
    */
-  public AngleAutoAdjustController(Supplier<Double> getMeasurment, double setPointDrgrees) {
+  public AngleAutoAdjustController(Supplier<Double> getMeasurment, double setPointDegrees) {
 
-    pid = new PIDController(0.07, 0, 0);
+    pid = new PIDController(0.1, 0, 0);
 
     measurment = getMeasurment;
-    pid.setSetpoint(setPointDrgrees);
-    pid.setTolerance(3.5);
+    pid.setSetpoint(setPointDegrees);
+    pid.setTolerance(0.5);
     pid.enableContinuousInput(180, -180);
   }
 
   public AngleAutoAdjustController(Supplier<Double> getMeasurment) {
-    this(getMeasurment, 0);
+    this(getMeasurment, 165);
   }
 
   public ChassisSpeeds update() {

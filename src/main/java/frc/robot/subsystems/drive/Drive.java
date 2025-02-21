@@ -87,9 +87,9 @@ public class Drive extends SubsystemBase {
   private static final double WHEEL_COF = 1.2;
   private static final Transform2d robotTransform =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
+          /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(192));
+          /*rotation*/ Rotation2d.fromDegrees(0));
   private static final Transform2d stationRobotTransform =
       new Transform2d(
           /*x*/ Units.inchesToMeters(22),
@@ -436,6 +436,11 @@ public class Drive extends SubsystemBase {
           SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
           Pose2d goalPose = reefmap.get(goalPosition);
+          Logger.recordOutput(
+              "Auto Drive Target Pose",
+              goalPose
+                  .transformBy(robotTransform)
+                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;

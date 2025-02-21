@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.GamePiece;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.PIDSwerve;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.generated.TunerConstants;
@@ -282,7 +281,11 @@ public class RobotContainer {
     controller
         .a()
         .whileTrue(
-            new PIDSwerve(drive, drive.getPose(), FieldConstants.Processor.centerFace, true));
+            DriveCommands.alignToReefFace(
+                () ->
+                    FieldConstants.Reef.centerFaces[0].rotateAround(
+                        FieldConstants.fieldCenter, Rotation2d.k180deg),
+                drive));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());

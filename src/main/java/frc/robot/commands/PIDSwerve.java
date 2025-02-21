@@ -77,15 +77,16 @@ public class PIDSwerve extends Command {
 
     /* TODO Consider a potential need to rotate most of the way first, then translate */
 
-    double xCorrection = xPID.calculate(Units.metersToInches(position.getX()));
+    double xCorrection = xPID.calculate(position.getX(), targetPose.getX());
     double xFeedForward = positionKS * Math.signum(xCorrection);
     double xVal = MathUtil.clamp(xCorrection + xFeedForward, -1.0, 1.0);
 
-    double yCorrection = yPID.calculate(Units.metersToInches(position.getY()));
+    double yCorrection = yPID.calculate(position.getY(), targetPose.getY());
     double yFeedForward = positionKS * Math.signum(yCorrection);
     double yVal = MathUtil.clamp(yCorrection + yFeedForward, -1.0, 1.0);
 
-    double correction = rotationPID.calculate(rotation.getDegrees());
+    double correction =
+        rotationPID.calculate(rotation.getRadians(), targetPose.getRotation().getRadians());
     double feedForward = rotationKS * Math.signum(correction);
     double rotationVal = MathUtil.clamp(correction + feedForward, -1.0, 1.0);
 

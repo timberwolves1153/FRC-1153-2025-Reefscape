@@ -9,6 +9,42 @@
           "data": {
             "pathName": "Center To Right C4 Path 1"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Right C4 Path 7"
+          }
         }
       ]
     }

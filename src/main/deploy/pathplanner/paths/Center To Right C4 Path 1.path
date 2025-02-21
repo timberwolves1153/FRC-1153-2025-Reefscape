@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.086388551376528,
-        "y": 4.078480595183705
+        "x": 6.0725110978625345,
+        "y": 4.109665184309565
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.88,
+        "x": 5.91,
         "y": 4.05
       },
       "prevControl": {
-        "x": 6.721179435066349,
-        "y": 3.9997864491396844
+        "x": 6.784257974515459,
+        "y": 4.026306750484148
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Outtake Coral",
-      "waypointRelativePos": 0,
+      "name": "Set Coral L1 Positions",
+      "waypointRelativePos": 0.4967948717948658,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "sequential",
         "data": {
-          "name": "Outtake Coral"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Score L1 Coral Position"
+              }
+            }
+          ]
         }
       }
     }
@@ -54,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 34.81
+    "rotation": -145.19
   },
   "reversed": false,
   "folder": "Center To Right C4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

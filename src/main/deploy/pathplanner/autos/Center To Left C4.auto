@@ -3,50 +3,7 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": [
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path6"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Left C4 Path7"
-          }
-        }
-      ]
+      "commands": []
     }
   },
   "resetOdom": true,

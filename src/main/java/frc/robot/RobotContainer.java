@@ -213,11 +213,17 @@ public class RobotContainer {
     // NamedCommands.registerCommand(
     //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
     NamedCommands.registerCommand(
-        "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
+        "Coral Mode",
+        Commands.runOnce(
+            () -> superstructure.setGamepieceCommand(GamePiece.CORAL), superstructure));
     // NamedCommands.registerCommand(
     //     "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
     NamedCommands.registerCommand(
-        "Score L1 Coral Position", superstructure.setAutoGoalCommand(Goal.L1));
+        "Score L1 Coral Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Stay At Previous Position",
+    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(

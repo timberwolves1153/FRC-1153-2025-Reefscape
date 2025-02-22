@@ -61,8 +61,8 @@ public class Superstructure extends SubsystemBase {
         .withName("Superstructure " + goal);
   }
 
-  public Command setAutoGoalCommand(Goal goal) {
-    return startEnd(() -> setGoal(goal), () -> setGoal(getCurrentGoal()));
+  public void setAutoGoalCommand(Goal goal) {
+    setGoal(goal);
   }
 
   private void setGamepiece(GamePiece gamePiece) {
@@ -79,6 +79,10 @@ public class Superstructure extends SubsystemBase {
   public Command setGamepieceCommand(GamePiece gamePiece) {
     return startEnd(() -> setGamepiece(gamePiece), () -> setGamepiece(getGamePiece()))
         .withName("Superstructure Gamepiece" + gamePiece);
+  }
+
+  public void setAutoGamepieceCommand(GamePiece gamePiece) {
+    setGamepiece(gamePiece);
   }
 
   public void actuateCoralWhenAtPosition(Value pistonPosition, WindmillGoal goal) {

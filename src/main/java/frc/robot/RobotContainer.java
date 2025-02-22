@@ -306,11 +306,11 @@ public class RobotContainer {
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     controller.x().whileTrue(drive.driveToStation());
     controller.b().whileTrue(drive.driveToBarge());
-    
+
     //LEDS AUTO DRIVE
     controller.leftBumper().whileTrue(led.runAutoPattern());
-    controller.rightBumper().whileTrue(led.runCoralPattern());
-    controller.a().whileTrue(led.runAlgaePattern());
+    controller.rightBumper().whileTrue(led.runAutoPattern());
+    controller.a().whileTrue(led.runAutoPattern());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
@@ -333,10 +333,14 @@ public class RobotContainer {
 
     //   coral.setCurrentGamePiece(GamePiece.CORAL);
     // }
+
+    //LED STATES OPERATOR
     atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
     atariButton13.onTrue(led.runAlgaePattern());
     atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
     atariButton13.onFalse(led.runCoralPattern());
+    atariButton8.whileTrue(led.runCollectPattern());
+    atariButton7.whileTrue(led.runScorePattern());
 
     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));

@@ -89,12 +89,22 @@ public class Drive extends SubsystemBase {
       new Transform2d(
           /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(0));
+          /*rotation*/ Rotation2d.fromDegrees(190));
   private static final Transform2d stationRobotTransform =
       new Transform2d(
           /*x*/ Units.inchesToMeters(22),
           /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(2));
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  private static final Transform2d algaeTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(6),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  private static final Transform2d coralTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-1),
+          /*rotation*/ Rotation2d.fromDegrees(0));
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
           ROBOT_MASS_KG,
@@ -261,6 +271,7 @@ public class Drive extends SubsystemBase {
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
     SmartDashboard.putNumber("Current Desired Reef Face", getDesiredReefFace().faceNumber);
+    FieldConstants.getNearestCoralStation(getPose());
   }
 
   /**
@@ -439,6 +450,14 @@ public class Drive extends SubsystemBase {
               new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
           SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+          Transform2d desiredGamepieceTransform;
+          if (BranchLocation.CENTER.equals(desiredLocation)) {
+            desiredGamepieceTransform = algaeTransform;
+          } else {
+            desiredGamepieceTransform = coralTransform;
+          }
+
           Pose2d goalPose = reefmap.get(goalPosition);
           Logger.recordOutput(
               "Auto Drive Target Pose",
@@ -449,17 +468,12 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
-            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(
+            return AutoBuilder.pathfindToPose(
                 goalPose
                     .transformBy(robotTransform)
+                    .transformBy(desiredGamepieceTransform)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                this);
-            // return AutoBuilder.pathfindToPose(
-            //     goalPose
-            //         .transformBy(robotTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
+                constraints);
           } else {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
             new AdjustToPose(
@@ -488,13 +502,11 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isFlipped) {
-            // return AutoBuilder.pathfindToPose(
-            //     nearestStation
-            //         .transformBy(stationRobotTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
             return AutoBuilder.pathfindToPose(
-                nearestStation.transformBy(robotTransform), constraints);
+                nearestStation
+                    .transformBy(stationRobotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
           } else {
             return AutoBuilder.pathfindToPose(
                 nearestStation.transformBy(robotTransform), constraints);

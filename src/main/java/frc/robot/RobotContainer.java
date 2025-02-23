@@ -279,7 +279,7 @@ public class RobotContainer {
     //             () -> new Rotation2d()));
 
     controller
-        .a()
+        .start()
         .whileTrue(
             DriveCommands.alignToReefFace(
                 () ->
@@ -313,7 +313,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller
-        .start()
+        .a()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     // controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());

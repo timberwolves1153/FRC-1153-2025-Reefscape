@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,10 +189,24 @@ public class FieldConstants {
             .getTranslation()
             .getDistance(FieldConstants.CoralStation.rightCenterFace.getTranslation());
 
-    if (distanceToLeftStation > distanceToRightStation) {
-      return FieldConstants.CoralStation.rightCenterFace;
+    SmartDashboard.putNumber("Distance to Left Station", distanceToLeftStation);
+    SmartDashboard.putNumber("Distance to Right Station", distanceToRightStation);
+
+    boolean isFlipped =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    if (isFlipped) {
+      if (distanceToLeftStation > distanceToRightStation) {
+        return FieldConstants.CoralStation.leftCenterFace;
+      } else {
+        return FieldConstants.CoralStation.rightCenterFace;
+      }
     } else {
-      return FieldConstants.CoralStation.leftCenterFace;
+      if (distanceToLeftStation > distanceToRightStation) {
+        return FieldConstants.CoralStation.rightCenterFace;
+      } else {
+        return FieldConstants.CoralStation.leftCenterFace;
+      }
     }
   }
 }

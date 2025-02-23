@@ -38,7 +38,7 @@ public class VisionIOPhotonVision implements VisionIO {
         AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     this.poseEstimator =
         new PhotonPoseEstimator(
-            aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCamera);
+            aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
   }
 
   @Override

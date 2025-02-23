@@ -21,7 +21,8 @@ public class VisionIOPhotonVision implements VisionIO {
 
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
-  protected final PhotonPoseEstimator poseEstimator;
+  protected final PhotonPoseEstimator overallPoseEstimator;
+  protected final PhotonPoseEstimator reefFacePoseEstimator;
 
   /**
    * Creates a new VisionIOPhotonVision.
@@ -36,9 +37,12 @@ public class VisionIOPhotonVision implements VisionIO {
 
     AprilTagFieldLayout aprilTagFieldLayout =
         AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-    this.poseEstimator =
+    this.overallPoseEstimator =
         new PhotonPoseEstimator(
-            aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCamera);
+            aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
+    this.reefFacePoseEstimator =
+        new PhotonPoseEstimator(
+            aprilTagFieldLayout, PoseStrategy.PNP_DISTANCE_TRIG_SOLVE, robotToCamera);
   }
 
   @Override
@@ -48,9 +52,9 @@ public class VisionIOPhotonVision implements VisionIO {
     // Read new camera observations
     Set<Short> tagIDs = new HashSet<>();
     List<PoseObservation> poseObservations = new LinkedList<>();
-    Optional<EstimatedRobotPose> photonResult = Optional.empty();
+    Optional<EstimatedRobotPose> overallPhotonResult = Optional.empty();
     for (var result : camera.getAllUnreadResults()) {
-      photonResult = poseEstimator.update(result);
+      overallPhotonResult = overallPoseEstimator.update(result);
       // update latest target oberservation
       if (result.hasTargets()) {
         inputs.latestTargetObservation =
@@ -116,8 +120,8 @@ public class VisionIOPhotonVision implements VisionIO {
         }
       }
     }
-    if (photonResult.isPresent()) {
-      inputs.photonpose = photonResult.get().estimatedPose;
+    if (overallPhotonResult.isPresent()) {
+      inputs.photonpose = overallPhotonResult.get().estimatedPose;
     }
 
     // Save pose observations to inputs object

@@ -5,8 +5,9 @@
   "pathFolders": [
     "Center To Left C4",
     "Center To Reef C1A3",
-    "Left To Reef&Source C3A2",
     "Drive straight paths",
+    "Left To Reef&Source C3A2",
+    "Center To Right C4",
     "Quoi",
     "Score 1 Left Coral Paths",
     "Score 1 Right Coral Paths"
@@ -16,7 +17,7 @@
     "Combination Autos",
     "Coral Autos"
   ],
-  "defaultMaxVel": 3.0,
+  "defaultMaxVel": 4.7,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

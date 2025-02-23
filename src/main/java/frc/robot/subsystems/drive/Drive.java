@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
+import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -86,7 +87,7 @@ public class Drive extends SubsystemBase {
   private static final double WHEEL_COF = 1.2;
   private static final Transform2d robotTransform =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
+          /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(190));
   private static final Transform2d stationRobotTransform =
@@ -127,7 +128,7 @@ public class Drive extends SubsystemBase {
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
-  private Rotation2d rawGyroRotation = new Rotation2d();
+  public Rotation2d rawGyroRotation = new Rotation2d();
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -422,6 +423,10 @@ public class Drive extends SubsystemBase {
     };
   }
 
+  public void resetGyro() {
+    gyroIO.resetGyro();
+  }
+
   public void setDesiredReefFace(TargetReefFace desiredFace) {
     this.desiredFace = desiredFace;
   }
@@ -454,6 +459,11 @@ public class Drive extends SubsystemBase {
           }
 
           Pose2d goalPose = reefmap.get(goalPosition);
+          Logger.recordOutput(
+              "Auto Drive Target Pose",
+              goalPose
+                  .transformBy(robotTransform)
+                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
@@ -465,7 +475,12 @@ public class Drive extends SubsystemBase {
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
                 constraints);
           } else {
-            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            new AdjustToPose(
+                goalPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                this);
           }
         },
         Set.of(this));
@@ -500,29 +515,30 @@ public class Drive extends SubsystemBase {
         Set.of(this));
   }
 
-  public Command driveToBarge() {
-    return new DeferredCommand(
-        () -> {
-          Pose2d targetPose =
-              new Pose2d(
-                  FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
-                  getPose().getY(),
-                  new Rotation2d());
+  // public Command driveToBarge() {
+  //   return new DeferredCommand(
+  //       () -> {
+  //         Pose2d targetPose =
+  //             new Pose2d(
+  //                 FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
+  //                 getPose().getY(),
+  //                 new Rotation2d());
 
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
+  //         boolean isFlipped =
+  //             DriverStation.getAlliance().isPresent()
+  //                 && DriverStation.getAlliance().get() == Alliance.Red;
+  //         if (isFlipped) {
 
-            return AutoBuilder.pathfindToPose(
-                targetPose
-                    .transformBy(robotTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                constraints);
-          } else {
-            return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform), constraints);
-          }
-        },
-        Set.of(this));
-  }
+  //           return AutoBuilder.pathfindToPose(
+  //               targetPose
+  //                   .transformBy(robotTransform)
+  //                   .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+  //               constraints);
+  //         } else {
+  //           return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform),
+  // constraints);
+  //         }
+  //       },
+  //       Set.of(this));
+  // }
 }

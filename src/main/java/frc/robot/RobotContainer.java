@@ -234,6 +234,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
     NamedCommands.registerCommand(
+        "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    NamedCommands.registerCommand(
         "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
@@ -266,15 +268,27 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Lock to 0° when A button is held
+    // // Lock to 0° when A button is held
+    // controller
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDriveAtAngle(
+    //             drive,
+    //             () -> -controller.getLeftY(),
+    //             () -> -controller.getLeftX(),
+    //             () -> new Rotation2d()));
+
     controller
         .start()
         .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> new Rotation2d()));
+            DriveCommands.alignToReefFace(
+                () ->
+                    FieldConstants.Reef.centerFaces[0].rotateAround(
+                        FieldConstants.fieldCenter, Rotation2d.k180deg),
+                drive));
+
+    // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
+    // controller.b().whileTrue(drive.driveToBarge());
 
     // Switch to X pattern when X button is pressed
     // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -290,6 +304,8 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
+    controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(), drive));
+
     controller
         .leftBumper()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
@@ -299,8 +315,8 @@ public class RobotContainer {
     controller
         .a()
         .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
-    controller.x().whileTrue(drive.driveToStation());
-    controller.b().whileTrue(drive.driveToBarge());
+    // controller.x().whileTrue(drive.driveToStation());
+    // controller.b().whileTrue(drive.driveToBarge());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));

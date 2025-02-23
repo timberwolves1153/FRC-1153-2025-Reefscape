@@ -40,6 +40,10 @@ public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double ANGLE_KP = 5.0;
   private static final double ANGLE_KD = 0.4;
+  private static final double XY_KP = 5.0;
+  private static final double XY_KD = 0.0;
+  private static final double positionKS = 0.02;
+
   private static final double ANGLE_MAX_VELOCITY = 8.0;
   private static final double ANGLE_MAX_ACCELERATION = 20.0;
   private static final double FF_START_DELAY = 2.0; // Secs
@@ -145,7 +149,7 @@ public class DriveCommands {
                       && DriverStation.getAlliance().get() == Alliance.Red;
               drive.runVelocity(
                   ChassisSpeeds.fromFieldRelativeSpeeds(
-                      speeds,
+                      isFlipped ? speeds.times(-1) : speeds,
                       isFlipped
                           ? drive.getRotation().plus(new Rotation2d(Math.PI))
                           : drive.getRotation()));
@@ -154,6 +158,65 @@ public class DriveCommands {
 
         // Reset PID controller when command starts
         .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
+  }
+
+  /*
+   * Attempts to drive to the selected reef face
+   *
+   */
+
+  public static Command alignToReefFace(Supplier<Pose2d> targetPose, Drive drive) {
+
+    // Create PID controller
+    ProfiledPIDController angleController =
+        new ProfiledPIDController(
+            ANGLE_KP,
+            0.0,
+            ANGLE_KD,
+            new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
+    angleController.enableContinuousInput(-Math.PI, Math.PI);
+
+    ProfiledPIDController xController =
+        new ProfiledPIDController(
+            XY_KP,
+            0,
+            XY_KD,
+            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
+    ProfiledPIDController yController =
+        new ProfiledPIDController(
+            XY_KP,
+            0,
+            XY_KD,
+            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
+
+    return Commands.run(
+            () -> {
+              double xVal =
+                  xController.calculate(
+                      drive.getPose().getTranslation().getX(), targetPose.get().getX());
+              double yVal =
+                  yController.calculate(
+                      drive.getPose().getTranslation().getY(), targetPose.get().getY());
+              double omega =
+                  angleController.calculate(
+                      drive.getRotation().getRadians(),
+                      targetPose.get().getRotation().getRadians());
+
+              // not actually from joysticks
+              Translation2d linearSpeeds = getLinearVelocityFromJoysticks(xVal, yVal);
+
+              ChassisSpeeds speeds =
+                  new ChassisSpeeds(
+                      linearSpeeds.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                      linearSpeeds.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                      omega);
+
+              drive.runVelocity(speeds);
+            },
+            drive)
+        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()))
+        .beforeStarting(() -> xController.reset(drive.getPose().getX()))
+        .beforeStarting(() -> yController.reset(drive.getPose().getY()));
   }
 
   /**

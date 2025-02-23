@@ -50,6 +50,7 @@ public class VisionIOPhotonVision implements VisionIO {
     List<PoseObservation> poseObservations = new LinkedList<>();
     Optional<EstimatedRobotPose> photonResult = Optional.empty();
     for (var result : camera.getAllUnreadResults()) {
+      photonResult = poseEstimator.update(result);
       // update latest target oberservation
       if (result.hasTargets()) {
         inputs.latestTargetObservation =
@@ -62,7 +63,6 @@ public class VisionIOPhotonVision implements VisionIO {
 
       // add pose observation
       if (result.multitagResult.isPresent()) {
-        photonResult = poseEstimator.update(result);
         var multitagResult = result.multitagResult.get();
 
         // calculate robot pose
@@ -89,7 +89,6 @@ public class VisionIOPhotonVision implements VisionIO {
                 totalTagDistance / result.targets.size(), // average tag distance
                 PoseObservationType.PHOTONVISION));
       } else if (!result.targets.isEmpty()) { // single tag result
-        photonResult = poseEstimator.update(result);
         var target = result.targets.get(0);
 
         // Calculate robot pose

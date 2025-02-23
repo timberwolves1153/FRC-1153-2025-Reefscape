@@ -62,6 +62,8 @@ public class Module {
     io.updateInputs(inputs);
     Logger.processInputs("Drive/Module" + Integer.toString(index), inputs);
 
+    // SmartDashboard.putNumber("module rotaion", getAngle().getRotations());
+
     // Calculate positions for odometry
     int sampleCount = inputs.odometryTimestamps.length; // All signals are sampled together
     odometryPositions = new SwerveModulePosition[sampleCount];

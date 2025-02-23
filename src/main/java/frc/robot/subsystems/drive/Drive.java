@@ -21,6 +21,7 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
@@ -30,6 +31,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -39,19 +41,29 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.FieldConstants;
+import frc.robot.data.BranchLocation;
+import frc.robot.data.DesiredReefPosition;
+import frc.robot.data.ReefMap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -69,9 +81,29 @@ public class Drive extends SubsystemBase {
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
 
   // PathPlanner config constants
-  private static final double ROBOT_MASS_KG = 74.088;
-  private static final double ROBOT_MOI = 6.883;
+  private static final double ROBOT_MASS_KG = 58.988;
+  private static final double ROBOT_MOI = 9.583;
   private static final double WHEEL_COF = 1.2;
+  private static final Transform2d robotTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(22),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(190));
+  private static final Transform2d stationRobotTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(22),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  private static final Transform2d algaeTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(6),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  private static final Transform2d coralTransform =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-1),
+          /*rotation*/ Rotation2d.fromDegrees(0));
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
           ROBOT_MASS_KG,
@@ -105,6 +137,27 @@ public class Drive extends SubsystemBase {
       };
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+  private PathConstraints constraints =
+      new PathConstraints(3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720));
+
+  private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
+
+  public enum TargetReefFace {
+    A(0),
+    B(1),
+    C(2),
+    D(3),
+    E(4),
+    F(5);
+
+    public int faceNumber;
+
+    TargetReefFace(int faceNumber) {
+      this.faceNumber = faceNumber;
+    }
+  }
+
+  private TargetReefFace desiredFace = TargetReefFace.A;
 
   public Drive(
       GyroIO gyroIO,
@@ -131,7 +184,7 @@ public class Drive extends SubsystemBase {
         this::getChassisSpeeds,
         this::runVelocity,
         new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+            new PIDConstants(18.0, 0.0, 0.0), new PIDConstants(18.0, 0.0, 0.0)),
         PP_CONFIG,
         () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
         this);
@@ -215,6 +268,9 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+
+    SmartDashboard.putNumber("Current Desired Reef Face", getDesiredReefFace().faceNumber);
+    FieldConstants.getNearestCoralStation(getPose());
   }
 
   /**
@@ -364,5 +420,109 @@ public class Drive extends SubsystemBase {
       new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
       new Translation2d(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)
     };
+  }
+
+  public void setDesiredReefFace(TargetReefFace desiredFace) {
+    this.desiredFace = desiredFace;
+  }
+
+  public TargetReefFace getDesiredReefFace() {
+    return this.desiredFace;
+  }
+
+  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
+
+    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
+    //            6   7
+    //         5        8
+    //        4          9
+    //         3        10
+    //          2     11
+    //            1 0
+    return new DeferredCommand(
+        () -> {
+          DesiredReefPosition goalPosition =
+              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
+          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
+          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+          Transform2d desiredGamepieceTransform;
+          if (BranchLocation.CENTER.equals(desiredLocation)) {
+            desiredGamepieceTransform = algaeTransform;
+          } else {
+            desiredGamepieceTransform = coralTransform;
+          }
+
+          Pose2d goalPose = reefmap.get(goalPosition);
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+            return AutoBuilder.pathfindToPose(
+                goalPose
+                    .transformBy(robotTransform)
+                    .transformBy(desiredGamepieceTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+          }
+        },
+        Set.of(this));
+
+    // Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
+    // Pose2d reefFace = FieldConstants.Reef.centerFaces[3];
+    // Pose2d coralStation = FieldConstants.CoralStation.leftCenterFace;
+
+    // System.out.println(FieldConstants.Reef.branchPositions);
+    // FieldConstants.Reef.centerFaces[target.index]
+  }
+
+  public Command driveToStation() {
+    return new DeferredCommand(
+        () -> {
+          Pose2d nearestStation = FieldConstants.getNearestCoralStation(getPose());
+
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+            return AutoBuilder.pathfindToPose(
+                nearestStation
+                    .transformBy(stationRobotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(
+                nearestStation.transformBy(robotTransform), constraints);
+          }
+        },
+        Set.of(this));
+  }
+
+  public Command driveToBarge() {
+    return new DeferredCommand(
+        () -> {
+          Pose2d targetPose =
+              new Pose2d(
+                  FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
+                  getPose().getY(),
+                  new Rotation2d());
+
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+
+            return AutoBuilder.pathfindToPose(
+                targetPose
+                    .transformBy(robotTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform), constraints);
+          }
+        },
+        Set.of(this));
   }
 }

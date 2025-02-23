@@ -2,6 +2,7 @@ package frc.robot.subsystems.Manipulator;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
@@ -10,13 +11,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
 
-  private SparkMax launchMotor;
+  private SparkFlex launchMotor;
   private SparkMax holdMotor;
   private SparkMaxConfig config;
 
   public AlgaeIOSparkMax() {
 
-    launchMotor = new SparkMax(46, MotorType.kBrushless);
+    launchMotor = new SparkFlex(46, MotorType.kBrushless);
     holdMotor = new SparkMax(47, MotorType.kBrushless);
     config = new SparkMaxConfig();
   }
@@ -38,7 +39,7 @@ public class AlgaeIOSparkMax implements AlgaeIO {
   @Override // matches names w/in algae
   public void updateInputs(AlgaeIOInputs inputs) {
 
-    inputs.outerAppliedVolts = launchMotor.getAppliedOutput() * launchMotor.getBusVoltage();
+    inputs.outerAppliedVolts = launchMotor.getAppliedOutput() * 12;
     inputs.outerCurrentAmps = launchMotor.getOutputCurrent();
 
     inputs.innerAppliedVolts = holdMotor.getAppliedOutput() * holdMotor.getBusVoltage();

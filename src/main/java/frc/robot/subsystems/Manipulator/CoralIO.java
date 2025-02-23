@@ -22,4 +22,8 @@ public interface CoralIO {
   public default void setSolenoid() {}
 
   public default void setSolenoidState(Value position) {}
+
+  public default Value getSolenoidState() {
+    return Value.kReverse;
+  }
 }

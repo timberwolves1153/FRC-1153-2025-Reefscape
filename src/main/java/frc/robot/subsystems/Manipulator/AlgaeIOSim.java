@@ -31,10 +31,10 @@ public class AlgaeIOSim implements AlgaeIO {
       setVoltageLauncher(0);
     }
 
-    inputs.outerAppliedVolts = appliedVoltsOuter;
+    inputs.outerAppliedVolts = simOuter.getInputVoltage();
     inputs.outerCurrentAmps = simOuter.getCurrentDrawAmps();
 
-    inputs.innerAppliedVolts = appliedVoltsInner;
+    inputs.innerAppliedVolts = simInner.getInputVoltage();
     inputs.innerCurrentAmps = simInner.getCurrentDrawAmps();
   }
 

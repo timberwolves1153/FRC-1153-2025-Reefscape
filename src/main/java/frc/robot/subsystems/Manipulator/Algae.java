@@ -6,7 +6,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Algae extends SubsystemBase {
   private final AlgaeIO io;
-  private final AlgaeIOInputsAutoLogged inputs = new AlgaeIOInputsAutoLogged();
+  public final AlgaeIOInputsAutoLogged inputs = new AlgaeIOInputsAutoLogged();
 
   public Algae(AlgaeIO io) {
     this.io = io;

@@ -35,7 +35,7 @@ public class LED extends SubsystemBase {
 
     public LED() {
 
-        LEDDensity = Meters.of(0/1); //chanhe tjis to the actual density of the LEDs
+        LEDDensity = Meters.of(1/30); //chanhe tjis to the actual density of the LEDs
         led = new AddressableLED(0);
 
         ledBuffer = new AddressableLEDBuffer(60);//CHANGES        

@@ -45,7 +45,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     L3_CORAL(-141.67),
     L3_ALGAE(67.76),
     ALGAE_PROCESSOR_AND_PRESTAGE(131.57),
-    ALGAE_BARGE(-0.966);
+    ALGAE_BARGE(-10.366);
 
     private double angleInDegrees;
 

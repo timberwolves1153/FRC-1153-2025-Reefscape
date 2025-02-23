@@ -2,19 +2,26 @@ package frc.robot.subsystems.vision;
 
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class VisionIOPhotonVision implements VisionIO {
 
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
+  protected final PhotonPoseEstimator poseEstimator;
 
   /**
    * Creates a new VisionIOPhotonVision.
@@ -26,6 +33,12 @@ public class VisionIOPhotonVision implements VisionIO {
 
     camera = new PhotonCamera(name);
     this.robotToCamera = robotToCamera;
+
+    AprilTagFieldLayout aprilTagFieldLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    this.poseEstimator =
+        new PhotonPoseEstimator(
+            aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCamera);
   }
 
   @Override
@@ -35,6 +48,7 @@ public class VisionIOPhotonVision implements VisionIO {
     // Read new camera observations
     Set<Short> tagIDs = new HashSet<>();
     List<PoseObservation> poseObservations = new LinkedList<>();
+    Optional<EstimatedRobotPose> photonResult = Optional.empty();
     for (var result : camera.getAllUnreadResults()) {
       // update latest target oberservation
       if (result.hasTargets()) {
@@ -48,6 +62,7 @@ public class VisionIOPhotonVision implements VisionIO {
 
       // add pose observation
       if (result.multitagResult.isPresent()) {
+        photonResult = poseEstimator.update(result);
         var multitagResult = result.multitagResult.get();
 
         // calculate robot pose
@@ -74,6 +89,7 @@ public class VisionIOPhotonVision implements VisionIO {
                 totalTagDistance / result.targets.size(), // average tag distance
                 PoseObservationType.PHOTONVISION));
       } else if (!result.targets.isEmpty()) { // single tag result
+        photonResult = poseEstimator.update(result);
         var target = result.targets.get(0);
 
         // Calculate robot pose
@@ -100,6 +116,9 @@ public class VisionIOPhotonVision implements VisionIO {
                   PoseObservationType.PHOTONVISION)); // Observation type
         }
       }
+    }
+    if (photonResult.isPresent()) {
+      inputs.photonpose = photonResult.get().estimatedPose;
     }
 
     // Save pose observations to inputs object

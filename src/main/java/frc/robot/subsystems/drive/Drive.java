@@ -31,7 +31,6 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -54,8 +53,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
-import frc.robot.commands.Auto_Adjust.AdjustToPose;
-import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
 import frc.robot.generated.TunerConstants;
@@ -64,7 +61,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -85,26 +81,7 @@ public class Drive extends SubsystemBase {
   private static final double ROBOT_MASS_KG = 58.988;
   private static final double ROBOT_MOI = 9.583;
   private static final double WHEEL_COF = 1.2;
-  private static final Transform2d robotTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(18),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(190));
-  private static final Transform2d stationRobotTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(0));
-  private static final Transform2d algaeTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(6),
-          /*rotation*/ Rotation2d.fromDegrees(0));
-  private static final Transform2d coralTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(-1),
-          /*rotation*/ Rotation2d.fromDegrees(0));
+
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
           ROBOT_MASS_KG,
@@ -435,64 +412,6 @@ public class Drive extends SubsystemBase {
     return this.desiredFace;
   }
 
-  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
-
-    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
-    //            6   7
-    //         5        8
-    //        4          9
-    //         3        10
-    //          2     11
-    //            1 0
-    return new DeferredCommand(
-        () -> {
-          DesiredReefPosition goalPosition =
-              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
-          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
-          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
-
-          Transform2d desiredGamepieceTransform;
-          if (BranchLocation.CENTER.equals(desiredLocation)) {
-            desiredGamepieceTransform = algaeTransform;
-          } else {
-            desiredGamepieceTransform = coralTransform;
-          }
-
-          Pose2d goalPose = reefmap.get(goalPosition);
-          Logger.recordOutput(
-              "Auto Drive Target Pose",
-              goalPose
-                  .transformBy(robotTransform)
-                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
-            return AutoBuilder.pathfindToPose(
-                goalPose
-                    .transformBy(robotTransform)
-                    .transformBy(desiredGamepieceTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                constraints);
-          } else {
-            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(
-                goalPose
-                    .transformBy(robotTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                this);
-          }
-        },
-        Set.of(this));
-
-    // Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
-    // Pose2d reefFace = FieldConstants.Reef.centerFaces[3];
-    // Pose2d coralStation = FieldConstants.CoralStation.leftCenterFace;
-
-    // System.out.println(FieldConstants.Reef.branchPositions);
-    // FieldConstants.Reef.centerFaces[target.index]
-  }
-
   public Command driveToStation() {
     return new DeferredCommand(
         () -> {
@@ -504,41 +423,14 @@ public class Drive extends SubsystemBase {
           if (isFlipped) {
             return AutoBuilder.pathfindToPose(
                 nearestStation
-                    .transformBy(stationRobotTransform)
+                    .transformBy(Constants.STATION_TRANSFORM)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
                 constraints);
           } else {
             return AutoBuilder.pathfindToPose(
-                nearestStation.transformBy(robotTransform), constraints);
+                nearestStation.transformBy(Constants.ROBOT_TRANSFORM), constraints);
           }
         },
         Set.of(this));
   }
-
-  // public Command driveToBarge() {
-  //   return new DeferredCommand(
-  //       () -> {
-  //         Pose2d targetPose =
-  //             new Pose2d(
-  //                 FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
-  //                 getPose().getY(),
-  //                 new Rotation2d());
-
-  //         boolean isFlipped =
-  //             DriverStation.getAlliance().isPresent()
-  //                 && DriverStation.getAlliance().get() == Alliance.Red;
-  //         if (isFlipped) {
-
-  //           return AutoBuilder.pathfindToPose(
-  //               targetPose
-  //                   .transformBy(robotTransform)
-  //                   .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-  //               constraints);
-  //         } else {
-  //           return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform),
-  // constraints);
-  //         }
-  //       },
-  //       Set.of(this));
-  // }
 }

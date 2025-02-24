@@ -15,7 +15,7 @@ public class AngleAutoAdjustController implements SwerveController {
    */
   public AngleAutoAdjustController(Supplier<Double> getMeasurment, double setPointDegrees) {
 
-    pid = new PIDController(0.1, 0, 0);
+    pid = new PIDController(0.2, 0, 0);
 
     measurment = getMeasurment;
     pid.setSetpoint(setPointDegrees);

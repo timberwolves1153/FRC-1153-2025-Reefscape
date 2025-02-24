@@ -17,19 +17,27 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.GamePiece;
+import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
+import frc.robot.data.DesiredReefPosition;
+import frc.robot.data.ReefMap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIO;
@@ -65,6 +73,10 @@ import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.windmill.WindmillIOTalonFX;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -108,6 +120,8 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
+  private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -308,13 +322,11 @@ public class RobotContainer {
 
     controller
         .leftBumper()
-        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
+        .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
     controller
         .rightBumper()
-        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
-    controller
-        .a()
-        .whileTrue(drive.driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
+        .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
+    controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     // controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
 
@@ -459,5 +471,63 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
+
+    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
+    //            6   7
+    //         5        8
+    //        4          9
+    //         3        10
+    //          2     11
+    //            1 0
+    return new DeferredCommand(
+        () -> {
+          DesiredReefPosition goalPosition =
+              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
+          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
+          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+          Transform2d desiredGamepieceTransform;
+          if (BranchLocation.CENTER.equals(desiredLocation)) {
+            desiredGamepieceTransform = Constants.ALGAE_TRANSFORM;
+          } else {
+            desiredGamepieceTransform = Constants.CORAL_TRANSFORM;
+          }
+
+          Pose2d goalPose = reefmap.get(goalPosition);
+          Logger.recordOutput(
+              "Auto Drive Target Pose",
+              goalPose
+                  .transformBy(Constants.ROBOT_TRANSFORM)
+                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isFlipped) {
+            // return AutoBuilder.pathfindToPose(
+            //     goalPose
+            //         .transformBy(robotTransform)
+            //         .transformBy(desiredGamepieceTransform)
+            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+            //     constraints);
+            drive.setPose(vision.getReefCameraPose());
+            return new AdjustToPose(
+                goalPose
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .transformBy(desiredGamepieceTransform)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                drive);
+          } else {
+            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            new AdjustToPose(
+                goalPose
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                drive);
+          }
+        },
+        Set.of(drive));
   }
 }

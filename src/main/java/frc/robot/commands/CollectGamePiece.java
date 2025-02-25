@@ -34,7 +34,7 @@ public class CollectGamePiece extends Command {
       }
 
     } else if (GamePiece.ALGAE.equals(selectedPiece)) {
-      algae.setVoltageHolding(-6);
+      algae.setVoltageHolding(6);
       algae.setVoltageLauncher(-6);
     } else {
       coral.stop();

@@ -61,6 +61,6 @@ public final class Constants {
   public static final Transform2d CORAL_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(-1),
+          /*y*/ Units.inchesToMeters(-.75),
           /*rotation*/ Rotation2d.fromDegrees(0));
 }

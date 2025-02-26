@@ -47,7 +47,7 @@ public class CollectGamePiece extends Command {
   public void end(boolean interrupted) {
     GamePiece currPiece = superstructure.getGamePiece();
     if (GamePiece.CORAL.equals(currPiece)) {
-      coral.runVolts(0);
+      coral.jiggle();
     } else if (GamePiece.ALGAE.equals(currPiece)) {
       algae.setVoltageHolding(0);
       algae.setVoltageLauncher(0);

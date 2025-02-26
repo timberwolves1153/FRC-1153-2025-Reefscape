@@ -51,7 +51,7 @@ public class ScoreGamePiece extends Command {
     } else if (currentGamePiece.equals(GamePiece.ALGAE)) {
       if (currentGoal.equals(Goal.L1)) {
         algae.setVoltageLauncher(6);
-        algae.setVoltageHolding(6);
+        algae.setVoltageHolding(-6);
       } else if ((currentGoal.equals(Goal.BARGE))) {
 
         algae.setVoltageLauncher(12);
@@ -59,7 +59,7 @@ public class ScoreGamePiece extends Command {
         if (algae.inputs.outerAppliedVolts > 11.95
             && timer.get()
                 > 2 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
-          algae.setVoltageHolding(6);
+          algae.setVoltageHolding(-6);
         }
       }
     } else {

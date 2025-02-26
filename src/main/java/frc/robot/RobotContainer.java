@@ -335,6 +335,9 @@ public class RobotContainer {
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
+    //jiggle
+    atariButton8.whileFalse(new InstantCommand(() -> coral.jiggle()));    
+
     // atariButton1.onTrue(
     //     new ConditionalCommand(
     //         superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),

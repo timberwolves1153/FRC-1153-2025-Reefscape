@@ -1,8 +1,12 @@
 package frc.robot.subsystems.Manipulator;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import org.littletonrobotics.junction.Logger;
@@ -11,6 +15,7 @@ public class Coral extends SubsystemBase {
   private final CoralIO io;
   private final CoralIOInputsAutoLogged inputs = new CoralIOInputsAutoLogged();
   private GamePiece currentGamePiece = GamePiece.CORAL;
+  private Timer timer;
 
   public Coral(CoralIO io) {
     this.io = io;
@@ -41,6 +46,20 @@ public class Coral extends SubsystemBase {
   public void runVolts(double volts) {
     io.setVoltage(volts);
   }
+
+  public Command jiggle() {
+    return Commands.sequence(
+        Commands.runOnce(() -> io.setVoltage(3)),
+        new WaitCommand(0.2),  
+        Commands.runOnce(() -> io.setVoltage(-3)),
+        new WaitCommand(0.2),  
+        Commands.runOnce(() -> io.setVoltage(3)),
+        new WaitCommand(0.2),  
+        Commands.runOnce(() -> io.setVoltage(-3)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(0))
+    );
+}
 
   public void stop() {
     io.stop();

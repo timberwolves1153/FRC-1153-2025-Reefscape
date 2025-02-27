@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center To Right C4 Path 1"
+            "pathName": null
           }
         },
         {
@@ -26,12 +26,6 @@
           "type": "path",
           "data": {
             "pathName": "Center To Right C4 Path 4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Right C4 Path 5"
           }
         }
       ]

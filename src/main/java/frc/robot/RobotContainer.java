@@ -34,6 +34,7 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.JiggleCoral;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
@@ -283,23 +284,18 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // // Lock to 0° when A button is held
-    // controller
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.joystickDriveAtAngle(
-    //             drive,
-    //             () -> -controller.getLeftY(),
-    //             () -> -controller.getLeftX(),
-    //             () -> new Rotation2d()));
-
     controller
-        .start()
+        .rightStick()
         .whileTrue(
-            DriveCommands.alignToReefFace(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
                 () ->
-                    FieldConstants.Reef.centerFaces[0].rotateAround(
-                        FieldConstants.fieldCenter, Rotation2d.k180deg),
-                drive));
+                    new Rotation2d(
+                        FieldConstants.getNearestCoralStation(drive.getPose())
+                            .getRotation()
+                            .getRadians())));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
@@ -327,7 +323,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
-    // controller.x().whileTrue(drive.driveToStation());
+    controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
@@ -361,6 +357,7 @@ public class RobotContainer {
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton8.whileFalse(new JiggleCoral(coral));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // atariButton1.onTrue(
@@ -474,7 +471,7 @@ public class RobotContainer {
   }
 
   public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
-
+    // FieldConstants.getNearestReefFace(drive.getPose());
     // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
     //            6   7
     //         5        8

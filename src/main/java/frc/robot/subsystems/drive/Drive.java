@@ -426,7 +426,7 @@ public class Drive extends SubsystemBase {
           if (isFlipped) {
             return AutoBuilder.pathfindToPose(
                 nearestStation
-                    .transformBy(Constants.STATION_TRANSFORM)
+                    .transformBy(Constants.ROBOT_TRANSFORM)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
                 constraints);
           } else {

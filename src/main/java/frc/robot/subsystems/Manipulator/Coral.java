@@ -2,7 +2,10 @@ package frc.robot.subsystems.Manipulator;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import org.littletonrobotics.junction.Logger;
@@ -40,6 +43,19 @@ public class Coral extends SubsystemBase {
   /** Run open loop at the specified voltage. */
   public void runVolts(double volts) {
     io.setVoltage(volts);
+  }
+
+  public Command jiggle() {
+    return Commands.sequence(
+        Commands.runOnce(() -> io.setVoltage(4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(-4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(-4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(0.1)));
   }
 
   public void stop() {

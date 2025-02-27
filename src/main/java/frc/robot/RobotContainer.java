@@ -283,23 +283,16 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // // Lock to 0° when A button is held
-    // controller
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.joystickDriveAtAngle(
-    //             drive,
-    //             () -> -controller.getLeftY(),
-    //             () -> -controller.getLeftX(),
-    //             () -> new Rotation2d()));
-
     controller
-        .start()
+        .rightStick()
         .whileTrue(
-            DriveCommands.alignToReefFace(
-                () ->
-                    FieldConstants.Reef.centerFaces[0].rotateAround(
-                        FieldConstants.fieldCenter, Rotation2d.k180deg),
-                drive));
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () -> new Rotation2d(FieldConstants.getNearestCoralStation(drive.getPose()).getRotation().getRadians())));
+
+    
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
@@ -327,7 +320,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
-    // controller.x().whileTrue(drive.driveToStation());
+    controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));

@@ -49,17 +49,16 @@ public class Coral extends SubsystemBase {
 
   public Command jiggle() {
     return Commands.sequence(
-        Commands.runOnce(() -> io.setVoltage(3)),
-        new WaitCommand(0.2),  
-        Commands.runOnce(() -> io.setVoltage(-3)),
-        new WaitCommand(0.2),  
-        Commands.runOnce(() -> io.setVoltage(3)),
-        new WaitCommand(0.2),  
-        Commands.runOnce(() -> io.setVoltage(-3)),
+        Commands.runOnce(() -> io.setVoltage(4)),
         new WaitCommand(0.2),
-        Commands.runOnce(() -> io.setVoltage(0))
-    );
-}
+        Commands.runOnce(() -> io.setVoltage(-4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(-4)),
+        new WaitCommand(0.2),
+        Commands.runOnce(() -> io.setVoltage(4)));
+  }
 
   public void stop() {
     io.stop();

@@ -333,7 +333,7 @@ public class RobotContainer {
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure)); 
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // atariButton1.onTrue(
     //     new ConditionalCommand(

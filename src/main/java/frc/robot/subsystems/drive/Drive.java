@@ -420,10 +420,10 @@ public class Drive extends SubsystemBase {
         () -> {
           Pose2d nearestStation = FieldConstants.getNearestCoralStation(getPose());
 
-          boolean isFlipped =
+          boolean isRed =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
+          if (isRed) {
             return AutoBuilder.pathfindToPose(
                 nearestStation
                     .transformBy(Constants.ROBOT_TRANSFORM)

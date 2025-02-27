@@ -520,8 +520,7 @@ public class RobotContainer {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
             new AdjustToPose(
                 goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                    .transformBy(Constants.ROBOT_TRANSFORM),
                 drive);
           }
         },

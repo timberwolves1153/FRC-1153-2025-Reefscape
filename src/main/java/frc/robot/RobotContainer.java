@@ -34,6 +34,7 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.JiggleCoral;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
@@ -290,9 +291,11 @@ public class RobotContainer {
                 drive,
                 () -> -controller.getLeftY(),
                 () -> -controller.getLeftX(),
-                () -> new Rotation2d(FieldConstants.getNearestCoralStation(drive.getPose()).getRotation().getRadians())));
-
-    
+                () ->
+                    new Rotation2d(
+                        FieldConstants.getNearestCoralStation(drive.getPose())
+                            .getRotation()
+                            .getRadians())));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
@@ -354,6 +357,7 @@ public class RobotContainer {
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton8.whileFalse(new JiggleCoral(coral));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // atariButton1.onTrue(

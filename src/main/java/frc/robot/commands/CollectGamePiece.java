@@ -18,7 +18,7 @@ public class CollectGamePiece extends Command {
     this.coral = coral;
     this.algae = algae;
     this.superstructure = superstructure;
-    coralHoldingVoltage = 0.25;
+    coralHoldingVoltage = 0.1;
 
     addRequirements(coral, algae);
   }
@@ -52,7 +52,8 @@ public class CollectGamePiece extends Command {
   public void end(boolean interrupted) {
     GamePiece currPiece = superstructure.getGamePiece();
     if (GamePiece.CORAL.equals(currPiece)) {
-      coral.runVolts(coralHoldingVoltage);
+      coral.jiggle();
+      // coral.runVolts(coralHoldingVoltage);
     } else if (GamePiece.ALGAE.equals(currPiece)) {
       algae.setVoltageHolding(0);
       algae.setVoltageLauncher(0);

@@ -53,11 +53,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
-import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -118,7 +116,8 @@ public class Drive extends SubsystemBase {
   private PathConstraints constraints =
       new PathConstraints(3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720));
 
-  private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
+  private ReefMap reefMap = new ReefMap();
+  // private Map<DesiredReefPosition, Pose2d> reefmapDesiredPositi = reefMap.getReefMap();
 
   public enum TargetReefFace {
     A(0),
@@ -409,7 +408,11 @@ public class Drive extends SubsystemBase {
   }
 
   public TargetReefFace getDesiredReefFace() {
-    return this.desiredFace;
+    boolean isRedAlliance =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    Pose2d closestReefPose = this.reefMap.getClosestReefFacePose(isRedAlliance, getPose());
+    return this.reefMap.getClosestReefFaceToTargetReefFace(closestReefPose);
   }
 
   public Command driveToStation() {

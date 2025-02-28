@@ -165,7 +165,10 @@ public class DriveCommands {
    *
    */
 
-  public static Command alignToReefFace(Supplier<Pose2d> targetPose, Drive drive) {
+  public static Command aimAtReefFace(
+      Drive drive,
+      DoubleSupplier xSupplier,
+      DoubleSupplier ySupplier, Pose2d targetPose) {
 
     // Create PID controller
     ProfiledPIDController angleController =
@@ -176,47 +179,28 @@ public class DriveCommands {
             new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    ProfiledPIDController xController =
-        new ProfiledPIDController(
-            XY_KP,
-            0,
-            XY_KD,
-            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
-    ProfiledPIDController yController =
-        new ProfiledPIDController(
-            XY_KP,
-            0,
-            XY_KD,
-            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
-
+  
     return Commands.run(
             () -> {
-              double xVal =
-                  xController.calculate(
-                      drive.getPose().getTranslation().getX(), targetPose.get().getX());
-              double yVal =
-                  yController.calculate(
-                      drive.getPose().getTranslation().getY(), targetPose.get().getY());
+              Translation2d linearVelocity =
+              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+
               double omega =
                   angleController.calculate(
                       drive.getRotation().getRadians(),
-                      targetPose.get().getRotation().getRadians());
+                      targetPose.getRotation().getRadians());
 
-              // not actually from joysticks
-              Translation2d linearSpeeds = getLinearVelocityFromJoysticks(xVal, yVal);
-
+      
               ChassisSpeeds speeds =
                   new ChassisSpeeds(
-                      linearSpeeds.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                      linearSpeeds.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                      omega);
+                      linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                      linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                      omega * drive.getMaxAngularSpeedRadPerSec());
 
               drive.runVelocity(speeds);
             },
             drive)
-        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()))
-        .beforeStarting(() -> xController.reset(drive.getPose().getX()))
-        .beforeStarting(() -> yController.reset(drive.getPose().getY()));
+        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
   }
 
   /**

@@ -15,9 +15,12 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -297,6 +300,13 @@ public class RobotContainer {
                             .getRotation()
                             .getRadians())));
 
+    controller.start().toggleOnTrue(
+        DriveCommands.aimAtReefFace(
+            drive, 
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(), 
+            FieldConstants.getNearestReefFace(drive.getPose())));
+
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
 
@@ -481,6 +491,7 @@ public class RobotContainer {
     //            1 0
     return new DeferredCommand(
         () -> {
+            double goalEndVelocity = 2; //meters per second
           DesiredReefPosition goalPosition =
               new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
           SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
@@ -517,13 +528,23 @@ public class RobotContainer {
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
                 drive);
           } else {
-            return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM),
-                drive);
+            return AutoBuilder.pathfindToPose(
+                goalPose.transformBy(Constants.ROBOT_TRANSFORM), 
+                new PathConstraints(
+                    3.0, 
+                    4.0, 
+                    Units.degreesToRadians(720), 
+                    Units.degreesToRadians(720)),
+                    goalEndVelocity);
+            // new AdjustToPose(
+            //     goalPose
+            //         .transformBy(Constants.ROBOT_TRANSFORM),
+            //     drive);
           }
         },
-        Set.of(drive));
+        Set.of(drive)).andThen(
+            
+        
+        );
   }
 }

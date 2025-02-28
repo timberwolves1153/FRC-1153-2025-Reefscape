@@ -28,11 +28,13 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -166,40 +168,35 @@ public class DriveCommands {
    */
 
   public static Command aimAtReefFace(
-      Drive drive,
-      DoubleSupplier xSupplier,
-      DoubleSupplier ySupplier, Pose2d targetPose) {
+      Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier, Pose2d targetPose) {
 
     // Create PID controller
     ProfiledPIDController angleController =
         new ProfiledPIDController(
             ANGLE_KP,
             0.0,
-            ANGLE_KD,
+            0,
             new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
-  
-    return Commands.run(
+    return new DeferredCommand(
             () -> {
               Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+                  getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
               double omega =
                   angleController.calculate(
-                      drive.getRotation().getRadians(),
-                      targetPose.getRotation().getRadians());
+                      drive.getRotation().getRadians(), targetPose.getRotation().getRadians());
 
-      
               ChassisSpeeds speeds =
                   new ChassisSpeeds(
                       linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                       linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                       omega * drive.getMaxAngularSpeedRadPerSec());
 
-              drive.runVelocity(speeds);
+              return Commands.run(() -> drive.runVelocity(speeds), drive);
             },
-            drive)
+            Set.of(drive))
         .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
   }
 

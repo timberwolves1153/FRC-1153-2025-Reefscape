@@ -16,7 +16,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -300,12 +299,18 @@ public class RobotContainer {
                             .getRotation()
                             .getRadians())));
 
-    controller.start().toggleOnTrue(
-        DriveCommands.aimAtReefFace(
-            drive, 
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(), 
-            FieldConstants.getNearestReefFace(drive.getPose())));
+    controller
+        .leftStick()
+        .toggleOnTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () ->
+                    new Rotation2d(
+                        FieldConstants.getNearestReefFace(drive.getPose())
+                            .getRotation()
+                            .getRadians())));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
@@ -490,61 +495,56 @@ public class RobotContainer {
     //          2     11
     //            1 0
     return new DeferredCommand(
-        () -> {
-            double goalEndVelocity = 2; //meters per second
-          DesiredReefPosition goalPosition =
-              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
-          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
-          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+            () -> {
+              double goalEndVelocity = 2; // meters per second
+              DesiredReefPosition goalPosition =
+                  new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
+              SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
+              SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
 
-          Transform2d desiredGamepieceTransform;
-          if (BranchLocation.CENTER.equals(desiredLocation)) {
-            desiredGamepieceTransform = Constants.ALGAE_TRANSFORM;
-          } else {
-            desiredGamepieceTransform = Constants.CORAL_TRANSFORM;
-          }
+              Transform2d desiredGamepieceTransform;
+              if (BranchLocation.CENTER.equals(desiredLocation)) {
+                desiredGamepieceTransform = Constants.ALGAE_TRANSFORM;
+              } else {
+                desiredGamepieceTransform = Constants.CORAL_TRANSFORM;
+              }
 
-          Pose2d goalPose = reefmap.get(goalPosition);
-          Logger.recordOutput(
-              "Auto Drive Target Pose",
-              goalPose
-                  .transformBy(Constants.ROBOT_TRANSFORM)
-                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
-            // return AutoBuilder.pathfindToPose(
-            //     goalPose
-            //         .transformBy(robotTransform)
-            //         .transformBy(desiredGamepieceTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
-            drive.setPose(vision.getReefCameraPose());
-            return new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM)
-                    .transformBy(desiredGamepieceTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                drive);
-          } else {
-            return AutoBuilder.pathfindToPose(
-                goalPose.transformBy(Constants.ROBOT_TRANSFORM), 
-                new PathConstraints(
-                    3.0, 
-                    4.0, 
-                    Units.degreesToRadians(720), 
-                    Units.degreesToRadians(720)),
+              Pose2d goalPose = reefmap.get(goalPosition);
+              Logger.recordOutput(
+                  "Auto Drive Target Pose",
+                  goalPose
+                      .transformBy(Constants.ROBOT_TRANSFORM)
+                      .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
+              boolean isFlipped =
+                  DriverStation.getAlliance().isPresent()
+                      && DriverStation.getAlliance().get() == Alliance.Red;
+              if (isFlipped) {
+                // return AutoBuilder.pathfindToPose(
+                //     goalPose
+                //         .transformBy(robotTransform)
+                //         .transformBy(desiredGamepieceTransform)
+                //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                //     constraints);
+                drive.setPose(vision.getReefCameraPose());
+                return new AdjustToPose(
+                    goalPose
+                        .transformBy(Constants.ROBOT_TRANSFORM)
+                        .transformBy(desiredGamepieceTransform)
+                        .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                    drive);
+              } else {
+                return AutoBuilder.pathfindToPose(
+                    goalPose.transformBy(Constants.ROBOT_TRANSFORM),
+                    new PathConstraints(
+                        3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720)),
                     goalEndVelocity);
-            // new AdjustToPose(
-            //     goalPose
-            //         .transformBy(Constants.ROBOT_TRANSFORM),
-            //     drive);
-          }
-        },
-        Set.of(drive)).andThen(
-            
-        
-        );
+                // new AdjustToPose(
+                //     goalPose
+                //         .transformBy(Constants.ROBOT_TRANSFORM),
+                //     drive);
+              }
+            },
+            Set.of(drive))
+        .andThen();
   }
 }

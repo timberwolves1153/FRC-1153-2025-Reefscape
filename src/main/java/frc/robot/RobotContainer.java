@@ -324,6 +324,8 @@ public class RobotContainer {
         .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
     controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
     controller.x().whileTrue(drive.driveToStation());
+    controller.b().whileTrue(drive.driveToBarge());
+    controller.y().whileTrue(drive.driveToClimb());
     // controller.b().whileTrue(drive.driveToBarge());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
@@ -518,10 +520,7 @@ public class RobotContainer {
                 drive);
           } else {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM),
-                drive);
+            new AdjustToPose(goalPose.transformBy(Constants.ROBOT_TRANSFORM), drive);
           }
         },
         Set.of(drive));

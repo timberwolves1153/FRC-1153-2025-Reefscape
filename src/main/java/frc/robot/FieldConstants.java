@@ -220,4 +220,51 @@ public class FieldConstants {
       }
     }
   }
+
+  public static Pose2d getNearestCage(Pose2d currentPose) {
+
+    Pose2d farCage = new Pose2d(FieldConstants.Barge.farCage, new Rotation2d());
+    Pose2d middleCage = new Pose2d(FieldConstants.Barge.middleCage, new Rotation2d());
+    Pose2d closeCage = new Pose2d(FieldConstants.Barge.closeCage, new Rotation2d());
+
+    double distanceToFarCage = currentPose.getTranslation().getDistance(farCage.getTranslation());
+
+    double distanceToMiddleCage =
+        currentPose.getTranslation().getDistance(middleCage.getTranslation());
+
+    double distanceToCloseCage =
+        currentPose.getTranslation().getDistance(closeCage.getTranslation());
+
+    // SmartDashboard.putNumber("Distance to Far Cage", distanceToFarCage);
+    // SmartDashboard.putNumber("Distance to Middle Cage", distanceToMiddleCage);
+    // SmartDashboard.putNumber("Distance to Close Cage", distanceToCloseCage);
+
+    boolean isFlipped =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    // if (isFlipped) {
+    //   if (distanceToLeftStation > distanceToRightStation) {
+    //     return FieldConstants.CoralStation.leftCenterFace;
+    //   } else {
+    //     return FieldConstants.CoralStation.rightCenterFace;
+    //   }
+    // } else {
+    //   if (distanceToLeftStation > distanceToRightStation) {
+    //     return FieldConstants.CoralStation.rightCenterFace;
+    //   } else {
+    //     return FieldConstants.CoralStation.leftCenterFace;
+    //   }
+
+    if (distanceToFarCage < distanceToMiddleCage && distanceToFarCage < distanceToCloseCage) {
+      return farCage;
+    } else if (distanceToCloseCage < distanceToMiddleCage
+        && distanceToCloseCage < distanceToFarCage) {
+      return closeCage;
+    } else if (distanceToMiddleCage < distanceToFarCage
+        && distanceToMiddleCage < distanceToCloseCage) {
+      return middleCage;
+    } else {
+      return middleCage;
+    }
+  }
 }

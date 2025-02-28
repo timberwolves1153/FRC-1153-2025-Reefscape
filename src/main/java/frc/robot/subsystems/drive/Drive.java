@@ -436,4 +436,47 @@ public class Drive extends SubsystemBase {
         },
         Set.of(this));
   }
+
+  public Command driveToBarge() {
+    return new DeferredCommand(
+        () -> {
+          // Pose2d nearestCage = FieldConstants.getNearestCage(getPose());
+          Pose2d goalPose =
+              new Pose2d(FieldConstants.Barge.closeCage.getX(), getPose().getY(), new Rotation2d());
+          boolean isRed =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isRed) {
+            return AutoBuilder.pathfindToPose(
+                goalPose.transformBy(Constants.BARGE_TRANSFORM),
+                //  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(
+                goalPose.transformBy(Constants.BARGE_TRANSFORM), constraints);
+          }
+        },
+        Set.of(this));
+  }
+
+  public Command driveToClimb() {
+    return new DeferredCommand(
+        () -> {
+          Pose2d nearestCage = FieldConstants.getNearestCage(getPose());
+
+          boolean isRed =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isRed) {
+            return AutoBuilder.pathfindToPose(
+                nearestCage.transformBy(Constants.CLIMB_TRANSFORM),
+                //  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
+          } else {
+            return AutoBuilder.pathfindToPose(
+                nearestCage.transformBy(Constants.CLIMB_TRANSFORM), constraints);
+          }
+        },
+        Set.of(this));
+  }
 }

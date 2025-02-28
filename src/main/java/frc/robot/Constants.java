@@ -63,4 +63,14 @@ public final class Constants {
           /*x*/ Units.inchesToMeters(0),
           /*y*/ Units.inchesToMeters(-.75),
           /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d BARGE_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(-100),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d CLIMB_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(-40),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
 }

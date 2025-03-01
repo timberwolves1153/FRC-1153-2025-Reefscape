@@ -35,4 +35,9 @@ public class AdjustToPose extends Command {
 
     drive.runVelocity(robotSpeeds);
   }
+
+  @Override
+  public boolean isFinished() {
+    return autoAdjustXYController.atPoint();
+  }
 }

@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 public class TranslationAutoAdjustController implements SwerveController {
 
   private Supplier<Pose2d> currentPoseSupplier;
-  private PIDController xController = new PIDController(10, 0, 0.5);
-  private PIDController yController = new PIDController(10, 0, 0.5);
+  private PIDController xController = new PIDController(10, 0, 0);
+  private PIDController yController = new PIDController(10, 0, 0);
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
 
   private boolean isFieldRelativ = true;

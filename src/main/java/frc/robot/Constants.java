@@ -13,6 +13,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -39,4 +42,31 @@ public final class Constants {
     CORAL,
     ALGAE;
   }
+
+  public static final Transform2d ROBOT_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d STATION_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(22),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d ALGAE_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(6),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d CORAL_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-.75),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+
+  public static final Transform2d AUTOALIGN_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-6),
+          /*rotation*/ Rotation2d.fromDegrees(0));
 }

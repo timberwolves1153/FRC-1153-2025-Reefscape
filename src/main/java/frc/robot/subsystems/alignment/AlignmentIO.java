@@ -1,4 +1,4 @@
-package frc.robot.subsystems.vision;
+package frc.robot.subsystems.alignment;
 
 // Copyright 2021-2025 FRC 6328
 // http://github.com/Mechanical-Advantage
@@ -13,38 +13,23 @@ package frc.robot.subsystems.vision;
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;
 
-public interface VisionIO {
+public interface AlignmentIO {
   @AutoLog
-  public static class VisionIOInputs {
+  public static class AlignmentIOInputs {
     public boolean connected = false;
     public TargetObservation latestTargetObservation =
         new TargetObservation(new Rotation2d(), new Rotation2d());
-    public PoseObservation[] poseObservations = new PoseObservation[0];
     public int[] tagIds = new int[0];
-    public Pose3d photonpose;
+    public double bestTargetTagId;
+    public double targetYaw;
+    public double targetRange;
   }
 
   /** Represents the angle to a simple target, not used for pose estimation. */
   public static record TargetObservation(Rotation2d tx, Rotation2d ty) {}
 
-  /** Represents a robot pose sample used for pose estimation. */
-  public static record PoseObservation(
-      double timestamp,
-      Pose3d pose,
-      double ambiguity,
-      int tagCount,
-      double averageTagDistance,
-      PoseObservationType type) {}
-
-  public static enum PoseObservationType {
-    MEGATAG_1,
-    MEGATAG_2,
-    PHOTONVISION
-  }
-
-  public default void updateInputs(VisionIOInputs inputs) {}
+  public default void updateInputs(AlignmentIOInputs inputs) {}
 }

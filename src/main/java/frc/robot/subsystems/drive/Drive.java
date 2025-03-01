@@ -514,6 +514,7 @@ public class Drive extends SubsystemBase {
         },
         Set.of(this));
   }
+}
 
   // public Command driveToBarge() {
   //   return new DeferredCommand(
@@ -541,4 +542,3 @@ public class Drive extends SubsystemBase {
   //       },
   //       Set.of(this));
   // }
-}

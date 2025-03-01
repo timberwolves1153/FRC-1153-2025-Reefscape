@@ -31,7 +31,6 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -54,16 +53,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
-import frc.robot.data.BranchLocation;
-import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -84,16 +79,7 @@ public class Drive extends SubsystemBase {
   private static final double ROBOT_MASS_KG = 58.988;
   private static final double ROBOT_MOI = 9.583;
   private static final double WHEEL_COF = 1.2;
-  private static final Transform2d robotTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(192));
-  private static final Transform2d stationRobotTransform =
-      new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(2));
+
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
           ROBOT_MASS_KG,
@@ -117,7 +103,7 @@ public class Drive extends SubsystemBase {
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
-  private Rotation2d rawGyroRotation = new Rotation2d();
+  public Rotation2d rawGyroRotation = new Rotation2d();
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -130,7 +116,8 @@ public class Drive extends SubsystemBase {
   private PathConstraints constraints =
       new PathConstraints(3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720));
 
-  private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
+  private ReefMap reefMap = new ReefMap();
+  // private Map<DesiredReefPosition, Pose2d> reefmapDesiredPositi = reefMap.getReefMap();
 
   public enum TargetReefFace {
     A(0),
@@ -260,6 +247,7 @@ public class Drive extends SubsystemBase {
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
     SmartDashboard.putNumber("Current Desired Reef Face", getDesiredReefFace().faceNumber);
+    FieldConstants.getNearestCoralStation(getPose());
   }
 
   /**
@@ -411,52 +399,20 @@ public class Drive extends SubsystemBase {
     };
   }
 
+  public void resetGyro() {
+    gyroIO.resetGyro();
+  }
+
   public void setDesiredReefFace(TargetReefFace desiredFace) {
     this.desiredFace = desiredFace;
   }
 
   public TargetReefFace getDesiredReefFace() {
-    return this.desiredFace;
-  }
-
-  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
-
-    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
-    //            6   7
-    //         5        8
-    //        4          9
-    //         3        10
-    //          2     11
-    //            1 0
-    return new DeferredCommand(
-        () -> {
-          DesiredReefPosition goalPosition =
-              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
-          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
-          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
-          Pose2d goalPose = reefmap.get(goalPosition);
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
-            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            // return AutoBuilder.pathfindToPose(
-            //     goalPose
-            //         .transformBy(robotTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
-          } else {
-            return AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-          }
-        },
-        Set.of(this));
-
-    // Pose3d pose = FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2);
-    // Pose2d reefFace = FieldConstants.Reef.centerFaces[3];
-    // Pose2d coralStation = FieldConstants.CoralStation.leftCenterFace;
-
-    // System.out.println(FieldConstants.Reef.branchPositions);
-    // FieldConstants.Reef.centerFaces[target.index]
+    boolean isRedAlliance =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    Pose2d closestReefPose = this.reefMap.getClosestReefFacePose(isRedAlliance, getPose());
+    return this.reefMap.getClosestReefFaceToTargetReefFace(closestReefPose);
   }
 
   public Command driveToStation() {
@@ -464,49 +420,20 @@ public class Drive extends SubsystemBase {
         () -> {
           Pose2d nearestStation = FieldConstants.getNearestCoralStation(getPose());
 
-          boolean isFlipped =
+          boolean isRed =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isFlipped) {
-            // return AutoBuilder.pathfindToPose(
-            //     nearestStation
-            //         .transformBy(stationRobotTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
+          if (isRed) {
             return AutoBuilder.pathfindToPose(
-                nearestStation.transformBy(robotTransform), constraints);
+                nearestStation
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                constraints);
           } else {
             return AutoBuilder.pathfindToPose(
-                nearestStation.transformBy(robotTransform), constraints);
+                nearestStation.transformBy(Constants.ROBOT_TRANSFORM), constraints);
           }
         },
         Set.of(this));
   }
-
-  // public Command driveToBarge() {
-  //   return new DeferredCommand(
-  //       () -> {
-  //         Pose2d targetPose =
-  //             new Pose2d(
-  //                 FieldConstants.Barge.closeCage.getX() - Units.inchesToMeters(128),
-  //                 getPose().getY(),
-  //                 new Rotation2d());
-
-  //         boolean isFlipped =
-  //             DriverStation.getAlliance().isPresent()
-  //                 && DriverStation.getAlliance().get() == Alliance.Red;
-  //         if (isFlipped) {
-
-  //           return AutoBuilder.pathfindToPose(
-  //               targetPose
-  //                   .transformBy(robotTransform)
-  //                   .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-  //               constraints);
-  //         } else {
-  //           return AutoBuilder.pathfindToPose(targetPose.transformBy(robotTransform),
-  // constraints);
-  //         }
-  //       },
-  //       Set.of(this));
-  // }
 }

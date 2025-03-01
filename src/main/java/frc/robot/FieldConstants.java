@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,8 @@ import java.util.Map;
 public class FieldConstants {
   public static final double fieldLength = Units.inchesToMeters(690.876);
   public static final double fieldWidth = Units.inchesToMeters(317);
+  public static final Translation2d fieldCenter =
+      new Translation2d(fieldLength / 2, fieldWidth / 2);
   public static final double startingLineX =
       Units.inchesToMeters(299.438); // Measured from the inside of starting line
   public static final double algaeDiameter = Units.inchesToMeters(16);
@@ -100,6 +105,13 @@ public class FieldConstants {
               Units.inchesToMeters(130.144),
               Rotation2d.fromDegrees(-120));
 
+      // centerFaces[6] = centerFaces[0].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[7] = centerFaces[1].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[8] = centerFaces[2].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[9] = centerFaces[3].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[10] = centerFaces[4].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[11] = centerFaces[5].rotateAround(fieldCenter, Rotation2d.k180deg);
+
       // Initialize branch positions
       for (int face = 0; face < 6; face++) {
         Map<ReefHeight, Pose3d> fillRight = new HashMap<>();
@@ -174,6 +186,10 @@ public class FieldConstants {
   public static final double aprilTagWidth = Units.inchesToMeters(6.50);
   public static final int aprilTagCount = 22;
 
+  public static Pose2d getNearestReefFace(Pose2d currentPose) {
+    return currentPose.nearest(List.of(FieldConstants.Reef.centerFaces));
+  }
+
   public static Pose2d getNearestCoralStation(Pose2d currentPose) {
     double distanceToLeftStation =
         currentPose
@@ -184,10 +200,24 @@ public class FieldConstants {
             .getTranslation()
             .getDistance(FieldConstants.CoralStation.rightCenterFace.getTranslation());
 
-    if (distanceToLeftStation > distanceToRightStation) {
-      return FieldConstants.CoralStation.rightCenterFace;
+    SmartDashboard.putNumber("Distance to Left Station", distanceToLeftStation);
+    SmartDashboard.putNumber("Distance to Right Station", distanceToRightStation);
+
+    boolean isFlipped =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    if (isFlipped) {
+      if (distanceToLeftStation > distanceToRightStation) {
+        return FieldConstants.CoralStation.leftCenterFace;
+      } else {
+        return FieldConstants.CoralStation.rightCenterFace;
+      }
     } else {
-      return FieldConstants.CoralStation.leftCenterFace;
+      if (distanceToLeftStation > distanceToRightStation) {
+        return FieldConstants.CoralStation.rightCenterFace;
+      } else {
+        return FieldConstants.CoralStation.leftCenterFace;
+      }
     }
   }
 }

@@ -64,6 +64,10 @@ public class Vision extends SubsystemBase {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
+  public Pose2d getReefCameraPose() {
+    return inputs[0].photonpose.toPose2d();
+  }
+
   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {

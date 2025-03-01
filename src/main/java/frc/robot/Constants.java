@@ -13,6 +13,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
+
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
  * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics sim) and "replay"
@@ -20,7 +25,7 @@ package frc.robot;
  */
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
-  public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -37,4 +42,25 @@ public final class Constants {
     CORAL,
     ALGAE;
   }
+
+  public static final Transform2d ROBOT_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d STATION_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(22),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d ALGAE_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(6),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d CORAL_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0),
+          /*y*/ Units.inchesToMeters(-.75),
+          /*rotation*/ Rotation2d.fromDegrees(0));
 }

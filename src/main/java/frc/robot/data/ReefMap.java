@@ -1,21 +1,139 @@
 package frc.robot.data;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.FieldConstants;
+import frc.robot.subsystems.drive.Drive.TargetReefFace;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.littletonrobotics.junction.Logger;
 
 public class ReefMap {
 
   private Map<DesiredReefPosition, Pose2d> map;
+  private List<Pose2d> redReefFaces;
+  private List<Pose2d> blueReefFaces;
+  private Map<Pose2d, Integer> reefFacePoseToAprilTagIdMap;
+  private Map<Pose2d, TargetReefFace> reefFacePoseToTargetReefFace;
 
   public ReefMap() {
     this.map = buildReefMap();
+    this.redReefFaces = buildReefFaceList(true);
+    this.blueReefFaces = buildReefFaceList(false);
+    this.reefFacePoseToAprilTagIdMap = buildReefFacePoseToAprilTagMap();
+    this.reefFacePoseToTargetReefFace = buildReefFacePoseToTarget();
   }
 
   public Map<DesiredReefPosition, Pose2d> getReefMap() {
     return this.map;
+  }
+
+  public Pose2d getClosestReefFacePose(boolean isRedAlliance, Pose2d currentPose) {
+    if (isRedAlliance) {
+      return currentPose.nearest(redReefFaces);
+    } else {
+      return currentPose.nearest(blueReefFaces);
+    }
+  }
+
+  public int getClosestReefFaceAprilTagId(Pose2d closestReefFace) {
+    return this.reefFacePoseToAprilTagIdMap.get(closestReefFace);
+  }
+
+  public String getClosetReefFaceSmartDashboardName(Pose2d closestReefFace) {
+    return this.reefFacePoseToTargetReefFace.get(closestReefFace).name();
+  }
+
+  public TargetReefFace getClosestReefFaceToTargetReefFace(Pose2d closestReefFace) {
+    return this.reefFacePoseToTargetReefFace.get(closestReefFace);
+  }
+
+  private List<Pose2d> buildReefFaceList(boolean isRedAlliance) {
+    if (isRedAlliance) {
+      List<Pose2d> redFaces = new ArrayList<>();
+      for (Pose2d face : FieldConstants.Reef.centerFaces) {
+        redFaces.add(face.rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
+      }
+      return redFaces;
+    } else {
+      return List.of(FieldConstants.Reef.centerFaces);
+    }
+  }
+
+  private Map<Pose2d, Integer> buildReefFacePoseToAprilTagMap() {
+    Map<Pose2d, Integer> retMap = new HashMap<>();
+    // BLUE FACES
+    retMap.put(FieldConstants.Reef.centerFaces[0], 18);
+    retMap.put(FieldConstants.Reef.centerFaces[1], 19);
+    retMap.put(FieldConstants.Reef.centerFaces[2], 20);
+    retMap.put(FieldConstants.Reef.centerFaces[3], 21);
+    retMap.put(FieldConstants.Reef.centerFaces[4], 22);
+    retMap.put(FieldConstants.Reef.centerFaces[5], 17);
+    // RED FACES
+    retMap.put(
+        FieldConstants.Reef.centerFaces[0].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        7);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[1].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        6);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[2].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        11);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[3].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        10);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[4].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        9);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[5].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        8);
+    return retMap;
+  }
+
+  private Map<Pose2d, TargetReefFace> buildReefFacePoseToTarget() {
+    Map<Pose2d, TargetReefFace> retMap = new HashMap<>();
+    // BLUE FACES
+    retMap.put(FieldConstants.Reef.centerFaces[0], TargetReefFace.A);
+    retMap.put(FieldConstants.Reef.centerFaces[1], TargetReefFace.B);
+    retMap.put(FieldConstants.Reef.centerFaces[2], TargetReefFace.C);
+    retMap.put(FieldConstants.Reef.centerFaces[3], TargetReefFace.D);
+    retMap.put(FieldConstants.Reef.centerFaces[4], TargetReefFace.E);
+    retMap.put(FieldConstants.Reef.centerFaces[5], TargetReefFace.F);
+    // RED FACES
+    retMap.put(
+        FieldConstants.Reef.centerFaces[0].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.A);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[1].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.B);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[2].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.C);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[3].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.D);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[4].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.E);
+    retMap.put(
+        FieldConstants.Reef.centerFaces[5].rotateAround(
+            FieldConstants.fieldCenter, Rotation2d.k180deg),
+        TargetReefFace.F);
+    return retMap;
   }
 
   private Map<DesiredReefPosition, Pose2d> buildReefMap() {

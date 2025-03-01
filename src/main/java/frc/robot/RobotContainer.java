@@ -518,10 +518,7 @@ public class RobotContainer {
                 drive);
           } else {
             return // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM),
-                drive);
+            new AdjustToPose(goalPose.transformBy(Constants.ROBOT_TRANSFORM), drive);
           }
         },
         Set.of(drive));

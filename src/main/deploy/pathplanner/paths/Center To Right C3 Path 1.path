@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.923,
-        "y": 5.209
+        "x": 7.16,
+        "y": 3.93
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.257566169279764,
-        "y": 5.874018971662272
+        "x": 6.015396029180947,
+        "y": 3.667061844845446
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.167,
-        "y": 6.24
+        "x": 5.75,
+        "y": 3.63
       },
       "prevControl": {
-        "x": 4.0709363280617525,
-        "y": 6.135630804076977
+        "x": 6.689574357226078,
+        "y": 3.844112301670366
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,26 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "L1",
+      "waypointRelativePos": 0.05,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Score L1 Coral Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 3.5,
@@ -42,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -173.973
   },
   "reversed": false,
-  "folder": "Left To Reef&Source C3A2",
+  "folder": "Center To Right C3",
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": -59.690000000000005
+    "velocity": 0,
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

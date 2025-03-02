@@ -63,7 +63,6 @@ public final class Constants {
           /*x*/ Units.inchesToMeters(0),
           /*y*/ Units.inchesToMeters(-.75),
           /*rotation*/ Rotation2d.fromDegrees(0));
-
   public static final Transform2d AUTOALIGN_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(0),

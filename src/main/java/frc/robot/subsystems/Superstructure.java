@@ -61,6 +61,10 @@ public class Superstructure extends SubsystemBase {
         .withName("Superstructure " + goal);
   }
 
+  public void setAutoGoalCommand(Goal goal) {
+    setGoal(goal);
+  }
+
   private void setGamepiece(GamePiece gamePiece) {
     if (currentGamePiece == gamePiece) {
       return; // The new gamepiece is already our state, do nothing
@@ -75,6 +79,10 @@ public class Superstructure extends SubsystemBase {
   public Command setGamepieceCommand(GamePiece gamePiece) {
     return startEnd(() -> setGamepiece(gamePiece), () -> setGamepiece(getGamePiece()))
         .withName("Superstructure Gamepiece" + gamePiece);
+  }
+
+  public void setAutoGamepieceCommand(GamePiece gamePiece) {
+    setGamepiece(gamePiece);
   }
 
   public void actuateCoralWhenAtPosition(Value pistonPosition, WindmillGoal goal) {

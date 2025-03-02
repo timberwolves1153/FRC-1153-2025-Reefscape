@@ -6,7 +6,6 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
@@ -14,23 +13,30 @@ public class AlgaeIOSparkMax implements AlgaeIO {
   private SparkFlex launchMotor;
   private SparkMax holdMotor;
   private SparkMaxConfig config;
+  private SparkMaxConfig launchConfig;
 
   public AlgaeIOSparkMax() {
 
     launchMotor = new SparkFlex(46, MotorType.kBrushless);
     holdMotor = new SparkMax(47, MotorType.kBrushless);
     config = new SparkMaxConfig();
+    launchConfig = new SparkMaxConfig();
+    configMotors();
   }
 
   public void configMotors() {
 
     // all post-deprecation REV motor configs
 
-    config.smartCurrentLimit(40);
-    config.idleMode(IdleMode.kBrake);
+    config.smartCurrentLimit(60);
+
+    launchConfig.smartCurrentLimit(60);
+
+    launchConfig.inverted(true);
 
     launchMotor.clearFaults();
-    launchMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    launchMotor.configure(
+        launchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     holdMotor.clearFaults();
     holdMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

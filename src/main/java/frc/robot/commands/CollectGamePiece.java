@@ -12,11 +12,13 @@ public class CollectGamePiece extends Command {
   private Coral coral;
   private Algae algae;
   private Superstructure superstructure;
+  private double coralHoldingVoltage;
 
   public CollectGamePiece(Coral coral, Algae algae, Superstructure superstructure) {
     this.coral = coral;
     this.algae = algae;
     this.superstructure = superstructure;
+    coralHoldingVoltage = 0.1;
 
     addRequirements(coral, algae);
   }
@@ -27,6 +29,8 @@ public class CollectGamePiece extends Command {
     Goal currentGoal = superstructure.getCurrentGoal();
 
     if (GamePiece.CORAL.equals(selectedPiece)) {
+      algae.stopHolding();
+      algae.stopLauncher();
       if (currentGoal.equals(Goal.L2) || currentGoal.equals(Goal.L3)) {
         coral.runVolts(-2);
       } else {
@@ -34,7 +38,8 @@ public class CollectGamePiece extends Command {
       }
 
     } else if (GamePiece.ALGAE.equals(selectedPiece)) {
-      algae.setVoltageHolding(-6);
+      coral.runVolts(coralHoldingVoltage);
+      algae.setVoltageHolding(6);
       algae.setVoltageLauncher(-6);
     } else {
       coral.stop();
@@ -47,7 +52,8 @@ public class CollectGamePiece extends Command {
   public void end(boolean interrupted) {
     GamePiece currPiece = superstructure.getGamePiece();
     if (GamePiece.CORAL.equals(currPiece)) {
-      coral.runVolts(0);
+      coral.jiggle();
+      // coral.runVolts(coralHoldingVoltage);
     } else if (GamePiece.ALGAE.equals(currPiece)) {
       algae.setVoltageHolding(0);
       algae.setVoltageLauncher(0);

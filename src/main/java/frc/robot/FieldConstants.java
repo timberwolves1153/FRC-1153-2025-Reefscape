@@ -105,6 +105,13 @@ public class FieldConstants {
               Units.inchesToMeters(130.144),
               Rotation2d.fromDegrees(-120));
 
+      // centerFaces[6] = centerFaces[0].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[7] = centerFaces[1].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[8] = centerFaces[2].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[9] = centerFaces[3].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[10] = centerFaces[4].rotateAround(fieldCenter, Rotation2d.k180deg);
+      // centerFaces[11] = centerFaces[5].rotateAround(fieldCenter, Rotation2d.k180deg);
+
       // Initialize branch positions
       for (int face = 0; face < 6; face++) {
         Map<ReefHeight, Pose3d> fillRight = new HashMap<>();
@@ -178,6 +185,10 @@ public class FieldConstants {
 
   public static final double aprilTagWidth = Units.inchesToMeters(6.50);
   public static final int aprilTagCount = 22;
+
+  public static Pose2d getNearestReefFace(Pose2d currentPose) {
+    return currentPose.nearest(List.of(FieldConstants.Reef.centerFaces));
+  }
 
   public static Pose2d getNearestCoralStation(Pose2d currentPose) {
     double distanceToLeftStation =

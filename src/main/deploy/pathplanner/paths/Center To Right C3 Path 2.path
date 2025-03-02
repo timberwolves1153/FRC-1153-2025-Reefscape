@@ -1,0 +1,93 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.75,
+        "y": 3.63
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.104983108108108,
+        "y": 2.7996621621621616
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.33,
+        "y": 0.51
+      },
+      "prevControl": {
+        "x": 1.4683445945945943,
+        "y": 1.1819594594594598
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6673773987206743,
+      "rotationDegrees": 49.392976566226864
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Stop Coral",
+      "waypointRelativePos": 0.19490586932447215,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Stop Coral"
+        }
+      }
+    },
+    {
+      "name": "Load Position",
+      "waypointRelativePos": 0.45,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Collect Coral Position"
+        }
+      }
+    },
+    {
+      "name": "Run Coral Intake",
+      "waypointRelativePos": 0.4961240310077566,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake Coral"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 51.295
+  },
+  "reversed": false,
+  "folder": "Center To Right C3",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -173.973
+  },
+  "useDefaultConstraints": true
+}

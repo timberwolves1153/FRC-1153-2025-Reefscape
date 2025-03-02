@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.67,
-        "y": 7.424
+        "x": 1.33,
+        "y": 0.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5870211726851777,
-        "y": 6.413755586409545
+        "x": 1.5625725827810213,
+        "y": 0.7334206935182608
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.7,
-        "y": 5.09
+        "x": 3.66,
+        "y": 3.09
       },
       "prevControl": {
-        "x": 3.2003253571357706,
-        "y": 5.681552314234588
+        "x": 3.2693784544053472,
+        "y": 2.6555337372260595
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,30 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Stop Coral Intake",
+      "waypointRelativePos": 0.05,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Stop Coral"
+        }
+      }
+    },
+    {
+      "name": "L1",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Score L1 Coral Position"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 3.5,
@@ -42,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 120.94025095255692
+    "rotation": 78.088
   },
   "reversed": false,
-  "folder": "Center To Left C4",
+  "folder": "Center To Right C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.35906241021442
+    "rotation": 54.295
   },
   "useDefaultConstraints": true
 }

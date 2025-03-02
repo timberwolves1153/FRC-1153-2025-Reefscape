@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.GamePiece;
 import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
@@ -207,34 +208,39 @@ public class RobotContainer {
         break;
     }
 
-    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6)));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6.5)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
-    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-6)));
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(6)));
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(-12)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-3)));
+    NamedCommands.registerCommand(
+        "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    NamedCommands.registerCommand(
+        "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
-    // NamedCommands.registerCommand("Stow Position", superstructure.setGoalCommand(Goal.STOW));
-    // NamedCommands.registerCommand(
-    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
-    // NamedCommands.registerCommand(
-    //     "Coral Mode",
-    //     Commands.runOnce(
-    //         () -> superstructure.setGamepieceCommand(GamePiece.CORAL), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    // NamedCommands.registerCommand(
-    //     "Score L1 Coral Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
+    NamedCommands.registerCommand(
+        "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    NamedCommands.registerCommand(
+        "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+
+    NamedCommands.registerCommand(
+        "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
+
+    NamedCommands.registerCommand(
+        "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
+    NamedCommands.registerCommand(
+        "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
+    NamedCommands.registerCommand(
+        "Coral Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
+    NamedCommands.registerCommand(
+        "Algae Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
+    NamedCommands.registerCommand(
+        "Score L1 Coral Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
     //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
@@ -242,12 +248,15 @@ public class RobotContainer {
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(
     //     "Score L3 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-    // NamedCommands.registerCommand(
-    //     "Grab L2 Algae Position", superstructure.setGoalCommand(Goal.GRAB_L2_ALGAE));
-    // NamedCommands.registerCommand(
-    //     "Grab L3 Algae Position", superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE));
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Position", superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE));
+    NamedCommands.registerCommand(
+        "L2 Position",
+        Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));
+    NamedCommands.registerCommand(
+        "L3 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    NamedCommands.registerCommand(
+        "Barge Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -336,8 +345,8 @@ public class RobotContainer {
 
     //   coral.setCurrentGamePiece(GamePiece.CORAL);
     // }
-    // atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    // atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
 
     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));

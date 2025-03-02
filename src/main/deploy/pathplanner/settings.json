@@ -5,21 +5,23 @@
   "pathFolders": [
     "Center To Left C4",
     "Center To Reef C1A3",
-    "Center To Right C4",
+    "Center To Right C3",
     "Drive straight paths",
+    "Left To Reef A1 C1",
     "Left To Reef&Source C3A2",
-    "Right to Reef C3A1",
     "Quoi",
+    "Right to Reef C3A1",
     "Score 1 Left Coral Paths",
     "Score 1 Right Coral Paths"
   ],
   "autoFolders": [
     "Algae Autos",
     "Combination Autos",
-    "Coral Autos"
+    "Coral Autos",
+    "Testing"
   ],
-  "defaultMaxVel": 2.0,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 3.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,

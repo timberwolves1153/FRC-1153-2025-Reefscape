@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.18063524590164,
-        "y": 7.24969262295082
+        "x": 5.266976351351351,
+        "y": 1.8213682432432439
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.931534491974952,
-        "y": 7.228507382967382
+        "x": 5.017875597424664,
+        "y": 1.8001830032598054
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.4903688524590155,
-        "y": 7.24969262295082
+        "x": 3.2214527027027025,
+        "y": 1.8213682432432439
       },
       "prevControl": {
-        "x": 6.035457061873584,
-        "y": 7.259225704914989
+        "x": 3.7665409121172684,
+        "y": 1.8309013252074127
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.7,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Drive straight paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

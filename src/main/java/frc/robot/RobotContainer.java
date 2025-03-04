@@ -243,11 +243,7 @@ public class RobotContainer {
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
-    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
-    // NamedCommands.registerCommand(
-    //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-    // NamedCommands.registerCommand(
-    //     "Score L3 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
+    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal())); 
     NamedCommands.registerCommand(
         "L2 Position",
         Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));

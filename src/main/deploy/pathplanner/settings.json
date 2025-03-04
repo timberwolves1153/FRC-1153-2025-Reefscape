@@ -9,6 +9,7 @@
     "Drive straight paths",
     "Left To Reef A1 C1",
     "Left To Reef&Source C3A2",
+    "Right To Reef&Source C3A1",
     "Quoi",
     "Right to Reef C3A1",
     "Score 1 Left Coral Paths",
@@ -20,8 +21,8 @@
     "Coral Autos",
     "Testing"
   ],
-  "defaultMaxVel": 3.5,
-  "defaultMaxAccel": 3.5,
+  "defaultMaxVel": 4.5,
+  "defaultMaxAccel": 4.25,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,

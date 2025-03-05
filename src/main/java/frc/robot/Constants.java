@@ -56,7 +56,7 @@ public final class Constants {
   public static final Transform2d ALGAE_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(6),
+          /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d CORAL_TRANSFORM =
       new Transform2d(
@@ -65,7 +65,7 @@ public final class Constants {
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d AUTOALIGN_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(-6),
+          /*x*/ Units.inchesToMeters(24), // 10
+          /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
 }

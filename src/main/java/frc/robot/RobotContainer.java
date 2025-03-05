@@ -54,6 +54,11 @@ import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.Goal;
+import frc.robot.subsystems.alignment.Alignment;
+import frc.robot.subsystems.alignment.AlignmentConstants;
+import frc.robot.subsystems.alignment.AlignmentIO;
+import frc.robot.subsystems.alignment.AlignmentIOPhotonVision;
+import frc.robot.subsystems.alignment.AlignmentIOPhotonVisionSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.Drive.TargetReefFace;
 import frc.robot.subsystems.drive.GyroIO;
@@ -97,6 +102,8 @@ public class RobotContainer {
   private final Algae algae;
   private final Vision vision;
   private final Climber climber;
+
+  private final Alignment alignment;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -152,6 +159,10 @@ public class RobotContainer {
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1),
                 new VisionIOPhotonVision(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
+        alignment =
+            new Alignment(
+                new AlignmentIOPhotonVision(
+                    AlignmentConstants.cameraName, AlignmentConstants.robotToCamera));
         break;
 
       case SIM:
@@ -179,6 +190,12 @@ public class RobotContainer {
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
+        alignment =
+            new Alignment(
+                new AlignmentIOPhotonVisionSim(
+                    AlignmentConstants.cameraName,
+                    AlignmentConstants.robotToCamera,
+                    drive::getPose));
         break;
 
       default:
@@ -205,6 +222,7 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {});
 
+        alignment = new Alignment(new AlignmentIO() {});
         break;
     }
 
@@ -320,9 +338,12 @@ public class RobotContainer {
     controller
         .rightBumper()
         .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
-    controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
+    // controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(),
+    // BranchLocation.CENTER));
+    controller.a().whileTrue(alignToScore());
     controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
+    controller.b().whileTrue(alignToTape());
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
@@ -428,17 +449,17 @@ public class RobotContainer {
     // controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
     // tuning/manual controls
-    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
-    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
 
-    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
-    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
+    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
+    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
 
     // controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(6)));
     // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
@@ -446,17 +467,17 @@ public class RobotContainer {
     // controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-9)));
-    controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(9)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-9)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(9)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
-    controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    // controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }
 
   /**
@@ -514,23 +535,159 @@ public class RobotContainer {
             //         .transformBy(desiredGamepieceTransform)
             //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
             //     constraints);
-            drive.setPose(vision.getReefCameraPose());
+            // drive.setPose(vision.getReefCameraPose());
+            drive.setPose(alignment.getRobotPose());
             return new AdjustToPose(
                 goalPose
                     .transformBy(Constants.ROBOT_TRANSFORM)
-                    .transformBy(Constants.AUTOALIGN_TRANSFORM)
                     .transformBy(desiredGamepieceTransform)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                drive);
+                drive,
+                alignment::getRobotPose);
           } else {
             // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
             return new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM)
-                    .transformBy(Constants.AUTOALIGN_TRANSFORM),
-                drive);
+                goalPose.transformBy(Constants.ROBOT_TRANSFORM), drive, alignment::getRobotPose);
           }
         },
         Set.of(drive));
   }
+
+  public Command alignToTape() {
+    // FieldConstants.getNearestReefFace(drive.getPose());
+    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
+    //            6   7
+    //         5        8
+    //        4          9
+    //         3        10
+    //          2     11
+    //            1 0
+
+    return new DeferredCommand(
+        () -> {
+          TargetReefFace desiredReefFace = drive.getDesiredReefFace();
+          DesiredReefPosition goalPosition =
+              new DesiredReefPosition(desiredReefFace.faceNumber, BranchLocation.CENTER);
+          SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
+          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+          Pose2d goalPose = reefmap.get(goalPosition);
+          boolean isRedAlliance =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          if (isRedAlliance) {
+            // return AutoBuilder.pathfindToPose(
+            //     goalPose
+            //         .transformBy(robotTransform)
+            //         .transformBy(desiredGamepieceTransform)
+            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+            //     constraints);
+            // drive.setPose(vision.getReefCameraPose());
+            Logger.recordOutput(
+                "Auto Drive Target Pose",
+                goalPose
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .transformBy(Constants.AUTOALIGN_TRANSFORM)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
+            AdjustToPose command =
+                new AdjustToPose(
+                    goalPose
+                        .transformBy(Constants.ROBOT_TRANSFORM)
+                        .transformBy(Constants.AUTOALIGN_TRANSFORM)
+                        .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                    drive,
+                    vision::getReefCameraPose);
+            command.setTapePIDValues();
+            return command;
+          } else {
+            // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            Logger.recordOutput(
+                "Auto Drive Target Pose",
+                goalPose
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .transformBy(Constants.AUTOALIGN_TRANSFORM));
+            AdjustToPose command =
+                new AdjustToPose(
+                    goalPose
+                        .transformBy(Constants.ROBOT_TRANSFORM)
+                        .transformBy(Constants.AUTOALIGN_TRANSFORM),
+                    drive,
+                    vision::getReefCameraPose);
+            command.setTapePIDValues();
+            return command;
+          }
+        },
+        Set.of(drive));
+  }
+
+  public Command alignToScore() {
+    return new DeferredCommand(
+        () -> {
+          TargetReefFace desiredReefFace = drive.getDesiredReefFace();
+          DesiredReefPosition goalPosition =
+              new DesiredReefPosition(desiredReefFace.faceNumber, BranchLocation.CENTER);
+          SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
+          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+          Pose2d goalPose = reefmap.get(goalPosition);
+          boolean isRedAlliance =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.setPose(alignment.getRobotPose());
+          if (isRedAlliance) {
+            Logger.recordOutput(
+                "Auto Drive Target Pose",
+                goalPose
+                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
+            AdjustToPose command =
+                new AdjustToPose(
+                    goalPose
+                        .transformBy(Constants.ROBOT_TRANSFORM)
+                        .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                    drive,
+                    alignment::getRobotPose);
+            command.setScorePIDValues();
+            command.useScoringTolerance();
+            return command;
+          } else {
+            // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+            Logger.recordOutput(
+                "Auto Drive Target Pose", goalPose.transformBy(Constants.ROBOT_TRANSFORM));
+            AdjustToPose command =
+                new AdjustToPose(
+                    goalPose.transformBy(Constants.ROBOT_TRANSFORM),
+                    drive,
+                    alignment::getRobotPose);
+            command.setScorePIDValues();
+            command.useScoringTolerance();
+            return command;
+          }
+        },
+        Set.of(drive));
+  }
+
+  //   public Command alignToScore() {
+  //     return new DeferredCommand(
+  //         () -> {
+  //           Transform3d goalTransform = alignment.getBestCameraToTarget();
+  //           //          TargetReefFace desiredReefFace = drive.getDesiredReefFace();
+  //           //          Pose2d reefFacePose =
+  //           // FieldConstants.Reef.centerFaces[desiredReefFace.faceNumber];
+
+  //           Transform2d goalTransform2d =
+  //               new Transform2d(goalTransform.getX(), goalTransform.getY(), new Rotation2d(180));
+  //           Pose2d goalPose = drive.getPose().transformBy(goalTransform2d);
+  //           Logger.recordOutput(
+  //               "Align To Score Target Pose", goalPose); //
+  // .transformBy(Constants.ROBOT_TRANSFORM)
+  //           boolean isRedAlliance =
+  //               DriverStation.getAlliance().isPresent()
+  //                   && DriverStation.getAlliance().get() == Alliance.Red;
+  //           // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+  //           // return new AdjustToPose(goalPose, drive);
+  //           return new AdjustToPose(goalPose, drive);
+  //         },
+  //         Set.of(drive));
+  //   }
 }

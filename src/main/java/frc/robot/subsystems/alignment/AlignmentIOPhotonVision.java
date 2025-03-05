@@ -1,16 +1,21 @@
 package frc.robot.subsystems.alignment;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.util.Units;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class AlignmentIOPhotonVision implements AlignmentIO {
 
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
+  protected final PhotonPoseEstimator alignmentPoseEstimator;
 
   /**
    * Creates a new AlignmentIOPhotonVision.
@@ -19,9 +24,15 @@ public class AlignmentIOPhotonVision implements AlignmentIO {
    * @param rotationSupplier The 3D position of the camera relative to the robot.
    */
   public AlignmentIOPhotonVision(String name, Transform3d robotToCamera) {
-
     camera = new PhotonCamera(name);
     this.robotToCamera = robotToCamera;
+
+    AprilTagFieldLayout aprilTagFieldLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
+    this.alignmentPoseEstimator =
+        new PhotonPoseEstimator(
+            aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
   }
 
   @Override
@@ -31,26 +42,20 @@ public class AlignmentIOPhotonVision implements AlignmentIO {
     // Read new camera observations
     Set<Short> tagIDs = new HashSet<>();
     for (var result : camera.getAllUnreadResults()) {
+      Optional<EstimatedRobotPose> overallPhotonResult = Optional.empty();
       if (!result.targets.isEmpty()) { // single tag result
+        overallPhotonResult = alignmentPoseEstimator.update(result);
         var target = result.getBestTarget();
         // Add tag ID
-        tagIDs.add((short) target.fiducialId);
-        inputs.bestTargetTagId = target.getFiducialId();
-        inputs.targetYaw = target.getYaw();
-        inputs.targetRange =
-            PhotonUtils.calculateDistanceToTargetMeters(
-                0.5, // Measured with a tape measure, or in CAD.
-                AlignmentConstants.REEF_TARGET_HEIGHT, // From 2024 game manual for ID 7
-                Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
-                Units.degreesToRadians(target.getPitch()));
+        if (AlignmentConstants.REEF_TAGS.contains((Integer) target.fiducialId)) {
+          tagIDs.add((short) target.fiducialId);
+          inputs.bestTargetTagId = target.getFiducialId();
+          inputs.cameraToTarget = target.getBestCameraToTarget();
+          if (overallPhotonResult.isPresent()) {
+            inputs.photonpose = overallPhotonResult.get().estimatedPose;
+          }
+        }
       }
-    }
-
-    // Save tag IDs to inputs objects
-    inputs.tagIds = new int[tagIDs.size()];
-    int i = 0;
-    for (int id : tagIDs) {
-      inputs.tagIds[i++] = id;
     }
   }
 }

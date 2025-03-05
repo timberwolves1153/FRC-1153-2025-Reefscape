@@ -16,6 +16,7 @@ package frc.robot.subsystems.alignment;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
+import java.util.List;
 
 public class AlignmentConstants {
   // Camera names, must match names configured on coprocessor
@@ -27,10 +28,10 @@ public class AlignmentConstants {
   // (Not used by Limelight, configure in web UI instead)
   public static Transform3d robotToCamera =
       new Transform3d(
-          Units.inchesToMeters(10.147),
-          Units.inchesToMeters(-10.328),
-          Units.inchesToMeters(9.052),
-          new Rotation3d(0.0, Units.degreesToRadians(-13), Units.degreesToRadians(10)));
+          Units.inchesToMeters(6.75),
+          Units.inchesToMeters(-10.75 + 1.5),
+          Units.inchesToMeters(12),
+          new Rotation3d(0.0, Units.degreesToRadians(7.5), Units.degreesToRadians(25)));
 
   // Standard deviation multipliers for each camera
   // (Adjust to trust some cameras more than others)
@@ -43,4 +44,9 @@ public class AlignmentConstants {
   public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
   public static double angularStdDevMegatag2Factor =
       Double.POSITIVE_INFINITY; // No rotation data available
+
+  public static List<Integer> REEF_TAGS =
+      List.of(
+          6, 7, 8, 9, 10, 11, // red
+          17, 18, 19, 20, 21, 22); // blue
 }

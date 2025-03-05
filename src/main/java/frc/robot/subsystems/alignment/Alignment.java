@@ -13,6 +13,8 @@
 
 package frc.robot.subsystems.alignment;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -27,12 +29,19 @@ public class Alignment extends SubsystemBase {
     this.inputs = new AlignmentIOInputsAutoLogged();
   }
 
-  public double getTargetDistance() {
-    return this.inputs.targetRange;
+  public Transform3d getBestCameraToTarget() {
+    if (AlignmentConstants.REEF_TAGS.contains(this.inputs.bestTargetTagId)) {
+      return this.inputs.cameraToTarget;
+    }
+    return new Transform3d();
   }
 
-  public double getTargetYaw() {
-    return this.inputs.targetYaw;
+  public int getTargetId() {
+    return this.inputs.bestTargetTagId;
+  }
+
+  public Pose2d getRobotPose() {
+    return inputs.photonpose.toPose2d();
   }
 
   @Override

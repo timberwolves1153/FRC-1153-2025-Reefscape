@@ -25,11 +25,12 @@ public class AlignCommand extends Command {
   @Override
   public void execute() {
 
-    double targetRange = alignment.getTargetDistance();
-    double targetYaw = alignment.getTargetYaw();
-    double turn =
-        (VISION_DES_ANGLE_deg - targetYaw) * VISION_TURN_kP * drive.getMaxAngularSpeedRadPerSec();
+    // double targetRange = alignment.getTargetDistance();
+    // double targetYaw = alignment.getTargetYaw();
+    // double turn =
+    //     (VISION_DES_ANGLE_deg - targetYaw) * VISION_TURN_kP *
+    // drive.getMaxAngularSpeedRadPerSec();
 
-    double forward = (-targetRange) * VISION_FORWARD_kP * drive.getMaxLinearSpeedMetersPerSec();
+    // double forward = (-targetRange) * VISION_FORWARD_kP * drive.getMaxLinearSpeedMetersPerSec();
   }
 }

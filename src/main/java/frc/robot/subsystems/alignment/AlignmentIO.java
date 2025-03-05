@@ -13,19 +13,18 @@ package frc.robot.subsystems.alignment;
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface AlignmentIO {
   @AutoLog
   public static class AlignmentIOInputs {
     public boolean connected = false;
-    public TargetObservation latestTargetObservation =
-        new TargetObservation(new Rotation2d(), new Rotation2d());
-    public int[] tagIds = new int[0];
-    public double bestTargetTagId;
-    public double targetYaw;
-    public double targetRange;
+    public int bestTargetTagId;
+    public Transform3d cameraToTarget;
+    public Pose3d photonpose;
   }
 
   /** Represents the angle to a simple target, not used for pose estimation. */

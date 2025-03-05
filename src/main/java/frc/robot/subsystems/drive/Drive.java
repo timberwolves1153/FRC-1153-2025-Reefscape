@@ -246,7 +246,9 @@ public class Drive extends SubsystemBase {
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
-    SmartDashboard.putNumber("Current Desired Reef Face", getDesiredReefFace().faceNumber);
+    TargetReefFace desiredReefFace = getDesiredReefFace();
+    SmartDashboard.putNumber("Current Desired Reef Face", desiredReefFace.faceNumber);
+    SmartDashboard.putString("Current Desired Reef Face Name", desiredReefFace.toString());
     FieldConstants.getNearestCoralStation(getPose());
   }
 

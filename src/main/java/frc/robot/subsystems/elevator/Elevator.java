@@ -42,11 +42,12 @@ public class Elevator extends SubsystemBase {
   public enum ElevatorGoal {
     STOW(.25),
     L1_CORAL(0.25),
-    L2_CORAL(0.25),
+    L2_CORAL(12.0),
     L2_ALGAE(0.25),
-    L3_CORAL(16.375),
-    L3_ALGAE(16.5),
-    COLLECT_CORAL(0.25),
+    L3_CORAL(27.875),
+    L3_ALGAE(14.25),
+    L4_CORAL(25.9),
+    COLLECT_CORAL(8.125),
     ALGAE_PROCESSOR_AND_PRESTAGE(0.25),
     // ALGAE_PROCESSOR(0.25),
     ALGAE_BARGE(23);

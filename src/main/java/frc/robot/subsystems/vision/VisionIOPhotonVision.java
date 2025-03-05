@@ -10,11 +10,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
 public class VisionIOPhotonVision implements VisionIO {
 
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
+  private PhotonPoseEstimator poseEstimator;
 
   /**
    * Creates a new VisionIOPhotonVision.
@@ -25,7 +27,13 @@ public class VisionIOPhotonVision implements VisionIO {
   public VisionIOPhotonVision(String name, Transform3d robotToCamera) {
 
     camera = new PhotonCamera(name);
+
     this.robotToCamera = robotToCamera;
+
+    // this.poseEstimator = new
+    // PhotonPoseEstimator(AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded),
+    //  PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,camera, robotToCamera)
+
   }
 
   @Override
@@ -114,5 +122,6 @@ public class VisionIOPhotonVision implements VisionIO {
     for (int id : tagIDs) {
       inputs.tagIds[i++] = id;
     }
+    // inputs.photonVisionPose =
   }
 }

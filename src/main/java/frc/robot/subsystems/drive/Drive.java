@@ -113,7 +113,7 @@ public class Drive extends SubsystemBase {
       };
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
-  private PathConstraints constraints =
+  public PathConstraints constraints =
       new PathConstraints(3.0, 4.0, Units.degreesToRadians(720), Units.degreesToRadians(720));
 
   private ReefMap reefMap = new ReefMap();

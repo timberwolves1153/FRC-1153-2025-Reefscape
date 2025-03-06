@@ -47,7 +47,7 @@ public final class Constants {
       new Transform2d(
           /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(0));
+          /*rotation*/ Rotation2d.fromDegrees(180));
   public static final Transform2d STATION_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(22),
@@ -65,7 +65,7 @@ public final class Constants {
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d AUTOALIGN_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(24), // 10
+          /*x*/ Units.inchesToMeters(-24), // 10
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
 }

@@ -332,18 +332,17 @@ public class RobotContainer {
 
     controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(), drive));
 
-    controller
-        .leftBumper()
-        .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
-    controller
-        .rightBumper()
-        .whileTrue(driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
-    // controller.a().whileTrue(driveToReef(() -> drive.getDesiredReefFace(),
-    // BranchLocation.CENTER));
-    controller.a().whileTrue(alignToScore());
+    controller.leftBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
+    controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
+    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
+
+    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
+    // controller.a().whileTrue(alignToScore(BranchLocation.RIGHT));
     controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
-    controller.b().whileTrue(alignToTape());
+    controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
     controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
@@ -589,15 +588,14 @@ public class RobotContainer {
                     .transformBy(Constants.ROBOT_TRANSFORM)
                     .transformBy(Constants.AUTOALIGN_TRANSFORM)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
-            AdjustToPose command =
-                new AdjustToPose(
+            Command command =
+                AutoBuilder.pathfindToPose(
                     goalPose
                         .transformBy(Constants.ROBOT_TRANSFORM)
                         .transformBy(Constants.AUTOALIGN_TRANSFORM)
                         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                    drive,
-                    vision::getReefCameraPose);
-            command.setTapePIDValues();
+                    drive.constraints);
+            // command.setTapePIDValues();
             return command;
           } else {
             // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
@@ -606,26 +604,26 @@ public class RobotContainer {
                 goalPose
                     .transformBy(Constants.ROBOT_TRANSFORM)
                     .transformBy(Constants.AUTOALIGN_TRANSFORM));
-            AdjustToPose command =
-                new AdjustToPose(
+
+            Command command =
+                AutoBuilder.pathfindToPose(
                     goalPose
                         .transformBy(Constants.ROBOT_TRANSFORM)
                         .transformBy(Constants.AUTOALIGN_TRANSFORM),
-                    drive,
-                    vision::getReefCameraPose);
-            command.setTapePIDValues();
+                    drive.constraints);
+            // command.setTapePIDValues();
             return command;
           }
         },
         Set.of(drive));
   }
 
-  public Command alignToScore() {
+  public Command alignToScore(BranchLocation branchLocation) {
     return new DeferredCommand(
         () -> {
           TargetReefFace desiredReefFace = drive.getDesiredReefFace();
           DesiredReefPosition goalPosition =
-              new DesiredReefPosition(desiredReefFace.faceNumber, BranchLocation.CENTER);
+              new DesiredReefPosition(desiredReefFace.faceNumber, branchLocation);
           SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
 
@@ -644,7 +642,8 @@ public class RobotContainer {
                 new AdjustToPose(
                     goalPose
                         .transformBy(Constants.ROBOT_TRANSFORM)
-                        .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
+                        .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
+                        .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                     drive,
                     alignment::getRobotPose);
             command.setScorePIDValues();
@@ -656,7 +655,9 @@ public class RobotContainer {
                 "Auto Drive Target Pose", goalPose.transformBy(Constants.ROBOT_TRANSFORM));
             AdjustToPose command =
                 new AdjustToPose(
-                    goalPose.transformBy(Constants.ROBOT_TRANSFORM),
+                    goalPose
+                        .transformBy(Constants.ROBOT_TRANSFORM)
+                        .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                     drive,
                     alignment::getRobotPose);
             command.setScorePIDValues();

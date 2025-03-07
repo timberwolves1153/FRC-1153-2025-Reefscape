@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -333,14 +334,31 @@ public class RobotContainer {
 
     controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(), drive));
 
-    controller.leftBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
-    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
-    controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
-    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
+    controller
+        .leftBumper()
+        .whileTrue(
+            new ConditionalCommand(
+                alignThenScore(BranchLocation.LEFT),
+                alignToScore(BranchLocation.LEFT),
+                () -> isCloseToReef()));
+    //
+    // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
+    controller
+        .rightBumper()
+        .whileTrue(
+            new ConditionalCommand(
+                alignThenScore(BranchLocation.RIGHT),
+                alignToScore(BranchLocation.RIGHT),
+                () -> isCloseToReef()));
+    //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+    controller
+        .a()
+        .whileTrue(
+            new ConditionalCommand(
+                alignThenScore(BranchLocation.CENTER),
+                alignToScore(BranchLocation.CENTER),
+                () -> isCloseToReef()));
 
-    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
-    // driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
-    // controller.a().whileTrue(alignToScore(BranchLocation.RIGHT));
     controller.x().whileTrue(drive.driveToStation());
     // controller.b().whileTrue(drive.driveToBarge());
     controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
@@ -382,106 +400,19 @@ public class RobotContainer {
             new InstantCommand(() -> coral.stop()),
             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+  }
 
-    // atariButton1.onTrue(
-    //     new ConditionalCommand(
-    //         superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
-    //         superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
-    //         () -> atariButton13.getAsBoolean()));
-    // atariButton2.onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-    // atariButton3.onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-    // atariButton4.onTrue(
-    //     new ConditionalCommand(
-    //         superstructure.setGoalCommand(Goal.COLLECT_CORAL),
-    //         superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
-    //         () -> atariButton13.getAsBoolean()));
-    // // atariButton5.onTrue(new CollectFromStation(superstructure));
-    // atariButton6.onTrue(
-    //     new ConditionalCommand(
-    //         superstructure.setGoalCommand(Goal.STOW),
-    //         superstructure.setGoalCommand(Goal.STOW),
-    //         () -> atariButton13.getAsBoolean()));
+  public boolean isCloseToReef() {
+    TargetReefFace reefFace = drive.getDesiredReefFace();
+    DesiredReefPosition goalPosition =
+        new DesiredReefPosition(reefFace.faceNumber, BranchLocation.CENTER);
+    Pose2d closestTagPose = reefmap.get(goalPosition);
+    double dist = drive.getPose().getTranslation().getDistance(closestTagPose.getTranslation());
+    return Math.abs(dist) < Units.inchesToMeters(24);
+  }
 
-    // controller
-    //     .y()
-    //     .onTrue(
-    //         new ConditionalCommand(
-    //             superstructure.setGoalCommand(Goal.SCORE_L3_CORAL),
-    //             superstructure.setGoalCommand(Goal.SCORE_ALGAE_BARGE),
-    //             controller.b()));
-    // controller
-    //     .a()
-    //     .onTrue(
-    //         new ConditionalCommand(
-    //             superstructure.setGoalCommand(Goal.SCORE_L1_CORAL),
-    //             superstructure.setGoalCommand(Goal.ALGAE_PROCESSOR_AND_PRESTAGE),
-    //             controller.b()));
-
-    // controller
-    //     .x()
-    //     .onTrue(
-    //         new ConditionalCommand(
-    //             superstructure.setGoalCommand(Goal.COLLECT_CORAL),
-    //             superstructure.setGoalCommand(Goal.GRAB_L3_ALGAE),
-    //             controller.b()));
-
-    // controller.leftBumper().whileTrue(new CollectGamePiece(coral, algae));
-    // controller.rightBumper().whileTrue(new ScoreGamePiece(coral, algae, superstructure));
-
-    //  controller.a().onTrue(superstructure.setGoalCommand(Goal.STOW));
-    // controller.x().onTrue(superstructure.setGoalCommand(Goal.SCORE_L1_CORAL));
-    // controller.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-
-    // controller.y().onTrue(superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-
-    // controller.a().onTrue(new InstantCommand(() -> coral.runVolts(-6)));
-    // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(-0.25)));
-    // controller.a().onFalse(new InstantCommand(() -> coral.runVolts(0)));
-
-    // controller.x().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(-75), windmill));
-    // controller.x().onTrue(new InstantCommand(() -> coral.runVolts(6)));
-
-    // controller.x().onFalse(new InstantCommand(() -> coral.runVolts(0)));
-    // controller.x().onTrue(Commands.run(() -> elevator.setTargetHeightInches(4), elevator));
-    // controller.b().onTrue(Commands.run(() -> windmill.setTargetPositionDegrees(5), windmill));
-    // controller.b().onTrue(Commands.run(() -> elevator.setTargetHeightInches(0.25), elevator));
-
-    // controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(8)));
-    // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
-
-    // controller.rightBumper().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    // controller.rightBumper().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
-
-    // tuning/manual controls
-    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
-
-    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
-
-    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
-    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
-
-    // controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
-    // controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(0.35)));
-
-    // controller.leftBumper().onTrue(new InstantCommand(() -> coral.runVolts(6)));
-    // controller.leftBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
-
-    // controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
-    // controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
-
-    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-9)));
-    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(9)));
-    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
-
-    // controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
-    // controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
-
-    // controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
+  public Command alignThenScore(BranchLocation location) {
+    return alignToTape().andThen(alignToScore(location));
   }
 
   /**

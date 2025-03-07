@@ -41,7 +41,7 @@ import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.ProtoTunerConstants;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIO;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -141,10 +141,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
+                new ModuleIOTalonFX(ProtoTunerConstants.FrontLeft),
+                new ModuleIOTalonFX(ProtoTunerConstants.FrontRight),
+                new ModuleIOTalonFX(ProtoTunerConstants.BackLeft),
+                new ModuleIOTalonFX(ProtoTunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOTalonFX());
         elevator = new Elevator(new ElevatorIOTalonFX());
@@ -172,10 +172,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSim(TunerConstants.FrontLeft),
-                new ModuleIOSim(TunerConstants.FrontRight),
-                new ModuleIOSim(TunerConstants.BackLeft),
-                new ModuleIOSim(TunerConstants.BackRight));
+                new ModuleIOSim(ProtoTunerConstants.FrontLeft),
+                new ModuleIOSim(ProtoTunerConstants.FrontRight),
+                new ModuleIOSim(ProtoTunerConstants.BackLeft),
+                new ModuleIOSim(ProtoTunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOSim());
         elevator = new Elevator(new ElevatorIOSim());

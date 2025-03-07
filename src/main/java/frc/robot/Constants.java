@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
@@ -26,6 +27,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final String protoRio = "";
+  public static final Bot currentBot =
+      protoRio.equalsIgnoreCase(HALUtil.getSerialNumber()) ? Bot.PROTO : Bot.COMP;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -41,6 +45,11 @@ public final class Constants {
   public static enum GamePiece {
     CORAL,
     ALGAE;
+  }
+
+  public static enum Bot {
+    PROTO,
+    COMP;
   }
 
   public static final Transform2d ROBOT_TRANSFORM =

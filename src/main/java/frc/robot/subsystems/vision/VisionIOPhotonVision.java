@@ -33,6 +33,7 @@ public class VisionIOPhotonVision implements VisionIO {
   public VisionIOPhotonVision(String name, Transform3d robotToCamera) {
 
     camera = new PhotonCamera(name);
+
     this.robotToCamera = robotToCamera;
 
     AprilTagFieldLayout aprilTagFieldLayout =
@@ -136,5 +137,6 @@ public class VisionIOPhotonVision implements VisionIO {
     for (int id : tagIDs) {
       inputs.tagIds[i++] = id;
     }
+    // inputs.photonVisionPose =
   }
 }

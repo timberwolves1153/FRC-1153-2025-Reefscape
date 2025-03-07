@@ -15,6 +15,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -41,7 +42,7 @@ import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
-import frc.robot.generated.ProtoTunerConstants;
+import frc.robot.generated.FinalTunerConstants;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIO;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -135,16 +136,18 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    SmartDashboard.putString("rioSerialNumber", HALUtil.getSerialNumber());
+    SmartDashboard.putString("rioSerialNumber", Constants.currentBot.name());
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOTalonFX(ProtoTunerConstants.FrontLeft),
-                new ModuleIOTalonFX(ProtoTunerConstants.FrontRight),
-                new ModuleIOTalonFX(ProtoTunerConstants.BackLeft),
-                new ModuleIOTalonFX(ProtoTunerConstants.BackRight));
+                new ModuleIOTalonFX(FinalTunerConstants.FrontLeft),
+                new ModuleIOTalonFX(FinalTunerConstants.FrontRight),
+                new ModuleIOTalonFX(FinalTunerConstants.BackLeft),
+                new ModuleIOTalonFX(FinalTunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOTalonFX());
         elevator = new Elevator(new ElevatorIOTalonFX());
@@ -172,10 +175,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSim(ProtoTunerConstants.FrontLeft),
-                new ModuleIOSim(ProtoTunerConstants.FrontRight),
-                new ModuleIOSim(ProtoTunerConstants.BackLeft),
-                new ModuleIOSim(ProtoTunerConstants.BackRight));
+                new ModuleIOSim(FinalTunerConstants.FrontLeft),
+                new ModuleIOSim(FinalTunerConstants.FrontRight),
+                new ModuleIOSim(FinalTunerConstants.BackLeft),
+                new ModuleIOSim(FinalTunerConstants.BackRight));
 
         windmill = new Windmill(new WindmillIOSim());
         elevator = new Elevator(new ElevatorIOSim());
@@ -264,6 +267,13 @@ public class RobotContainer {
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
     //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
+    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT_CORAL));
+    // NamedCommands.registerCommand(
+    //     "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
+    // NamedCommands.registerCommand(
+    //     "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    // NamedCommands.registerCommand(
+    //     "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
     // NamedCommands.registerCommand(
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(

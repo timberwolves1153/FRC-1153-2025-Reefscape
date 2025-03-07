@@ -32,9 +32,9 @@ public class CollectGamePiece extends Command {
       algae.stopHolding();
       algae.stopLauncher();
       if (currentGoal.equals(Goal.L2) || currentGoal.equals(Goal.L3)) {
-        coral.runVolts(-2);
+        coral.runVolts(2);
       } else {
-        coral.runVolts(6);
+        coral.runVolts(-6);
       }
 
     } else if (GamePiece.ALGAE.equals(selectedPiece)) {

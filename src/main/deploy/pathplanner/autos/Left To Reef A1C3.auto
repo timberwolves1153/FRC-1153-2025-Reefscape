@@ -67,7 +67,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Left To Reef A1C3 Path 4"
+            "pathName": "Left To Reef A1C3 Path 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 6"
           }
         }
       ]

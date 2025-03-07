@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 7.16,
+        "y": 5.01
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.184907602190028,
-        "y": 5.251476179085591
+        "x": 6.181706081081082,
+        "y": 5.089054054054054
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.842,
-        "y": 5.18
+        "x": 5.039695945945946,
+        "y": 5.01
       },
       "prevControl": {
-        "x": 5.066768534066413,
-        "y": 5.289449102753908
+        "x": 5.759222972972973,
+        "y": 5.347972972972973
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,31 +33,39 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Coral Mode",
-      "waypointRelativePos": 0.05,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Coral Mode"
-        }
-      }
-    },
-    {
-      "name": "Set L3 Position",
+      "name": "L3 Algae Position",
       "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "sequential",
         "data": {
-          "name": "L3 Position"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.25,
+    "maxAcceleration": 4.1,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -65,10 +73,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.05460409907711
+    "rotation": -120.11000000000001
   },
   "reversed": false,
-  "folder": "Left To Reef A1 C1",
+  "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

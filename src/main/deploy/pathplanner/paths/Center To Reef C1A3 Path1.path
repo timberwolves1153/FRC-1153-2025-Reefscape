@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.770945945945946,
-        "y": 3.99
+        "x": 5.63,
+        "y": 3.97
       },
       "prevControl": {
-        "x": 7.09339939261822,
-        "y": 3.9973857190199715
+        "x": 6.9524534466722745,
+        "y": 3.9773857190199715
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,71 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Collect Algae L2",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L2 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Hold Coral",
+      "waypointRelativePos": 0.2,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Hold Coral"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.75
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Coral"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.25,
+    "maxAcceleration": 4.1,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

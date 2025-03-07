@@ -3,70 +3,54 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.75,
-        "y": 3.63
+        "x": 6.61,
+        "y": 5.04
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.104983108108108,
-        "y": 2.7996621621621616
+        "x": 6.184907602190028,
+        "y": 5.251476179085591
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.33,
-        "y": 0.51
+        "x": 5.11,
+        "y": 5.0
       },
       "prevControl": {
-        "x": 1.4683445945945943,
-        "y": 1.1819594594594598
+        "x": 5.334768534066414,
+        "y": 5.109449102753908
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.6673773987206743,
-      "rotationDegrees": 49.392976566226864
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Stop Coral",
-      "waypointRelativePos": 0.19490586932447215,
+      "name": "Coral Mode",
+      "waypointRelativePos": 0.05,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Stop Coral"
+          "name": "Coral Mode"
         }
       }
     },
     {
-      "name": "Load Position",
-      "waypointRelativePos": 0.45,
+      "name": "Set L3 Position",
+      "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Collect Coral Position"
-        }
-      }
-    },
-    {
-      "name": "Run Coral Intake",
-      "waypointRelativePos": 0.4961240310077566,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Intake Coral"
+          "name": "L3 Position"
         }
       }
     }
@@ -81,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 51.295
+    "rotation": -119.05460409907711
   },
   "reversed": false,
-  "folder": "Center To Right C3",
+  "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -173.973
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

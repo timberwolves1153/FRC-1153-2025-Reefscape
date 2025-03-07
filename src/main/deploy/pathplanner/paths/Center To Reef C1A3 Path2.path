@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.771,
-        "y": 3.99
+        "x": 5.63,
+        "y": 3.97
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.928990546345422,
-        "y": 4.345713485331754
+        "x": 5.918581081081081,
+        "y": 4.172989864864864
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.44,
-        "y": 5.53
+        "x": 6.61,
+        "y": 5.04
       },
       "prevControl": {
-        "x": 6.337485804218623,
-        "y": 5.296860189212861
+        "x": 6.507485804218623,
+        "y": 4.806860189212861
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,76 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Stop Algae Intake",
+      "waypointRelativePos": 0.05,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Stop Algae Inner"
+        }
+      }
+    },
+    {
+      "name": "Hold Coral",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Hold Coral"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.3
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Coral"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.3012181616832759,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.25,
+    "maxAcceleration": 4.1,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

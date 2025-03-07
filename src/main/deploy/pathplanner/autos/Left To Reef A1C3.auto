@@ -7,55 +7,73 @@
         {
           "type": "named",
           "data": {
-            "name": "Coral Mode"
+            "name": "Algae Mode"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Down the Wing Path 1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Outtake Coral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Coral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "Left To Reef A1C3 Path 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "DtW Move Away from Reef"
+            "pathName": "Left To Reef A1C3 Path 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Algae Inner"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Left To Reef A1C3 Path 4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Combination Autos",
   "choreoAuto": false
 }

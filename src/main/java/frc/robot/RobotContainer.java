@@ -209,6 +209,7 @@ public class RobotContainer {
     }
 
     NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6.5)));
+    NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(0.75)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
     NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-3)));
     NamedCommands.registerCommand(
@@ -243,10 +244,10 @@ public class RobotContainer {
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
-    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal())); 
+    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
     NamedCommands.registerCommand(
         "L2 Position",
-        Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
     NamedCommands.registerCommand(
         "L3 Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));

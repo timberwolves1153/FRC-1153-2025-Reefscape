@@ -111,7 +111,7 @@ public class Superstructure extends SubsystemBase {
       }
       case COLLECT -> {
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-        coralManip.setSolenoidState(Value.kForward);
+        // coralManip.setSolenoidState(Value.kForward);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
         break;
       }

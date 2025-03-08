@@ -249,21 +249,21 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
 
-    NamedCommands.registerCommand(
-        "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
-    NamedCommands.registerCommand(
-        "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
-    NamedCommands.registerCommand(
-        "Coral Mode",
-        Commands.runOnce(
-            () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
-    NamedCommands.registerCommand(
-        "Algae Mode",
-        Commands.runOnce(
-            () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
-    NamedCommands.registerCommand(
-        "Score L1 Coral Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
+    // NamedCommands.registerCommand(
+    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
+    // NamedCommands.registerCommand(
+    //     "Coral Mode",
+    //     Commands.runOnce(
+    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Algae Mode",
+    //     Commands.runOnce(
+    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Score L1 Coral Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
     //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
@@ -278,15 +278,15 @@ public class RobotContainer {
     //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
     // NamedCommands.registerCommand(
     //     "Score L3 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-    NamedCommands.registerCommand(
-        "L2 Position",
-        Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));
-    NamedCommands.registerCommand(
-        "L3 Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
-    NamedCommands.registerCommand(
-        "Barge Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+    // NamedCommands.registerCommand(
+    //     "L2 Position",
+    //     Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));
+    // NamedCommands.registerCommand(
+    //     "L3 Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Barge Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -379,13 +379,25 @@ public class RobotContainer {
     controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(-10)));
     controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-    atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
-    atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
+    // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
+    // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
 
-    atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.C)));
-    atariButton12.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
-    atariButton14.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
-    atariButton15.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
+    // atariButton11.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.C)));
+    // atariButton12.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.D)));
+    // atariButton14.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
+    // atariButton15.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
+
+    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
+    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+
+    // controller.start().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
+    // controller.start().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+
+    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+
+    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
     // if (atariButton13.getAsBoolean()) {
     //   coral.setCurrentGamePiece(GamePiece.ALGAE);

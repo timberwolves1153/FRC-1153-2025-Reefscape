@@ -2,6 +2,7 @@ package frc.robot.data;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.Constants;
 import frc.robot.FieldConstants;
 import frc.robot.subsystems.drive.Drive.TargetReefFace;
 import java.util.ArrayList;
@@ -181,7 +182,11 @@ public class ReefMap {
         FieldConstants.Reef.branchPositions.get(1).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(
         aRight,
-        FieldConstants.Reef.branchPositions.get(0).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(0)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(aCenter, FieldConstants.Reef.centerFaces[0]);
 
     reefMap.put(
@@ -189,12 +194,20 @@ public class ReefMap {
         FieldConstants.Reef.branchPositions.get(3).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(
         bRight,
-        FieldConstants.Reef.branchPositions.get(2).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(2)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(bCenter, FieldConstants.Reef.centerFaces[1]);
 
     reefMap.put(
         cLeft,
-        FieldConstants.Reef.branchPositions.get(4).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(4)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(
         cRight,
         FieldConstants.Reef.branchPositions.get(5).get(FieldConstants.ReefHeight.L2).toPose2d());
@@ -202,7 +215,11 @@ public class ReefMap {
 
     reefMap.put(
         dLeft,
-        FieldConstants.Reef.branchPositions.get(6).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(6)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(
         dRight,
         FieldConstants.Reef.branchPositions.get(7).get(FieldConstants.ReefHeight.L2).toPose2d());
@@ -210,7 +227,11 @@ public class ReefMap {
 
     reefMap.put(
         eLeft,
-        FieldConstants.Reef.branchPositions.get(8).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(8)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(
         eRight,
         FieldConstants.Reef.branchPositions.get(9).get(FieldConstants.ReefHeight.L2).toPose2d());
@@ -221,7 +242,11 @@ public class ReefMap {
         FieldConstants.Reef.branchPositions.get(11).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(
         fRight,
-        FieldConstants.Reef.branchPositions.get(10).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions
+            .get(10)
+            .get(FieldConstants.ReefHeight.L2)
+            .toPose2d()
+            .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(fCenter, FieldConstants.Reef.centerFaces[5]);
 
     Logger.recordOutput("aLeft", reefMap.get(aLeft));

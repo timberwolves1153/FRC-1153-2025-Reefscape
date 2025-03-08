@@ -7,23 +7,20 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class CoralIOSparkMax implements CoralIO {
 
   private SparkMax coralMotor;
   private SparkMaxConfig config;
 
-  private final DoubleSolenoid doubleSolenoid;
+  // private final DoubleSolenoid doubleSolenoid;
 
   public CoralIOSparkMax() {
 
     coralMotor = new SparkMax(45, MotorType.kBrushless);
     config = new SparkMaxConfig();
-    doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
-    doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+    // doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
+    // doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void configMotors() {
@@ -54,18 +51,18 @@ public class CoralIOSparkMax implements CoralIO {
     coralMotor.setVoltage(0);
   }
   // ------------------------------------------
-  @Override
-  public void setSolenoid() {
-    doubleSolenoid.toggle();
-  }
+  // @Override
+  // public void setSolenoid() {
+  //   doubleSolenoid.toggle();
+  // }
 
-  @Override
-  public void setSolenoidState(Value position) {
-    doubleSolenoid.set(position);
-  }
+  // @Override
+  // public void setSolenoidState(Value position) {
+  //   doubleSolenoid.set(position);
+  // }
 
-  @Override
-  public Value getSolenoidState() {
-    return doubleSolenoid.get();
-  }
+  // @Override
+  // public Value getSolenoidState() {
+  //   return doubleSolenoid.get();
+  // }
 }

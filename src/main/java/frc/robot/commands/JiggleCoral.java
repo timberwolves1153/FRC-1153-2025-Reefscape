@@ -21,8 +21,8 @@ public class JiggleCoral extends SequentialCommandGroup {
         new WaitCommand(0.1),
         Commands.runOnce(() -> coral.runVolts(-3)),
         new WaitCommand(0.1),
-        Commands.runOnce(() -> coral.runVolts(3)),
-        new WaitCommand(0.1),
+        // Commands.runOnce(() -> coral.runVolts(3)),
+        // new WaitCommand(0.1),
         Commands.runOnce(() -> coral.runVolts(0.1)));
   }
 }

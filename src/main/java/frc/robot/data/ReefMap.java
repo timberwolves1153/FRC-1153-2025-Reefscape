@@ -194,10 +194,10 @@ public class ReefMap {
 
     reefMap.put(
         cLeft,
-        FieldConstants.Reef.branchPositions.get(5).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions.get(4).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(
         cRight,
-        FieldConstants.Reef.branchPositions.get(4).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions.get(5).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(cCenter, FieldConstants.Reef.centerFaces[2]);
 
     reefMap.put(
@@ -218,10 +218,10 @@ public class ReefMap {
 
     reefMap.put(
         fLeft,
-        FieldConstants.Reef.branchPositions.get(10).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions.get(11).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(
         fRight,
-        FieldConstants.Reef.branchPositions.get(11).get(FieldConstants.ReefHeight.L2).toPose2d());
+        FieldConstants.Reef.branchPositions.get(10).get(FieldConstants.ReefHeight.L2).toPose2d());
     reefMap.put(fCenter, FieldConstants.Reef.centerFaces[5]);
 
     Logger.recordOutput("aLeft", reefMap.get(aLeft));

@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -367,7 +368,11 @@ public class RobotContainer {
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
-    atariButton8.whileFalse(new JiggleCoral(coral));
+    atariButton8.whileFalse(
+        new ConditionalCommand(
+            new JiggleCoral(coral),
+            new InstantCommand(() -> coral.stop()),
+            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
 
     // atariButton1.onTrue(
@@ -458,15 +463,15 @@ public class RobotContainer {
     // controller.rightBumper().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
     // controller.rightBumper().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-9)));
-    controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(9)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-9)));
+    // controller.leftBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(9)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.leftBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
-    controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
-    controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    // controller.rightBumper().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // controller.rightBumper().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
     controller.start().onTrue(new InstantCommand(() -> coral.toggleSolenoid()));
   }

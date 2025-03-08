@@ -241,6 +241,18 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Score L1 Coral Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
+
+    NamedCommands.registerCommand(
+        "Auto Align Center", driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.CENTER));
+
+    NamedCommands.registerCommand(
+        "Auto Align Left", driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.LEFT));
+
+    NamedCommands.registerCommand(
+        "Auto Align Right", driveToReef(() -> drive.getDesiredReefFace(), BranchLocation.RIGHT));
+
+    NamedCommands.registerCommand("Auto Align Source", drive.driveToStation());
+
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
     //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));

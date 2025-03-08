@@ -3,77 +3,75 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.11,
-        "y": 5.0
+        "x": 5.12,
+        "y": 4.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.772652027027027,
-        "y": 5.358918918918919
+        "x": 4.881706081081081,
+        "y": 6.001114864864865
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3636824324324324,
-        "y": 7.483614864864864
+        "x": 3.88,
+        "y": 4.98
       },
       "prevControl": {
-        "x": 1.709543918918919,
-        "y": 7.078462837837837
+        "x": 3.460152027027027,
+        "y": 5.686435810810811
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": -59.99999999999999
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Stop Coral",
-      "waypointRelativePos": 0.1,
+      "name": "Grab Algae",
+      "waypointRelativePos": 0.35,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "sequential",
         "data": {
-          "name": "Stop Coral"
-        }
-      }
-    },
-    {
-      "name": "Collect Positon",
-      "waypointRelativePos": 0.15,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Collect Coral Position"
-        }
-      }
-    },
-    {
-      "name": "Run Coral Intake",
-      "waypointRelativePos": 0.6998892580287882,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Intake Coral"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Algae Mode"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "L2 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -81,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.60500000000002
+    "rotation": -59.605
   },
   "reversed": false,
   "folder": "Left To Reef A1C3",

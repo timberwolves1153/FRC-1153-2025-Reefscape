@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.04,
-        "y": 5.01
+        "x": 5.02,
+        "y": 5.02
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.394493243243242,
-        "y": 4.983293918918918
+        "x": 5.374493243243242,
+        "y": 4.993293918918917
       },
       "isLocked": false,
       "linkedName": null
@@ -49,13 +49,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Inner"
+                "name": "Stop Algae Outer"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Outer"
+                "name": "Stop Algae Inner"
               }
             }
           ]
@@ -64,7 +64,7 @@
     },
     {
       "name": "Rev Motors",
-      "waypointRelativePos": 0.6290143964562595,
+      "waypointRelativePos": 0.6489479512735353,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -82,8 +82,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

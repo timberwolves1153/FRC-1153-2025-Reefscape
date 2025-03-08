@@ -3,38 +3,68 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.82,
-        "y": 5.142
+        "x": 1.27,
+        "y": 7.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.890701478155816,
-        "y": 5.381794288894842
+        "x": 1.729070945945946,
+        "y": 7.1972804054054045
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9131756756756757,
-        "y": 5.032939189189189
+        "x": 4.16,
+        "y": 5.13
       },
       "prevControl": {
-        "x": 3.8044763513513518,
-        "y": 5.932179054054054
+        "x": 3.9129560810810804,
+        "y": 5.377043918918919
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": -59.99999999999999
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "L3 Position",
+      "waypointRelativePos": 0.25,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Coral"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -48,7 +78,7 @@
   "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.05
+    "rotation": -49.605
   },
   "useDefaultConstraints": true
 }

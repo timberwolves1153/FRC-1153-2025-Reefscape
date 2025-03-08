@@ -37,7 +37,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
 
   public enum WindmillGoal {
     STOW(25),
-    COLLECT_CORAL(126.2988),
+    COLLECT_CORAL(125.2988),
     // PRESTAGE_ALGAE(131.57),
     L1_CORAL(-97.03),
     L2_CORAL(-141.67),

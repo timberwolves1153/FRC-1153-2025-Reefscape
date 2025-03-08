@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.193,
-        "y": 7.484
+        "x": 3.933,
+        "y": 5.043
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6969695945945693,
-        "y": 6.999793918918919
+        "x": 3.6398443387326647,
+        "y": 5.51062020079376
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.364,
-        "y": 5.032939189189189
+        "x": 1.27,
+        "y": 7.57
       },
       "prevControl": {
-        "x": 0.7809763513513519,
-        "y": 5.685135135135134
+        "x": 1.8134932078608064,
+        "y": 6.848629184757848
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,35 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Collect Positon",
+      "waypointRelativePos": 0.19490586932446852,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Coral Mode"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stow Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.605
+    "rotation": -49.605
   },
   "reversed": false,
   "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.605
+    "rotation": -59.605
   },
   "useDefaultConstraints": true
 }

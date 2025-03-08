@@ -61,7 +61,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.2
           }
         },
         {
@@ -71,15 +71,51 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Left To Reef A1C3 Path 5"
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Left To Reef A1C3 Path 6"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 7"
           }
         }
       ]

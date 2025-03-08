@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.11,
-        "y": 5.0
+        "x": 5.12,
+        "y": 4.98
       },
       "prevControl": {
-        "x": 5.334768534066414,
-        "y": 5.109449102753908
+        "x": 5.3447685340664135,
+        "y": 5.089449102753909
       },
       "nextControl": null,
       "isLocked": false,
@@ -53,11 +53,35 @@
           "name": "L3 Position"
         }
       }
+    },
+    {
+      "name": "Stop Algae Intake",
+      "waypointRelativePos": 0.4429678848283503,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Inner"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.1,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

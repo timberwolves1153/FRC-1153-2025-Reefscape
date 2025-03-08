@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.66,
-        "y": 3.09
+        "x": 5.12,
+        "y": 4.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4820327862590617,
-        "y": 2.894320554106824
+        "x": 4.881706081081081,
+        "y": 6.001114864864865
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.33,
-        "y": 0.51
+        "x": 3.88,
+        "y": 4.98
       },
       "prevControl": {
-        "x": 1.5030733322447896,
-        "y": 0.6963938167151745
+        "x": 3.460152027027027,
+        "y": 5.686435810810811
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Load Position",
-      "waypointRelativePos": 0.15,
+      "name": "Grab Algae",
+      "waypointRelativePos": 0.35,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -43,27 +43,28 @@
             {
               "type": "named",
               "data": {
-                "name": "Collect Coral Position"
+                "name": "Algae Mode"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Coral"
+                "name": "L2 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
               }
             }
           ]
-        }
-      }
-    },
-    {
-      "name": "Intake Coral",
-      "waypointRelativePos": 0.5,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Intake Coral"
         }
       }
     }
@@ -78,13 +79,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 54.295
+    "rotation": -59.605
   },
   "reversed": false,
-  "folder": "Center To Right C3",
+  "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 78.088
+    "rotation": -119.05
   },
   "useDefaultConstraints": true
 }

@@ -232,6 +232,7 @@ public class RobotContainer {
     }
 
     NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(6.5)));
+    NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(0.75)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
     NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(-3)));
     NamedCommands.registerCommand(
@@ -267,26 +268,15 @@ public class RobotContainer {
     // NamedCommands.registerCommand(
     //     "Stay At Previous Position",
     //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
-    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT_CORAL));
-    // NamedCommands.registerCommand(
-    //     "Coral Mode", superstructure.setGamepieceCommand(GamePiece.CORAL));
-    // NamedCommands.registerCommand(
-    //     "Algae Mode", superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    // NamedCommands.registerCommand(
-    //     "Score L1 Coral Position", superstructure.setGoalCommand(Goal.L1));
-    // NamedCommands.registerCommand(
-    //     "Score L2 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L2_CORAL));
-    // NamedCommands.registerCommand(
-    //     "Score L3 Coral Position", superstructure.setGoalCommand(Goal.SCORE_L3_CORAL));
-    // NamedCommands.registerCommand(
-    //     "L2 Position",
-    //     Commands.runOnce(() -> superstructure.setGoalCommand(Goal.L2), superstructure));
-    // NamedCommands.registerCommand(
-    //     "L3 Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Barge Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+    NamedCommands.registerCommand(
+        "L2 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
+    NamedCommands.registerCommand(
+        "L3 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    NamedCommands.registerCommand(
+        "Barge Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());

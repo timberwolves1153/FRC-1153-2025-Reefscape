@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.1,
-        "y": 2.898
+        "x": 4.99,
+        "y": 2.958
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.116807432432433,
-        "y": 2.5723817567567564
+        "x": 6.006807432432433,
+        "y": 2.6323817567567565
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.44,
-        "y": 5.536
+        "x": 6.61,
+        "y": 5.04
       },
       "prevControl": {
-        "x": 6.828293918918919,
-        "y": 5.42820945945946
+        "x": 6.541722972972973,
+        "y": 4.558614864864865
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,89 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Stop Algae Intake",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Inner"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Outer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.502768549280188,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Hold Coral",
+      "waypointRelativePos": 0.65,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake Coral"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.5
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Coral"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

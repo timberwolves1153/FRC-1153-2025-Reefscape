@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Straight Line Path"
+            "pathName": "Right To Reef&Source C3A1 Path 1"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing",
+  "folder": "Combination Autos",
   "choreoAuto": false
 }

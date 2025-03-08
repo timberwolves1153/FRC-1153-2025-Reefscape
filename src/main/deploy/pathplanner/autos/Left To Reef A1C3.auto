@@ -13,13 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A2 Path 1"
+            "pathName": "Left To Reef A1C3 Path 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A2 Path 2"
+            "pathName": "Left To Reef A1C3 Path 2"
           }
         },
         {
@@ -41,15 +41,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Coral Mode"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A2 Path 3"
+            "pathName": "Left To Reef A1C3 Path 3"
           }
         },
         {
@@ -67,25 +61,67 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Coral"
+            "waitTime": 0.2
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A2 Path 4"
+            "pathName": "Left To Reef A1C3 Path 4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 5"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 6"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A1C3 Path 7"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Algae Autos",
+  "folder": "Combination Autos",
   "choreoAuto": false
 }

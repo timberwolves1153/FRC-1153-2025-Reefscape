@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.66,
-        "y": 3.09
+        "x": 6.61,
+        "y": 5.04
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4820327862590617,
-        "y": 2.894320554106824
+        "x": 6.184907602190028,
+        "y": 5.251476179085591
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.33,
-        "y": 0.51
+        "x": 5.12,
+        "y": 4.98
       },
       "prevControl": {
-        "x": 1.5030733322447896,
-        "y": 0.6963938167151745
+        "x": 5.3447685340664135,
+        "y": 5.089449102753909
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,30 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Load Position",
-      "waypointRelativePos": 0.15,
+      "name": "Coral Mode",
+      "waypointRelativePos": 0.05,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Coral Mode"
+        }
+      }
+    },
+    {
+      "name": "Set L3 Position",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L3 Position"
+        }
+      }
+    },
+    {
+      "name": "Stop Algae Intake",
+      "waypointRelativePos": 0.4429678848283503,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -43,27 +65,16 @@
             {
               "type": "named",
               "data": {
-                "name": "Collect Coral Position"
+                "name": "Stop Algae Outer"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Coral"
+                "name": "Stop Algae Inner"
               }
             }
           ]
-        }
-      }
-    },
-    {
-      "name": "Intake Coral",
-      "waypointRelativePos": 0.5,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Intake Coral"
         }
       }
     }
@@ -78,13 +89,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 54.295
+    "rotation": -119.05460409907711
   },
   "reversed": false,
-  "folder": "Center To Right C3",
+  "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 78.088
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

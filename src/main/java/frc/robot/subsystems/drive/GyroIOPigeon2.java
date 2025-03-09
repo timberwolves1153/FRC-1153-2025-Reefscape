@@ -63,7 +63,7 @@ public class GyroIOPigeon2 implements GyroIO {
   }
 
   @Override
-  public void resetGyro() {
-    pigeon.reset();
+  public void resetGyro(double angle) {
+    pigeon.setYaw(angle);
   }
 }

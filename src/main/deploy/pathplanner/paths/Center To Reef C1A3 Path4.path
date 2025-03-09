@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.04,
-        "y": 5.01
+        "x": 5.2674,
+        "y": 5.368
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.20768581081081,
-        "y": 5.240456081081081
+        "x": 5.43508581081081,
+        "y": 5.598456081081082
       },
       "isLocked": false,
       "linkedName": null
@@ -33,36 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Hold Coral",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Hold Coral"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.2
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Coral"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Barge Position",
       "waypointRelativePos": 0.2015503875968945,
       "endWaypointRelativePos": null,
@@ -75,36 +45,6 @@
               "data": {
                 "name": "Barge Position"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Algae Inner"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Algae Outer"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Rev Motors",
-      "waypointRelativePos": 0.6290143964562595,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Outer"
-              }
             }
           ]
         }
@@ -112,8 +52,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -127,7 +67,7 @@
   "folder": "Center To Reef C1A3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.11
+    "rotation": -119.46848008574578
   },
   "useDefaultConstraints": true
 }

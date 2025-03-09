@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.63,
-        "y": 3.97
+        "x": 5.75,
+        "y": 3.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.918581081081081,
-        "y": 4.172989864864864
+        "x": 6.038581081081081,
+        "y": 4.182989864864863
       },
       "isLocked": false,
       "linkedName": null
@@ -33,47 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Stop Algae Intake",
-      "waypointRelativePos": 0.05,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Stop Algae Inner"
-        }
-      }
-    },
-    {
-      "name": "Hold Coral",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Hold Coral"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.3
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Coral"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Barge Position",
       "waypointRelativePos": 0.3012181616832759,
       "endWaypointRelativePos": null,
@@ -86,12 +45,6 @@
               "data": {
                 "name": "Barge Position"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Outer"
-              }
             }
           ]
         }
@@ -99,8 +52,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

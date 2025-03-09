@@ -61,9 +61,10 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   }
 
   public enum WindmillGoal {
+
     // bounds are +100 and
     STOW(-135.07),
-    COLLECT_CORAL(-41.5),
+    COLLECT_CORAL(-43.5),
     // PRESTAGE_ALGAE(131.57),
     L1_CORAL(-240.29),
     L2_CORAL(-228.69),
@@ -72,7 +73,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     L3_ALGAE(-99.66),
     L4_CORAL(-202.8),
     ALGAE_PROCESSOR_AND_PRESTAGE(-252.5),
-    ALGAE_BARGE(-185);
+    ALGAE_BARGE(-176.44);
 
     private double angleInDegrees;
 

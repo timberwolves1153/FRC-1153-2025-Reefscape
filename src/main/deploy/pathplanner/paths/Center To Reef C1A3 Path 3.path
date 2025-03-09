@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.631706081081083,
-        "y": 5.119054054054054
+        "x": 5.588875560501009,
+        "y": 5.277846354892295
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.039695945945946,
-        "y": 5.01
+        "x": 5.286577868852459,
+        "y": 5.367622950819673
       },
       "prevControl": {
-        "x": 5.759222972972973,
-        "y": 5.347972972972973
+        "x": 5.489415182420794,
+        "y": 5.221482524433335
       },
       "nextControl": null,
       "isLocked": false,
@@ -57,24 +57,6 @@
               "data": {
                 "name": "Grab Algae Outer"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake Coral"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.05
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Coral"
-              }
             }
           ]
         }
@@ -82,8 +64,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

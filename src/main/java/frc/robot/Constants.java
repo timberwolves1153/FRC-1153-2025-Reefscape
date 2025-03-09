@@ -57,6 +57,11 @@ public final class Constants {
           /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(180));
+  public static final Transform2d AUTO_ROBOT_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d STATION_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(22),

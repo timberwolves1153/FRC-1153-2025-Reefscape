@@ -412,8 +412,8 @@ public class Drive extends SubsystemBase {
     };
   }
 
-  public void resetGyro() {
-    gyroIO.resetGyro();
+  public void resetGyro(double angle) {
+    gyroIO.resetGyro(angle);
   }
 
   public void setDesiredReefFace(TargetReefFace desiredFace) {

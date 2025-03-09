@@ -180,7 +180,7 @@ public class Superstructure extends SubsystemBase {
         if (GamePiece.CORAL.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.L4_CORAL);
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);
-        } else if (GamePiece.CORAL.equals(getGamePiece())) {
+        } else if (GamePiece.ALGAE.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
           windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
         } else {

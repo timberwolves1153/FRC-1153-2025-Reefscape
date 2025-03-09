@@ -50,7 +50,7 @@ public class Elevator extends SubsystemBase {
     COLLECT_CORAL(8.5625),
     ALGAE_PROCESSOR_AND_PRESTAGE(0.25),
     // ALGAE_PROCESSOR(0.25),
-    ALGAE_BARGE(30.75);
+    ALGAE_BARGE(30.25);
 
     private double heightInInches;
 

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.676,
-        "y": 3.047
+        "x": 3.824,
+        "y": 2.574
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.849307266795523,
-        "y": 2.1865777320602984
+        "x": 2.9973072667955227,
+        "y": 1.713577732060298
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.33,
-        "y": 0.512
+        "x": 1.35,
+        "y": 0.48
       },
       "prevControl": {
-        "x": 1.8774366992702451,
-        "y": 1.10573082153447
+        "x": 1.8974366992702452,
+        "y": 1.07373082153447
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,35 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Collect Coral Position",
+      "waypointRelativePos": 0.14854827819040958,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Coral Mode"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Collect Coral Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

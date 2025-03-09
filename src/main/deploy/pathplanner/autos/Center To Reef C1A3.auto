@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Hold Coral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Center To Reef C1A3 Path1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
           }
         },
         {
@@ -23,9 +35,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Center To Reef C1A3 Path2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center To Reef C1A3 Path2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
+                }
+              }
+            ]
           }
         },
         {
@@ -43,7 +74,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 0.15
           }
         },
         {
@@ -53,75 +84,46 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Center To Reef C1A3 Path4"
+            "name": "Auto Align Center"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center To Reef C1A3 Path4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot Algae Inner"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Reef C1A3 Path5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Reef C1A3 Path6"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Algae Inner"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center To Reef C1A3 Path 7"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Coral"
           }
         },
         {
@@ -133,7 +135,80 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center To Reef C1A3 Path 8"
+            "pathName": "Center To Reef C1A3 Path5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center To Reef C1A3 Path6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Algae Inner"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Reef C1A3 Path 7"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         }
       ]

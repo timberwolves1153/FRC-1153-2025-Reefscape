@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.33,
-        "y": 0.512
+        "x": 1.35,
+        "y": 0.48
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8295157992167381,
-        "y": 0.9853362009555872
+        "x": 1.8495157992167381,
+        "y": 0.9533362009555871
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9625844594594595,
-        "y": 2.8688344594594595
+        "x": 3.5483606557377048,
+        "y": 2.766290983606557
       },
       "prevControl": {
-        "x": 3.56767782111965,
-        "y": 2.507661967902971
+        "x": 3.153454017397895,
+        "y": 2.405118492050068
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,35 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "L3 Position",
+      "waypointRelativePos": 0.14854827819040575,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Coral Mode"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

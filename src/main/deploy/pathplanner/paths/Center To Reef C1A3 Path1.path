@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.63,
-        "y": 3.97
+        "x": 5.75,
+        "y": 3.98
       },
       "prevControl": {
-        "x": 6.9524534466722745,
-        "y": 3.9773857190199715
+        "x": 7.072453446672275,
+        "y": 3.9873857190199713
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,41 +61,11 @@
           ]
         }
       }
-    },
-    {
-      "name": "Hold Coral",
-      "waypointRelativePos": 0.2,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Hold Coral"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 0.75
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Coral"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

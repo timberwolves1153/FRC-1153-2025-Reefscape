@@ -53,6 +53,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.FieldConstants;
+import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.data.ReefMap;
 import frc.robot.generated.ProtoTunerConstants;
 import frc.robot.util.LocalADStarAK;
@@ -437,14 +438,15 @@ public class Drive extends SubsystemBase {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           if (isRed) {
-            return AutoBuilder.pathfindToPose(
+            return new AdjustToPose(
                 nearestStation
-                    .transformBy(Constants.ROBOT_TRANSFORM)
+                    .transformBy(Constants.STATION_TRANSFORM)
                     .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                constraints);
+                this,
+                () -> getPose());
           } else {
-            return AutoBuilder.pathfindToPose(
-                nearestStation.transformBy(Constants.ROBOT_TRANSFORM), constraints);
+            return new AdjustToPose(
+                nearestStation.transformBy(Constants.STATION_TRANSFORM), this, () -> getPose());
           }
         },
         Set.of(this));

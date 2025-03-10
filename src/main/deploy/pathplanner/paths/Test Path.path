@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.1,
-        "y": 4.99
+        "x": 7.1566598360655735,
+        "y": 3.9890368852459024
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.454493243243242,
-        "y": 4.963293918918918
+        "x": 6.58125,
+        "y": 4.013012295081967
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 6.041803278688524,
+        "y": 3.9890368852459024
       },
       "prevControl": {
-        "x": 6.278602424314219,
-        "y": 5.072628926270818
+        "x": 6.291803278688524,
+        "y": 3.9890368852459024
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,47 +33,29 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Barge Position",
-      "waypointRelativePos": 0.2015503875968945,
+      "name": "l3 algae",
+      "waypointRelativePos": 0.05671843349088167,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "Barge Position"
+                "name": "L3 Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Outer"
+                "name": "Grab Algae Inner"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Inner"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Rev Motors",
-      "waypointRelativePos": 0.6489479512735353,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Outer"
+                "name": "Grab Algae Outer"
               }
             }
           ]
@@ -94,10 +76,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Left To Reef A1C3",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.11
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

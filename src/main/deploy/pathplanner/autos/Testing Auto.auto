@@ -1,0 +1,86 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae Mode"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Test Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Mode"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Right"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

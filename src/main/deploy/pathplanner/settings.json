@@ -13,7 +13,7 @@
     "Combination Autos",
     "Coral Autos"
   ],
-  "defaultMaxVel": 4.0,
+  "defaultMaxVel": 4.5,
   "defaultMaxAccel": 4.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

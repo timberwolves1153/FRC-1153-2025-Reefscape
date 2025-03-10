@@ -59,8 +59,7 @@ public class ScoreGamePiece extends Command {
         algae.setVoltageLauncher(12);
 
         if (algae.inputs.outerAppliedVolts > 11.95
-            && timer.get()
-                > 1.25 /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */) {
+        /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */ ) {
           algae.setVoltageHolding(-6);
         }
       }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.16,
-        "y": 1.881
+        "x": 6.86,
+        "y": 1.927
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.133191617263227,
-        "y": 2.158837111584798
+        "x": 5.715431476829897,
+        "y": 2.5187520245727795
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.6943647540983604
       },
       "prevControl": {
-        "x": 6.387558257463191,
-        "y": 2.2393816447770947
+        "x": 6.454454891623962,
+        "y": 2.1889587173654657
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -60,7 +60,7 @@
   "folder": "Right To Reef&Source C3A1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 121.95
   },
   "useDefaultConstraints": true
 }

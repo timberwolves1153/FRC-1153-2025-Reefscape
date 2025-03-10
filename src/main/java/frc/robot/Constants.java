@@ -64,12 +64,12 @@ public final class Constants {
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d STATION_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(0));
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(-16),
+          /*rotation*/ Rotation2d.fromDegrees(180));
   public static final Transform2d ALGAE_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(0),
+          /*x*/ Units.inchesToMeters(2),
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d CORAL_TRANSFORM =

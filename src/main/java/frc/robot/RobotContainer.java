@@ -231,56 +231,54 @@ public class RobotContainer {
         break;
     }
 
-    // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() ->
-    // coral.runVolts(-6.5)));
-    // NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() ->
-    // drive.resetGyro(180)));
-    // NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
-    // NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
-    // NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
-    // NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
+    NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
+    NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
+    NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
+    NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
+    NamedCommands.registerCommand(
+        "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    NamedCommands.registerCommand(
+        "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    NamedCommands.registerCommand(
+        "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    NamedCommands.registerCommand(
+        "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
 
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
 
+    NamedCommands.registerCommand(
+        "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
+    NamedCommands.registerCommand(
+        "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
+    NamedCommands.registerCommand(
+        "Coral Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
+    NamedCommands.registerCommand(
+        "Algae Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
+    NamedCommands.registerCommand(
+        "Score L1 Coral Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
-    //     "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
-    // NamedCommands.registerCommand(
-    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
-    // NamedCommands.registerCommand(
-    //     "Coral Mode",
-    //     Commands.runOnce(
-    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Algae Mode",
-    //     Commands.runOnce(
-    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Score L1 Coral Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
-    // // NamedCommands.registerCommand(
-    // //     "Stay At Previous Position",
-    // //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
-    // NamedCommands.registerCommand(
-    //     "L2 Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
-    // NamedCommands.registerCommand(
-    //     "L3 Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Barge Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+    //     "Stay At Previous Position",
+    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
+    NamedCommands.registerCommand(
+        "L2 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
+    NamedCommands.registerCommand(
+        "L3 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    NamedCommands.registerCommand(
+        "Barge Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
     NamedCommands.registerCommand(
         "Auto Align Center",
@@ -640,6 +638,14 @@ public class RobotContainer {
           SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
 
+          Transform2d algaeTransform = new Transform2d(0, 0, new Rotation2d());
+
+          if (branchLocation.equals(BranchLocation.CENTER)) {
+            algaeTransform = Constants.ALGAE_TRANSFORM;
+          } else {
+            algaeTransform = algaeTransform;
+          }
+
           Pose2d goalPose = reefmap.get(goalPosition);
           boolean isRedAlliance =
               DriverStation.getAlliance().isPresent()
@@ -657,6 +663,7 @@ public class RobotContainer {
                   new AdjustToPose(
                       goalPose
                           .transformBy(Constants.AUTO_ROBOT_TRANSFORM)
+                          .transformBy(algaeTransform)
                           .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
                           .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive,
@@ -669,6 +676,7 @@ public class RobotContainer {
                   new AdjustToPose(
                       goalPose
                           .transformBy(Constants.ROBOT_TRANSFORM)
+                          .transformBy(algaeTransform)
                           .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
                           .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive,

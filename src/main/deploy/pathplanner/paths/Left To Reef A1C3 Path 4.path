@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.15,
-        "y": 4.95
+        "x": 1.35,
+        "y": 7.63
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.911706081081081,
-        "y": 5.971114864864865
+        "x": 2.2803940354831087,
+        "y": 6.722145297038295
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.98,
-        "y": 4.99
+        "x": 3.9,
+        "y": 5.117
       },
       "prevControl": {
-        "x": 3.5601520270270273,
-        "y": 5.696435810810811
+        "x": 3.343607922686139,
+        "y": 5.694998924667476
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Grab Algae",
+      "name": "L3 Position",
       "waypointRelativePos": 0.35,
       "endWaypointRelativePos": null,
       "command": {
@@ -49,7 +49,7 @@
             {
               "type": "named",
               "data": {
-                "name": "L2 Position"
+                "name": "L3 Position"
               }
             },
             {
@@ -85,7 +85,7 @@
   "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.05
+    "rotation": -50.985
   },
   "useDefaultConstraints": true
 }

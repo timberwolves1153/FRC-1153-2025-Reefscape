@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.8240778688524584,
-        "y": 2.5744877049180332
+        "x": 3.836,
+        "y": 2.934118852459016
       },
       "prevControl": {
-        "x": 3.5368701798950815,
-        "y": 2.2241761141668457
+        "x": 3.548792311042623,
+        "y": 2.5838072617078285
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L3 Position",
+      "name": "l2",
       "waypointRelativePos": 0.15124915597568686,
       "endWaypointRelativePos": null,
       "command": {
@@ -43,13 +43,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Coral Mode"
+                "name": "Algae Mode"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "L3 Position"
+                "name": "L2 Position"
               }
             }
           ]

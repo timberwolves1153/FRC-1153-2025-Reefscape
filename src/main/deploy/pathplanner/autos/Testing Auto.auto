@@ -35,6 +35,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "L3 Position"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -57,12 +63,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
           }
         },
         {

@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.1,
-        "y": 4.99
+        "x": 5.17,
+        "y": 5.11
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.454493243243242,
-        "y": 4.963293918918918
+        "x": 5.524493243243242,
+        "y": 5.083293918918918
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.61,
+        "x": 6.58,
         "y": 5.04
       },
       "prevControl": {
-        "x": 6.278602424314219,
+        "x": 6.248602424314218,
         "y": 5.072628926270818
       },
       "nextControl": null,
@@ -64,7 +64,7 @@
     },
     {
       "name": "Rev Motors",
-      "waypointRelativePos": 0.6489479512735353,
+      "waypointRelativePos": 0.6481389578163704,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -97,7 +97,7 @@
   "folder": "Left To Reef A1C3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.11
+    "rotation": -120.11000000000001
   },
   "useDefaultConstraints": true
 }

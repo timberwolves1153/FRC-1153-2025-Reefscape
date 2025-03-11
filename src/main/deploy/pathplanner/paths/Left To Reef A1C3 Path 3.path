@@ -3,60 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.61,
+        "x": 6.58,
         "y": 5.04
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.184907602190028,
-        "y": 5.251476179085591
+        "x": 5.8193861093728785,
+        "y": 5.492566835351541
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.226639344262295,
-        "y": 4.876127049180329
+        "x": 1.35,
+        "y": 7.63
       },
       "prevControl": {
-        "x": 5.451407878328708,
-        "y": 4.985576151934237
+        "x": 1.9560114716047583,
+        "y": 7.35487219328781
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -59.99999999999999
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Coral Mode",
-      "waypointRelativePos": 0.05,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Coral Mode"
-        }
-      }
-    },
-    {
-      "name": "Set L3 Position",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "L3 Position"
-        }
-      }
-    },
-    {
-      "name": "Stop Algae Intake",
-      "waypointRelativePos": 0.4429678848283503,
+      "name": "Collect Coral Position",
+      "waypointRelativePos": 0.14590570719602766,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -65,13 +48,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Outer"
+                "name": "Coral Mode"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Inner"
+                "name": "Collect Coral Position"
               }
             }
           ]
@@ -89,7 +72,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.05460409907711
+    "rotation": -50.98546757883227
   },
   "reversed": false,
   "folder": "Left To Reef A1C3",

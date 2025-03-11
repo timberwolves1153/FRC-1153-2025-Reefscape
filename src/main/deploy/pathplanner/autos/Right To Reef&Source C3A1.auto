@@ -35,24 +35,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Center"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Intake Coral"
@@ -61,7 +43,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 3"
+            "pathName": "Right To Reef&Source C3A1 Path 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae Mode"
           }
         },
         {
@@ -69,9 +63,72 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 0.5
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Right To Reef&Source C3A1 Path 4"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Auto Align Center"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Grab Algae Outer"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Grab Algae Inner"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Mode"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3 Position"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Right"
                 }
               },
               {
@@ -87,18 +144,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Right"
           }
         },
         {
@@ -152,7 +197,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 0.25
           }
         }
       ]

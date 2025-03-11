@@ -56,7 +56,7 @@ public class WindmillIOTalonFX implements WindmillIO {
     //     .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
     //     .withMagnetOffset(0);
     encoderConfig.withMagnetSensor(magnetSensorConfigs);
-    magnetSensorConfigs.AbsoluteSensorDiscontinuityPoint = 0.25;
+    magnetSensorConfigs.AbsoluteSensorDiscontinuityPoint = 0.05;
     encoder.getConfigurator().apply(encoderConfig);
   }
 

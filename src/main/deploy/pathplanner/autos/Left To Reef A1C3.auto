@@ -11,21 +11,77 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "Left To Reef A1C3 Path 1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left To Reef A1C3 Path 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Center"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Mode"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Slow Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Outtake Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Left To Reef A1C3 Path 2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.75
           }
         },
         {
@@ -37,7 +93,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
+            "waitTime": 0.15
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
           }
         },
         {
@@ -49,13 +111,26 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.25
+            "waitTime": 0.5
           }
         },
         {
-          "type": "named",
+          "type": "sequential",
           "data": {
-            "name": "Intake Coral"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left To Reef A1C3 Path 4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Center"
+                }
+              }
+            ]
           }
         },
         {
@@ -65,57 +140,46 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Left To Reef A1C3 Path 4"
+            "name": "Coral Mode"
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef A1C3 Path 5"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef A1C3 Path 6"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.25
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Slow Algae Inner"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake Coral"
+            "name": "Outtake Coral"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef A1C3 Path 7"
+            "waitTime": 0.15
           }
         }
       ]

@@ -69,7 +69,7 @@ public final class Constants {
           /*rotation*/ Rotation2d.fromDegrees(180));
   public static final Transform2d ALGAE_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(2),
+          /*x*/ Units.inchesToMeters(0),
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d CORAL_TRANSFORM =
@@ -81,5 +81,10 @@ public final class Constants {
       new Transform2d(
           /*x*/ Units.inchesToMeters(-24), // 10
           /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d L4_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0), // 10
+          /*y*/ Units.inchesToMeters(-3),
           /*rotation*/ Rotation2d.fromDegrees(0));
 }

@@ -26,7 +26,8 @@ public class Superstructure extends SubsystemBase {
     L3,
     // PROCESSOR_AND_PRESTAGE,
     BARGE,
-    STAY_STILL;
+    STAY_STILL,
+    CLIMB;
   }
 
   private Goal desiredGoal = Goal.STOW;
@@ -189,6 +190,10 @@ public class Superstructure extends SubsystemBase {
         }
 
         break;
+      }
+      case CLIMB -> {
+        elevator.setTargetHeight(ElevatorGoal.CLIMB);
+        windmill.setTargetPosition(WindmillGoal.CLIMB);
       }
 
       case STAY_STILL -> {

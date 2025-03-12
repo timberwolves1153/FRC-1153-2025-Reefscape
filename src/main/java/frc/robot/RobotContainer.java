@@ -364,6 +364,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
+    controller.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
 
     controller
         .leftBumper()
@@ -415,6 +416,8 @@ public class RobotContainer {
 
     controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    controller.pov(90).onTrue(Commands.runOnce(() -> climber.setPosition(-70)));
+    controller.pov(270).onTrue(Commands.runOnce(() -> climber.setPosition(170)));
 
     // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
@@ -463,6 +466,7 @@ public class RobotContainer {
     // }
     atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
     atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));

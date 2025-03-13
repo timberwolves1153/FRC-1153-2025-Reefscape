@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.884016393442623,
-        "y": 3.042008196721312
+        "x": 1.35,
+        "y": 7.63
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0573236602381457,
-        "y": 2.1815859287816104
+        "x": 2.3918555683441154,
+        "y": 6.723390297151862
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.35,
-        "y": 0.48
+        "x": 3.812250000004077,
+        "y": 5.419250000004956
       },
       "prevControl": {
-        "x": 1.8974366992702452,
-        "y": 1.07373082153447
+        "x": 3.5364665623144242,
+        "y": 5.678619052133467
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Collect Coral Position",
-      "waypointRelativePos": 0.14854827819040958,
+      "name": "l2",
+      "waypointRelativePos": 0.15124915597568686,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -43,13 +43,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Coral Mode"
+                "name": "Algae Mode"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Collect Coral Position"
+                "name": "L2 Position"
               }
             }
           ]
@@ -67,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 51.3
+    "rotation": -60.04639183219849
   },
   "reversed": false,
-  "folder": "Right To Reef&Source C3A1",
+  "folder": "Left To Reef&Source C3A1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 60.07000000000001
+    "rotation": -50.85
   },
   "useDefaultConstraints": true
 }

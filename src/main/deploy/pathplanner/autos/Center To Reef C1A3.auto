@@ -249,6 +249,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "reset gyro 180"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 0.15

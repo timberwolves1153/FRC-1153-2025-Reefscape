@@ -13,13 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 1"
+            "pathName": "Left To Reef&Source C3A1 Path 1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Auto Align Left"
+            "name": "Auto Align Right"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 2"
+            "pathName": "Left To Reef&Source C3A1 Path 2"
           }
         },
         {
@@ -69,7 +69,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Right To Reef&Source C3A1 Path 3"
+                        "pathName": "Left To Reef&Source C3A1 Path 3"
                       }
                     },
                     {
@@ -167,7 +167,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 4"
+            "pathName": "Left To Reef&Source C3A1 Path 4"
           }
         },
         {
@@ -179,7 +179,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 5"
+            "pathName": "Left To Reef&Source C3A1 Path 5"
           }
         },
         {
@@ -201,7 +201,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "reset gyro 60"
+                  "name": "reset gyro -60"
                 }
               }
             ]

@@ -14,6 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -230,82 +231,82 @@ public class RobotContainer {
         break;
     }
 
-    // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() ->
-    // coral.runVolts(-6.5)));
-    // NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() ->
-    // drive.resetGyro(180)));
-    // NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
-    // NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
-    // NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
-    // NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
-    // NamedCommands.registerCommand(
-    //     "Slow Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(2)));
-    // NamedCommands.registerCommand(
-    //     "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
+    NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
+    NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
+    NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() -> drive.resetGyro(-60)));
+    NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() -> drive.resetGyro(60)));
+    NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
+    NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
+    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
+    NamedCommands.registerCommand(
+        "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    NamedCommands.registerCommand(
+        "Slow Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(2)));
+    NamedCommands.registerCommand(
+        "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
-    // NamedCommands.registerCommand(
-    //     "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    NamedCommands.registerCommand(
+        "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    NamedCommands.registerCommand(
+        "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
 
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    // NamedCommands.registerCommand(
-    //     "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
 
+    NamedCommands.registerCommand(
+        "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
+    NamedCommands.registerCommand(
+        "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
+    NamedCommands.registerCommand(
+        "Coral Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
+    NamedCommands.registerCommand(
+        "Algae Mode",
+        Commands.runOnce(
+            () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
+    NamedCommands.registerCommand(
+        "Score L1 Coral Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
     // NamedCommands.registerCommand(
-    //     "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
-    // NamedCommands.registerCommand(
-    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
-    // NamedCommands.registerCommand(
-    //     "Coral Mode",
-    //     Commands.runOnce(
-    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Algae Mode",
-    //     Commands.runOnce(
-    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Score L1 Coral Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
-    // // NamedCommands.registerCommand(
-    // //     "Stay At Previous Position",
-    // //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
-    // NamedCommands.registerCommand(
-    //     "L2 Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
-    // NamedCommands.registerCommand(
-    //     "L3 Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
-    // NamedCommands.registerCommand(
-    //     "Barge Position",
-    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+    //     "Stay At Previous Position",
+    //     superstructure.setAutoGoalCommand(superstructure.getCurrentGoal()));
+    NamedCommands.registerCommand(
+        "L2 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
+    NamedCommands.registerCommand(
+        "L3 Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    NamedCommands.registerCommand(
+        "Barge Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
-    // NamedCommands.registerCommand(
-    //     "Auto Align Center",
-    //     new ConditionalCommand(
-    //             alignThenScore(BranchLocation.CENTER),
-    //             alignToScore(BranchLocation.CENTER),
-    //             () -> isCloseToReef())
-    //         .withTimeout(1));
+    NamedCommands.registerCommand(
+        "Auto Align Center",
+        new ConditionalCommand(
+                alignThenScore(BranchLocation.CENTER),
+                alignToScore(BranchLocation.CENTER, false),
+                () -> isCloseToReef())
+            .withTimeout(1));
 
-    // NamedCommands.registerCommand(
-    //     "Auto Align Left",
-    //     new ConditionalCommand(
-    //             alignThenScore(BranchLocation.LEFT),
-    //             alignToScore(BranchLocation.LEFT),
-    //             () -> isCloseToReef())
-    //         .withTimeout(1));
+    NamedCommands.registerCommand(
+        "Auto Align Left",
+        new ConditionalCommand(
+                alignThenScore(BranchLocation.LEFT),
+                alignToScore(BranchLocation.LEFT, false),
+                () -> isCloseToReef())
+            .withTimeout(1));
 
-    // NamedCommands.registerCommand(
-    //     "Auto Align Right",
-    //     new ConditionalCommand(
-    //             alignThenScore(BranchLocation.RIGHT),
-    //             alignToScore(BranchLocation.RIGHT),
-    //             () -> isCloseToReef())
-    //         .withTimeout(1));
+    NamedCommands.registerCommand(
+        "Auto Align Right",
+        new ConditionalCommand(
+                alignThenScore(BranchLocation.RIGHT),
+                alignToScore(BranchLocation.RIGHT, false),
+                () -> isCloseToReef())
+            .withTimeout(1));
 
     // NamedCommands.registerCommand("Auto Align Station", drive.driveToStation());
 
@@ -416,8 +417,8 @@ public class RobotContainer {
 
     controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
     controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
-    controller.pov(90).onTrue(Commands.runOnce(() -> climber.setPosition(-70)));
-    controller.pov(270).onTrue(Commands.runOnce(() -> climber.setPosition(170)));
+    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-70)));
+    controller.rightTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(170)));
 
     // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));

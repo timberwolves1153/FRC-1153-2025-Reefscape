@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left To Reef A1C3 Path 1"
+                  "pathName": "Left To Reef A2C2 Path 1"
                 }
               },
               {
@@ -81,7 +81,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A1C3 Path 2"
+            "pathName": "Left To Reef A2C2 Path 2"
           }
         },
         {
@@ -105,7 +105,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A1C3 Path 3"
+            "pathName": "Left To Reef A2C2 Path 3"
           }
         },
         {
@@ -121,7 +121,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left To Reef A1C3 Path 4"
+                  "pathName": "Left To Reef A2C2 Path 4"
                 }
               },
               {
@@ -180,6 +180,24 @@
           "type": "wait",
           "data": {
             "waitTime": 0.15
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef A2C2 Path 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Algae Inner"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "reset gyro 180"
           }
         }
       ]

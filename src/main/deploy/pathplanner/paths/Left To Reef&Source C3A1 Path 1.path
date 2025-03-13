@@ -3,61 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.29,
-        "y": 7.6
+        "x": 6.96,
+        "y": 6.013999999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.749070945945946,
-        "y": 7.227280405405404
+        "x": 6.2625,
+        "y": 5.643499999999999
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.800102459016393,
-        "y": 4.900102459016394
+        "x": 5.3235,
+        "y": 5.3705
       },
       "prevControl": {
-        "x": 3.5530585400974735,
-        "y": 5.1471463779353135
+        "x": 5.937749999999999,
+        "y": 5.67275
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": -59.99999999999999
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L3 Position",
-      "waypointRelativePos": 0.25,
+      "name": "L2 Position",
+      "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Coral"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "L3 Position"
-              }
-            }
-          ]
+          "name": "L2 Position"
         }
       }
     }
@@ -72,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -56.605
+    "rotation": -119.7448812969422
   },
   "reversed": false,
-  "folder": "Left To Reef A1C3",
+  "folder": "Left To Reef&Source C3A1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -49.605
+    "rotation": -119.745
   },
   "useDefaultConstraints": true
 }

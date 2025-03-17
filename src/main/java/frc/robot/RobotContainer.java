@@ -240,6 +240,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
     NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
     NamedCommands.registerCommand(
+        "quick right align", DriveCommands.alignToReefFace(false, drive).withTimeout(0.5));
+    NamedCommands.registerCommand(
         "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
     NamedCommands.registerCommand(
         "Slow Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(2)));
@@ -374,22 +376,22 @@ public class RobotContainer {
                 alignThenScore(BranchLocation.LEFT),
                 alignToScore(BranchLocation.LEFT, false),
                 () -> isCloseToReef()));
-    controller
-        .leftBumper()
-        .and(controller.leftStick())
-        .whileTrue(
-            new ConditionalCommand(
-                alignThenScore(BranchLocation.LEFT),
-                alignToScore(BranchLocation.LEFT, true),
-                () -> isCloseToReef()));
-    controller
-        .rightBumper()
-        .and(controller.leftStick())
-        .whileTrue(
-            new ConditionalCommand(
-                alignThenScore(BranchLocation.RIGHT),
-                alignToScore(BranchLocation.RIGHT, true),
-                () -> isCloseToReef()));
+    // controller
+    //     .leftBumper()
+    //     .and(controller.leftStick())
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignThenScore(BranchLocation.LEFT),
+    //             alignToScore(BranchLocation.LEFT, true),
+    //             () -> isCloseToReef()));
+    // controller
+    //     .rightBumper()
+    //     .and(controller.leftStick())
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignThenScore(BranchLocation.RIGHT),
+    //             alignToScore(BranchLocation.RIGHT, true),
+    //             () -> isCloseToReef()));
     //
     // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
     controller
@@ -407,16 +409,15 @@ public class RobotContainer {
                 alignThenScore(BranchLocation.CENTER),
                 alignToScore(BranchLocation.CENTER, false),
                 () -> isCloseToReef()));
-
-    //  controller.x().whileTrue(drive.driveToStation());
-    // // controller.b().whileTrue(drive.driveToBarge());
     // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
-    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-10)));
+    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
     controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(10)));
+    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
     controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
+    controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
     controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-70)));
     controller.rightTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(170)));
 
@@ -469,6 +470,8 @@ public class RobotContainer {
     atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
     controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
+    //  controller.x().whileTrue(drive.driveToStation());
+    // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
     atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
@@ -592,6 +595,7 @@ public class RobotContainer {
           boolean isRedAlliance =
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
+
           if (isRedAlliance) {
             // return AutoBuilder.pathfindToPose(
             //     goalPose
@@ -627,7 +631,7 @@ public class RobotContainer {
             }
             // command.setTapePIDValues();
 
-          } else {
+          } else { // BLUE
             // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
             Logger.recordOutput(
                 "Auto Drive Target Pose",
@@ -635,16 +639,18 @@ public class RobotContainer {
                     .transformBy(Constants.ROBOT_TRANSFORM)
                     .transformBy(Constants.AUTOALIGN_TRANSFORM));
             if (DriverStation.isAutonomous()) {
-
+              // AUTO
               Command command =
                   AutoBuilder.pathfindToPose(
                       goalPose
                           .transformBy(Constants.AUTO_ROBOT_TRANSFORM)
-                          .transformBy(Constants.AUTOALIGN_TRANSFORM),
+                          .transformBy(Constants.AUTOALIGN_TRANSFORM)
+                          .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive.constraints);
               // command.setTapePIDValues();
               return command;
             } else {
+              // TELE
               Command command =
                   AutoBuilder.pathfindToPose(
                       goalPose
@@ -678,7 +684,7 @@ public class RobotContainer {
 
           Transform2d l4Transform = new Transform2d(0, 0, new Rotation2d());
 
-          if (branchLocation.equals(isL4)) {
+          if (isL4) {
             l4Transform = Constants.L4_TRANSFORM;
           } else {
             l4Transform = l4Transform;
@@ -734,7 +740,6 @@ public class RobotContainer {
                   new AdjustToPose(
                       goalPose
                           .transformBy(Constants.AUTO_ROBOT_TRANSFORM)
-                          .transformBy(l4Transform)
                           .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive,
                       alignment::getRobotPose);
@@ -744,10 +749,7 @@ public class RobotContainer {
             } else {
               AdjustToPose command =
                   new AdjustToPose(
-                      goalPose
-                          .transformBy(Constants.ROBOT_TRANSFORM)
-                          .transformBy(l4Transform)
-                          .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
+                      goalPose.transformBy(Constants.ROBOT_TRANSFORM).transformBy(l4Transform),
                       drive,
                       alignment::getRobotPose);
               command.setScorePIDValues();
@@ -757,6 +759,42 @@ public class RobotContainer {
           }
         },
         Set.of(drive));
+  }
+
+  public void calibration() {
+    TargetReefFace desiredReefFace = drive.getDesiredReefFace();
+    DesiredReefPosition goalPosition =
+        new DesiredReefPosition(desiredReefFace.faceNumber, BranchLocation.CENTER);
+    SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
+    SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
+
+    Transform2d algaeTransform = new Transform2d(0, 0, new Rotation2d());
+
+    Pose2d goalPose = reefmap.get(goalPosition);
+    boolean isRedAlliance =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    drive.setPose(alignment.getRobotPose());
+    if (isRedAlliance) {
+      Logger.recordOutput(
+          "Calibration Target Pose",
+          goalPose
+              .transformBy(Constants.ROBOT_TRANSFORM)
+              .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
+              .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)));
+      AdjustToPose command =
+          new AdjustToPose(
+              goalPose
+                  .transformBy(Constants.ROBOT_TRANSFORM)
+                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
+                  .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
+              drive,
+              alignment::getRobotPose);
+    } else {
+      // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
+      Logger.recordOutput(
+          "Calibration Target Pose", goalPose.transformBy(Constants.ROBOT_TRANSFORM));
+    }
   }
 
   //   public Command alignToScore() {

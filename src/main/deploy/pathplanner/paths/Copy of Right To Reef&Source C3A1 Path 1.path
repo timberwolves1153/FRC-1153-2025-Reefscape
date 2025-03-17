@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.706,
-        "y": 3.98
+        "x": 6.86,
+        "y": 1.927
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.994581081081082,
-        "y": 4.182989864864863
+        "x": 5.71813524590164,
+        "y": 2.2148565573770487
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 5.1067622950819676,
+        "y": 3.1618852459016398
       },
       "prevControl": {
-        "x": 6.507485804218623,
-        "y": 4.806860189212861
+        "x": 5.490368852459017,
+        "y": 2.7662909836065577
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,20 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Barge Position",
-      "waypointRelativePos": 0.3012181616832759,
+      "name": "L2 Position",
+      "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Barge Position"
-              }
-            }
-          ]
+          "name": "L2 Position"
         }
       }
     }
@@ -61,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 121.94707728936393
   },
   "reversed": false,
-  "folder": "Center To Reef C1A3",
+  "folder": null,
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": 180.0
+    "velocity": 0,
+    "rotation": 121.95
   },
   "useDefaultConstraints": true
 }

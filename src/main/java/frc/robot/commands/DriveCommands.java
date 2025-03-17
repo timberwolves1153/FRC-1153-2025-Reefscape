@@ -14,6 +14,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -167,7 +168,7 @@ public class DriveCommands {
    *
    */
 
-  public static Command alignToReefFace(Supplier<Pose2d> targetPose, Drive drive) {
+  public static Command alignToReefFace(boolean isLeft, Drive drive) {
 
     // Create PID controller
     ProfiledPIDController angleController =
@@ -178,12 +179,7 @@ public class DriveCommands {
             new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    ProfiledPIDController xController =
-        new ProfiledPIDController(
-            XY_KP,
-            0,
-            XY_KD,
-            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
+    PIDController xController = new PIDController(XY_KP, 0, XY_KD);
     ProfiledPIDController yController =
         new ProfiledPIDController(
             XY_KP,
@@ -193,16 +189,18 @@ public class DriveCommands {
 
     return Commands.run(
             () -> {
-              double xVal =
-                  xController.calculate(
-                      drive.getPose().getTranslation().getX(), targetPose.get().getX());
-              double yVal =
-                  yController.calculate(
-                      drive.getPose().getTranslation().getY(), targetPose.get().getY());
-              double omega =
-                  angleController.calculate(
-                      drive.getRotation().getRadians(),
-                      targetPose.get().getRotation().getRadians());
+              double xVal = 0;
+              double yVal = 0;
+              if (isLeft) {
+                yVal = 0.5;
+
+              } else {
+                yVal = -0.5;
+              }
+              double omega = 0;
+              // angleController.calculate(
+              //     drive.getRotation().getRadians(),
+              //     targetPose.get().getRotation().getRadians());
 
               // not actually from joysticks
               Translation2d linearSpeeds = getLinearVelocityFromJoysticks(xVal, yVal);
@@ -216,9 +214,9 @@ public class DriveCommands {
               drive.runVelocity(speeds);
             },
             drive)
-        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()))
-        .beforeStarting(() -> xController.reset(drive.getPose().getX()))
-        .beforeStarting(() -> yController.reset(drive.getPose().getY()));
+        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
+    // .beforeStarting(() -> xController.reset(drive.getPose().getX()))
+    // .beforeStarting(() -> yController.reset(drive.getPose().getY()));
   }
 
   /**

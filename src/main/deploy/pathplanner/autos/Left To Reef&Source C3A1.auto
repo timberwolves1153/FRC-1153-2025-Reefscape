@@ -31,7 +31,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
+            "waitTime": 0.2
           }
         },
         {
@@ -180,6 +180,18 @@
           "type": "path",
           "data": {
             "pathName": "Left To Reef&Source C3A1 Path 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Mode"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3 Position"
           }
         },
         {

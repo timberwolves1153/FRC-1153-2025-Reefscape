@@ -13,13 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 1"
+            "pathName": "Copy of Right To Reef&Source C3A1 Path 1"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Auto Align Left"
+            "waitTime": 0.5
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 2"
+            "pathName": "Copy of Right To Reef&Source C3A1 Path 2"
           }
         },
         {
@@ -69,13 +69,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Right To Reef&Source C3A1 Path 3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Align Center"
+                        "pathName": "Copy of Right To Reef&Source C3A1 Path 3"
                       }
                     }
                   ]
@@ -122,15 +116,15 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "shift sideways"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Auto Align Right"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -144,6 +138,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -167,7 +167,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 4"
+            "pathName": "Copy of Right To Reef&Source C3A1 Path 4"
           }
         },
         {
@@ -179,13 +179,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right To Reef&Source C3A1 Path 5"
+            "pathName": "Copy of Right To Reef&Source C3A1 Path 5"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Auto Align Left"
+            "waitTime": 0.5
           }
         },
         {
@@ -210,7 +210,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.25
+            "waitTime": 0.35
           }
         }
       ]

@@ -51,7 +51,7 @@ public class Elevator extends SubsystemBase {
     ALGAE_PROCESSOR_AND_PRESTAGE(0.25),
     // ALGAE_PROCESSOR(0.25),
     ALGAE_BARGE(30.25),
-    CLIMB(5);
+    CLIMB(12);
 
     private double heightInInches;
 

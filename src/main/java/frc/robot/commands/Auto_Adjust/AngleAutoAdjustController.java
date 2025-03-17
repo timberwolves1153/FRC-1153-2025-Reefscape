@@ -24,7 +24,7 @@ public class AngleAutoAdjustController implements SwerveController {
   }
 
   public AngleAutoAdjustController(Supplier<Double> getMeasurment) {
-    this(getMeasurment, 165);
+    this(getMeasurment, 0);
   }
 
   public ChassisSpeeds update() {

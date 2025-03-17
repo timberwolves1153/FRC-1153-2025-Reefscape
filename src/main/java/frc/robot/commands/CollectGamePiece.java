@@ -38,9 +38,13 @@ public class CollectGamePiece extends Command {
       }
 
     } else if (GamePiece.ALGAE.equals(selectedPiece)) {
-      coral.runVolts(coralHoldingVoltage);
-      algae.setVoltageHolding(6);
-      algae.setVoltageLauncher(-6);
+      if (currentGoal.equals(Goal.COLLECT)) {
+        coral.runVolts(-6);
+      } else {
+        coral.runVolts(coralHoldingVoltage);
+        algae.setVoltageHolding(6);
+        algae.setVoltageLauncher(-6);
+      }
     } else {
       coral.stop();
       algae.stopHolding();

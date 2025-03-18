@@ -16,7 +16,7 @@ public class TranslationAutoAdjustController implements SwerveController {
   private PIDController yController = new PIDController(20, 0, 0);
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
 
-  private boolean isFieldRelativ = true;
+  private boolean isFieldRelative = true;
   private Supplier<Double> gyromMeasurment;
   private Supplier<Double> gyroOffset;
   private Pose2d targetPose;
@@ -34,7 +34,7 @@ public class TranslationAutoAdjustController implements SwerveController {
     yController.setTolerance(0.05);
 
     updateSetPoint(setPoint);
-    isFieldRelativ = true;
+    isFieldRelative = true;
   }
 
   public TranslationAutoAdjustController(
@@ -47,7 +47,7 @@ public class TranslationAutoAdjustController implements SwerveController {
   public void setConstrains(Constraints constraints) {}
 
   public void setField(boolean field) {
-    isFieldRelativ = field;
+    isFieldRelative = field;
   }
 
   public void setPID(
@@ -69,11 +69,11 @@ public class TranslationAutoAdjustController implements SwerveController {
     chassisSpeeds.vxMetersPerSecond = xController.calculate(currentPoseSupplier.get().getX());
     chassisSpeeds.vyMetersPerSecond = yController.calculate(currentPoseSupplier.get().getY());
 
-    if (isFieldRelativ && DriverStation.getAlliance().get() == Alliance.Blue) {
+    if (isFieldRelative && DriverStation.getAlliance().get() == Alliance.Blue) {
       return ChassisSpeedsUtil.FromFieldToRobot(
           chassisSpeeds,
-          new Rotation2d(Math.toRadians((-(gyromMeasurment.get() - gyroOffset.get())))));
-    } else if (isFieldRelativ) {
+          new Rotation2d(Math.toRadians(((gyromMeasurment.get() - gyroOffset.get())))));
+    } else if (isFieldRelative) {
       return ChassisSpeedsUtil.FromFieldToRobot(
           chassisSpeeds,
           new Rotation2d(Math.toRadians(((gyromMeasurment.get() - gyroOffset.get())))));

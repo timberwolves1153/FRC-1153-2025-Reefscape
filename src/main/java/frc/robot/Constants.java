@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
-  public static final String protoRio = "";
+  public static final String protoRio = "0323818A";
   public static final Bot currentBot =
       protoRio.equalsIgnoreCase(HALUtil.getSerialNumber()) ? Bot.PROTO : Bot.COMP;
 

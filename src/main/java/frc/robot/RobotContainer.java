@@ -377,8 +377,8 @@ public class RobotContainer {
         .leftBumper()
         .whileTrue(
             new ConditionalCommand(
-                alignThenScore(BranchLocation.LEFT),
                 alignToScore(BranchLocation.LEFT, false),
+                alignThenScore(BranchLocation.LEFT),
                 () -> isCloseToReef()));
     // controller
     //     .leftBumper()
@@ -402,16 +402,16 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(
             new ConditionalCommand(
-                alignThenScore(BranchLocation.RIGHT),
                 alignToScore(BranchLocation.RIGHT, false),
+                alignThenScore(BranchLocation.RIGHT),
                 () -> isCloseToReef()));
     //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
     controller
         .a()
         .whileTrue(
             new ConditionalCommand(
-                alignThenScore(BranchLocation.CENTER),
                 alignToScore(BranchLocation.CENTER, false),
+                alignThenScore(BranchLocation.CENTER),
                 () -> isCloseToReef()));
     // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
@@ -498,7 +498,9 @@ public class RobotContainer {
     DesiredReefPosition goalPosition =
         new DesiredReefPosition(reefFace.faceNumber, BranchLocation.CENTER);
     Pose2d closestTagPose = reefmap.get(goalPosition);
+    Logger.recordOutput("closest tag pose", closestTagPose);
     double dist = drive.getPose().getTranslation().getDistance(closestTagPose.getTranslation());
+    SmartDashboard.putNumber("distance to reef", dist);
     return Math.abs(dist) < Units.inchesToMeters(24);
   }
 

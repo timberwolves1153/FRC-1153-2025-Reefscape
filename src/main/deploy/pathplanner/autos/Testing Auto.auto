@@ -7,37 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Reef A2C2 Path 1"
+            "pathName": "Test Path"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Auto Align Center"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef A2C2 Path 2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Algae Inner"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
           }
         }
       ]

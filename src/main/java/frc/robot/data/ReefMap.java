@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.littletonrobotics.junction.Logger;
 
 public class ReefMap {
 
@@ -249,29 +248,29 @@ public class ReefMap {
             .transformBy(Constants.CORAL_TRANSFORM));
     reefMap.put(fCenter, FieldConstants.Reef.centerFaces[5]);
 
-    Logger.recordOutput("aLeft", reefMap.get(aLeft));
-    Logger.recordOutput("aRight", reefMap.get(aRight));
-    Logger.recordOutput("aCenter", reefMap.get(aCenter));
+    // Logger.recordOutput("aLeft", reefMap.get(aLeft));
+    // Logger.recordOutput("aRight", reefMap.get(aRight));
+    // Logger.recordOutput("aCenter", reefMap.get(aCenter));
 
-    Logger.recordOutput("bLeft", reefMap.get(bLeft));
-    Logger.recordOutput("bRight", reefMap.get(bRight));
-    Logger.recordOutput("bCenter", reefMap.get(bCenter));
+    // Logger.recordOutput("bLeft", reefMap.get(bLeft));
+    // Logger.recordOutput("bRight", reefMap.get(bRight));
+    // Logger.recordOutput("bCenter", reefMap.get(bCenter));
 
-    Logger.recordOutput("cLeft", reefMap.get(cLeft));
-    Logger.recordOutput("cRight", reefMap.get(cRight));
-    Logger.recordOutput("cCenter", reefMap.get(cCenter));
+    // Logger.recordOutput("cLeft", reefMap.get(cLeft));
+    // Logger.recordOutput("cRight", reefMap.get(cRight));
+    // Logger.recordOutput("cCenter", reefMap.get(cCenter));
 
-    Logger.recordOutput("dLeft", reefMap.get(dLeft));
-    Logger.recordOutput("dRight", reefMap.get(dRight));
-    Logger.recordOutput("dCenter", reefMap.get(dCenter));
+    // Logger.recordOutput("dLeft", reefMap.get(dLeft));
+    // Logger.recordOutput("dRight", reefMap.get(dRight));
+    // Logger.recordOutput("dCenter", reefMap.get(dCenter));
 
-    Logger.recordOutput("eLeft", reefMap.get(eLeft));
-    Logger.recordOutput("eRight", reefMap.get(eRight));
-    Logger.recordOutput("eCenter", reefMap.get(eCenter));
+    // Logger.recordOutput("eLeft", reefMap.get(eLeft));
+    // Logger.recordOutput("eRight", reefMap.get(eRight));
+    // Logger.recordOutput("eCenter", reefMap.get(eCenter));
 
-    Logger.recordOutput("fLeft", reefMap.get(fLeft));
-    Logger.recordOutput("fRight", reefMap.get(fRight));
-    Logger.recordOutput("fCenter", reefMap.get(fCenter));
+    // Logger.recordOutput("fLeft", reefMap.get(fLeft));
+    // Logger.recordOutput("fRight", reefMap.get(fRight));
+    // Logger.recordOutput("fCenter", reefMap.get(fCenter));
 
     return reefMap;
   }

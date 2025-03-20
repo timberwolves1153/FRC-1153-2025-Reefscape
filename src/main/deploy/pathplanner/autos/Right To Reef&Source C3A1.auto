@@ -47,40 +47,21 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Algae Mode"
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Right To Reef&Source C3A1 Path 3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Align Center"
-                      }
-                    }
-                  ]
-                }
-              },
               {
                 "type": "sequential",
                 "data": {
@@ -104,9 +85,21 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Right To Reef&Source C3A1 Path 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.15
           }
         },
         {
@@ -116,19 +109,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "L3 Position"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align Right"
+                  "name": "L3 Position"
                 }
               },
               {
@@ -144,6 +131,18 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Right"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {

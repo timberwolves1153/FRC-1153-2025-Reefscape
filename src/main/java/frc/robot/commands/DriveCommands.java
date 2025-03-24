@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -73,11 +75,21 @@ public class DriveCommands {
    */
   public static Command joystickDrive(
       Drive drive,
+      Superstructure superstructure,
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
+          // superstructure state
+          Goal currentGoal = superstructure.getCurrentGoal();
+          double speedScaleFactor;
+          if (currentGoal == Goal.BARGE || currentGoal == Goal.L3) {
+            speedScaleFactor = 0.75;
+          } else {
+            speedScaleFactor = 1;
+          }
+
           // Get linear velocity
           Translation2d linearVelocity =
               getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
@@ -91,8 +103,8 @@ public class DriveCommands {
           // Convert to field relative speeds & send command
           ChassisSpeeds speeds =
               new ChassisSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec() * speedScaleFactor,
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec() * speedScaleFactor,
                   omega * drive.getMaxAngularSpeedRadPerSec());
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()

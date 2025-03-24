@@ -295,13 +295,13 @@ public class RobotContainer {
         "Barge Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
-    NamedCommands.registerCommand(
-        "Auto Align Center",
-        new ConditionalCommand(
-                alignThenScore(BranchLocation.CENTER),
-                alignToScore(BranchLocation.CENTER, false),
-                () -> isCloseToReef())
-            .withTimeout(1));
+    // NamedCommands.registerCommand(
+    //     "Auto Align Center",
+    //     new ConditionalCommand(
+    //             alignThenScore(BranchLocation.CENTER),
+    //             alignToScore(BranchLocation.CENTER, false),
+    //             () -> isCloseToReef())
+    //         .withTimeout(1));
 
     NamedCommands.registerCommand(
         "Auto Align Left",
@@ -309,17 +309,26 @@ public class RobotContainer {
                 alignThenScore(BranchLocation.LEFT),
                 alignToScore(BranchLocation.LEFT, false),
                 () -> isCloseToReef())
-            .withTimeout(2));
+            .withTimeout(1));
+
+    // NamedCommands.registerCommand(
+    //     "Auto Align Right",
+    //     new ConditionalCommand(
+    //             alignThenScore(BranchLocation.RIGHT),
+    //             alignToScore(BranchLocation.RIGHT, false),
+    //             () -> isCloseToReef())
+    //         .withTimeout(5));
 
     NamedCommands.registerCommand(
-        "Auto Align Right",
-        new ConditionalCommand(
-                alignThenScore(BranchLocation.RIGHT),
-                alignToScore(BranchLocation.RIGHT, false),
-                () -> isCloseToReef())
-            .withTimeout(2));
+        "Auto Align Center", alignToScore(BranchLocation.CENTER, false).withTimeout(3));
 
-    // NamedCommands.registerCommand("Auto Align Station", drive.driveToStation());
+    NamedCommands.registerCommand(
+        "Auto Align Right", alignToScore(BranchLocation.RIGHT, false).withTimeout(1.75));
+
+    NamedCommands.registerCommand(
+        "Auto Align Left", alignToScore(BranchLocation.LEFT, false).withTimeout(1.75));
+
+    // NamedCommands.registerCommand("Aut87o Align Station", drive.driveToStation());
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -340,6 +349,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
+            superstructure,
             () -> -controller.getLeftY(),
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
@@ -453,8 +463,9 @@ public class RobotContainer {
     controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
     controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
     controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-70)));
-    controller.rightTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(170)));
+    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
+
+    atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
     controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
 
@@ -525,10 +536,23 @@ public class RobotContainer {
   }
 
   public boolean isCloseToReef() {
+
+    boolean isRedAlliance =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+
     TargetReefFace reefFace = drive.getDesiredReefFace();
     DesiredReefPosition goalPosition =
         new DesiredReefPosition(reefFace.faceNumber, BranchLocation.CENTER);
-    Pose2d closestTagPose = reefmap.get(goalPosition);
+    Pose2d closestTagPose;
+
+    if (isRedAlliance) {
+      closestTagPose =
+          reefmap.get(goalPosition).rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg);
+    } else {
+      closestTagPose = reefmap.get(goalPosition);
+    }
+
     Logger.recordOutput("closest tag pose", closestTagPose);
     double dist = drive.getPose().getTranslation().getDistance(closestTagPose.getTranslation());
     SmartDashboard.putNumber("distance to reef", dist);
@@ -713,12 +737,12 @@ public class RobotContainer {
           SmartDashboard.putNumber("desiredPosition Face", desiredReefFace.faceNumber);
           SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
 
-          Transform2d algaeTransform = new Transform2d(0, 0, new Rotation2d());
+          Transform2d algaeTransform; // = new Transform2d(0, 0, new Rotation2d());
 
           if (branchLocation.equals(BranchLocation.CENTER)) {
             algaeTransform = Constants.ALGAE_TRANSFORM;
           } else {
-            algaeTransform = algaeTransform;
+            algaeTransform = new Transform2d(0, 0, new Rotation2d());
           }
 
           Transform2d l4Transform = new Transform2d(0, 0, new Rotation2d());
@@ -778,6 +802,7 @@ public class RobotContainer {
                   new AdjustToPose(
                       goalPose
                           .transformBy(Constants.AUTO_ROBOT_TRANSFORM)
+                          // .transformBy(algaeTransform)
                           .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive,
                       alignment::getRobotPose);
@@ -787,7 +812,7 @@ public class RobotContainer {
             } else {
               AdjustToPose command =
                   new AdjustToPose(
-                      goalPose.transformBy(Constants.ROBOT_TRANSFORM),
+                      goalPose.transformBy(Constants.ROBOT_TRANSFORM).transformBy(algaeTransform),
                       drive,
                       alignment::getRobotPose);
               command.setScorePIDValues();

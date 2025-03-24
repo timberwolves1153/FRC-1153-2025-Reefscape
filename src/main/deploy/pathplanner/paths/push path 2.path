@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.35,
-        "y": 7.63
+        "x": 8.092,
+        "y": 6.036
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3918555683441154,
-        "y": 6.723390297151862
+        "x": 7.744057377049179,
+        "y": 4.67233606557377
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.812250000004077,
-        "y": 5.419250000004956
+        "x": 5.826024590163935,
+        "y": 3.977049180327869
       },
       "prevControl": {
-        "x": 3.5364665623144242,
-        "y": 5.678619052133467
+        "x": 6.36547131147541,
+        "y": 4.060963114754099
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -60.04639183219849
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Left To Reef&Source C3A1",
+  "folder": "Push and Score Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -50.85
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

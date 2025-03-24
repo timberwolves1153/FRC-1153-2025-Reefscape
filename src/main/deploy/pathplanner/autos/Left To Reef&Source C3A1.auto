@@ -35,21 +35,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Intake Coral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef&Source C3A1 Path 2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left To Reef&Source C3A1 Path 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         },
         {
@@ -59,54 +60,46 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Left To Reef&Source C3A1 Path 3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Align Center"
-                      }
-                    }
-                  ]
+                  "name": "Grab Algae Outer"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Grab Algae Outer"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Grab Algae Inner"
-                      }
-                    }
-                  ]
+                  "name": "Grab Algae Inner"
                 }
               }
             ]
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Left To Reef&Source C3A1 Path 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.4
           }
         },
         {
@@ -128,12 +121,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align Right"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "Stop Algae Outer"
                 }
               },
@@ -144,6 +131,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Right"
           }
         },
         {
@@ -183,21 +176,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Coral Mode"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L3 Position"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Left"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L3 Position"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              }
+            ]
           }
         },
         {

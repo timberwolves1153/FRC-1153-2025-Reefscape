@@ -124,6 +124,10 @@ public class Elevator extends SubsystemBase {
     elevatorIO.stop();
   }
 
+  public void resetEncoder() {
+    elevatorIO.resetEncoder();
+  }
+
   public void updateMech2d() {
     elevatorLig2d.setLength(elevatorInputs.heightInches);
   }

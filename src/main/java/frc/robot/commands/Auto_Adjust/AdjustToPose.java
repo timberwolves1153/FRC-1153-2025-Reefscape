@@ -14,7 +14,7 @@ public class AdjustToPose extends Command {
   public static TranslationAutoAdjustController autoAdjustXYController;
   private Pose2d targetPose;
   private Supplier<Pose2d> isAtGoalPoseSupplier;
-  private boolean useScoringTolerance = false;
+  private boolean useScoringTolerance = true;
 
   public AdjustToPose(Pose2d targetPose, Drive drive, Supplier<Pose2d> isAtGoalPoseSupplier) {
     this.drive = drive;
@@ -55,8 +55,8 @@ public class AdjustToPose extends Command {
   @Override
   public boolean isFinished() {
     if (useScoringTolerance) {
-      return (Math.abs(isAtGoalPoseSupplier.get().getX() - this.targetPose.getX()) < .025)
-          && (Math.abs(isAtGoalPoseSupplier.get().getY() - this.targetPose.getY()) < .025);
+      return (Math.abs(isAtGoalPoseSupplier.get().getX() - this.targetPose.getX()) < .04)
+          && (Math.abs(isAtGoalPoseSupplier.get().getY() - this.targetPose.getY()) < .04);
     } else {
       return (Math.abs(isAtGoalPoseSupplier.get().getX() - this.targetPose.getX()) < .01)
           && (Math.abs(isAtGoalPoseSupplier.get().getY() - this.targetPose.getY()) < .01);

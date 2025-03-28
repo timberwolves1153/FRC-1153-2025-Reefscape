@@ -356,7 +356,7 @@ public class RobotContainer {
 
     // // Lock to 0° when A button is held
     controller
-        .rightStick()
+        .y()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
@@ -408,22 +408,22 @@ public class RobotContainer {
                     () -> isCloseToReef())
                 .andThen(
                     new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    // controller
-    //     .leftBumper()
-    //     .and(controller.leftStick())
-    //     .whileTrue(
-    //         new ConditionalCommand(
-    //             alignThenScore(BranchLocation.LEFT),
-    //             alignToScore(BranchLocation.LEFT, true),
-    //             () -> isCloseToReef()));
-    // controller
-    //     .rightBumper()
-    //     .and(controller.leftStick())
-    //     .whileTrue(
-    //         new ConditionalCommand(
-    //             alignThenScore(BranchLocation.RIGHT),
-    //             alignToScore(BranchLocation.RIGHT, true),
-    //             () -> isCloseToReef()));
+
+    controller
+        .leftStick()
+        .whileTrue(
+            new ConditionalCommand(
+                alignToScore(BranchLocation.LEFT, true),
+                alignThenScore(BranchLocation.LEFT),
+                () -> isCloseToReef()));
+
+    controller
+        .rightStick()
+        .whileTrue(
+            new ConditionalCommand(
+                alignToScore(BranchLocation.RIGHT, true),
+                alignThenScore(BranchLocation.RIGHT),
+                () -> isCloseToReef()));
     //
     // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
     controller
@@ -745,12 +745,12 @@ public class RobotContainer {
             algaeTransform = new Transform2d(0, 0, new Rotation2d());
           }
 
-          Transform2d l4Transform = new Transform2d(0, 0, new Rotation2d());
+          Transform2d l4Transform;
 
           if (isL4) {
             l4Transform = Constants.L4_TRANSFORM;
           } else {
-            l4Transform = l4Transform;
+            l4Transform = new Transform2d(0, 0, new Rotation2d());
           }
 
           Pose2d goalPose = reefmap.get(goalPosition);

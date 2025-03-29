@@ -20,12 +20,17 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.FieldConstants;
+import frc.robot.Interpolation.InterpolatingDouble;
+import frc.robot.Interpolation.WindmillTable;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
 
   private WindmillIO windmillIo;
   public WindmillInputsAutoLogged windmillInputs;
+  private WindmillTable windmillMap;
 
   private ProfiledPIDController windmillPID;
   private TrapezoidProfile.Constraints windmillConstraints;
@@ -91,6 +96,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     this.windmillIo = io;
     windmillInputs = new WindmillInputsAutoLogged();
 
+    windmillMap = new WindmillTable();
+
     windmillConstraints =
         new Constraints(
             2, 2); // check up with this, might be needed to change to different constants later
@@ -123,6 +130,11 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     double rotations = Units.degreesToRotations(degrees);
     windmillIo.setTargetPosition(rotations);
   }
+
+  // public void interpolateWindmill() {
+
+  //   double interpolatedSetpoint = windmillMap.windmillMap.getInterpolated(new InterpolatingDouble(FieldConstants.getNearestCage(null))).value;
+  // }
 
   public Command setTargetPositionCommand(WindmillGoal degreeGoal) {
     return startEnd(() -> setTargetPosition(degreeGoal), () -> setTargetPosition(WindmillGoal.STOW))

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 6.797,
+        "y": 4.864
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.588875560501009,
-        "y": 5.277846354892295
+        "x": 5.775875560501008,
+        "y": 5.101846354892295
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 5.235758196721312
       },
       "prevControl": {
-        "x": 5.42947665783063,
-        "y": 5.089617770334974
+        "x": 5.4903688524590155,
+        "y": 5.2597336065573765
       },
       "nextControl": null,
       "isLocked": false,
@@ -79,7 +79,7 @@
   "folder": "Center To Reef C1A3",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -171.675
   },
   "useDefaultConstraints": true
 }

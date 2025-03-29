@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Center"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.5

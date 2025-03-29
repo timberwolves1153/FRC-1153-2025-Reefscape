@@ -75,6 +75,10 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
+import frc.robot.subsystems.toroSticks.GroundAlgae;
+import frc.robot.subsystems.toroSticks.GroundAlgaeIO;
+import frc.robot.subsystems.toroSticks.GroundAlgaeIOReal;
+import frc.robot.subsystems.toroSticks.GroundAlgaeIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -107,6 +111,7 @@ public class RobotContainer {
   private final Algae algae;
   private final Vision vision;
   private final Climber climber;
+  private final GroundAlgae groundAlgae;
 
   private final Alignment alignment;
 
@@ -165,6 +170,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
+        groundAlgae = new GroundAlgae(new GroundAlgaeIOReal());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
         vision =
             new Vision(
@@ -195,6 +201,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOSim());
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
+        groundAlgae = new GroundAlgae(new GroundAlgaeIOSim());
         superstructure = new Superstructure(elevator, windmill, coral, algae);
         climber = new Climber(new ClimberIOSim());
         vision =
@@ -229,6 +236,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
         climber = new Climber(new ClimberIO() {});
+        groundAlgae = new GroundAlgae(new GroundAlgaeIO() {});
         superstructure = new Superstructure(elevator, windmill, coral, algae);
 
         vision =
@@ -303,13 +311,13 @@ public class RobotContainer {
     //             () -> isCloseToReef())
     //         .withTimeout(1));
 
-    NamedCommands.registerCommand(
-        "Auto Align Left",
-        new ConditionalCommand(
-                alignThenScore(BranchLocation.LEFT),
-                alignToScore(BranchLocation.LEFT, false),
-                () -> isCloseToReef())
-            .withTimeout(1));
+    // NamedCommands.registerCommand(
+    //     "Auto Align Left",
+    //     new ConditionalCommand(
+    //             alignThenScore(BranchLocation.LEFT),
+    //             alignToScore(BranchLocation.LEFT, false),
+    //             () -> isCloseToReef())
+    //         .withTimeout(1));
 
     // NamedCommands.registerCommand(
     //     "Auto Align Right",
@@ -526,7 +534,7 @@ public class RobotContainer {
     atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    atariButton8.whileTrue(new CollectGamePiece(coral, algae, superstructure));
+    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
     atariButton8.whileFalse(
         new ConditionalCommand(
             new JiggleCoral(coral),

@@ -32,4 +32,14 @@ public class GroundAlgaeIOSim implements GroundAlgaeIO {
     inputs.pivotAppliedVolts = volts.baseUnitMagnitude();
     inputs.pivotCurrentAmps = armSim.getCurrentDrawAmps();
   }
+
+  @Override
+  public void pivotUp() {
+
+  }
+
+  @Override
+  public void pivotDown() {
+    
+  }
 }

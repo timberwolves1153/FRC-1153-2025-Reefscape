@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface GroundAlgaeIO {
 
   @AutoLog
-  public static class GroundAlgaeInputs {
+  public class GroundAlgaeInputs {
     public double pivotAppliedVolts = 0.0; // input
     public double pivotCurrentAmps = 0.0;
 
@@ -20,6 +20,10 @@ public interface GroundAlgaeIO {
   public default void pivotDown() {}
 
   public default void pivotUp() {}
+
+  public default void deploy() {}
+
+  public default void stow() {}
 
   public default void pivotStop() {}
 

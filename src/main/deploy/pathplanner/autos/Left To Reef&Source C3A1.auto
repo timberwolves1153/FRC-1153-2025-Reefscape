@@ -80,14 +80,14 @@
                 "data": {
                   "name": "Grab Algae Inner"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left To Reef&Source C3A1 Path 3"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef&Source C3A1 Path 3"
           }
         },
         {
@@ -103,21 +103,28 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Coral Mode"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L3 Position"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Coral Mode"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L3 Position"
+                      }
+                    }
+                  ]
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -129,14 +136,14 @@
                 "data": {
                   "name": "Stop Algae Inner"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Right"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Right"
           }
         },
         {
@@ -152,15 +159,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Intake Coral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left To Reef&Source C3A1 Path 4"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left To Reef&Source C3A1 Path 4"
+                }
+              }
+            ]
           }
         },
         {

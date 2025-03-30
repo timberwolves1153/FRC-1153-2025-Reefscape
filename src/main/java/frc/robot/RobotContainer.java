@@ -23,23 +23,17 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.GamePiece;
 import frc.robot.commands.Auto_Adjust.AdjustToPose;
-import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.JiggleCoral;
-import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -57,8 +51,6 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.alignment.Alignment;
 import frc.robot.subsystems.alignment.AlignmentConstants;
 import frc.robot.subsystems.alignment.AlignmentIO;
@@ -106,7 +98,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
-  private final Superstructure superstructure;
+  // private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
   private final Vision vision;
@@ -171,7 +163,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         groundAlgae = new GroundAlgae(new GroundAlgaeIOReal());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        // superstructure = new Superstructure(elevator, windmill, coral, algae);
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -202,7 +194,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
         groundAlgae = new GroundAlgae(new GroundAlgaeIOSim());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
         climber = new Climber(new ClimberIOSim());
         vision =
             new Vision(
@@ -237,7 +229,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIO() {});
         climber = new Climber(new ClimberIO() {});
         groundAlgae = new GroundAlgae(new GroundAlgaeIO() {});
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
 
         vision =
             new Vision(
@@ -250,58 +242,62 @@ public class RobotContainer {
         break;
     }
 
-    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
-    NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
-    NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
-    NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() -> drive.resetGyro(-60)));
-    NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() -> drive.resetGyro(60)));
-    NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
-    NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
-    NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
-    NamedCommands.registerCommand(
-        "quick right align", DriveCommands.alignToReefFace(false, drive).withTimeout(0.5));
-    NamedCommands.registerCommand(
-        "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
-    NamedCommands.registerCommand(
-        "Slow Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(2)));
-    NamedCommands.registerCommand(
-        "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    // NamedCommands.registerCommand("Intake Coral", new InstantCommand(() ->
+    // coral.runVolts(-6.5)));
+    // NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() ->
+    // drive.resetGyro(180)));
+    // NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
+    // NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() ->
+    // drive.resetGyro(-60)));
+    // NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() ->
+    // drive.resetGyro(60)));
+    // NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
+    // NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
+    // NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
+    // NamedCommands.registerCommand(
+    //     "quick right align", DriveCommands.alignToReefFace(false, drive).withTimeout(0.5));
+    // NamedCommands.registerCommand(
+    //     "Stop Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // NamedCommands.registerCommand(
+    //     "Slow Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(2)));
+    // NamedCommands.registerCommand(
+    //     "Stop Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
-    NamedCommands.registerCommand(
-        "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
-    NamedCommands.registerCommand(
-        "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    // NamedCommands.registerCommand(
+    //     "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
+    // NamedCommands.registerCommand(
+    //     "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
 
-    NamedCommands.registerCommand(
-        "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    NamedCommands.registerCommand(
-        "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    // NamedCommands.registerCommand(
+    //     "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    // NamedCommands.registerCommand(
+    //     "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
 
-    NamedCommands.registerCommand(
-        "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
-    NamedCommands.registerCommand(
-        "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
-    NamedCommands.registerCommand(
-        "Coral Mode",
-        Commands.runOnce(
-            () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
-    NamedCommands.registerCommand(
-        "Algae Mode",
-        Commands.runOnce(
-            () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
-    NamedCommands.registerCommand(
-        "Score L1 Coral Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
+    // NamedCommands.registerCommand(
+    //     "Collect Coral Position", superstructure.setGoalCommand(Goal.COLLECT));
+    // NamedCommands.registerCommand(
+    //     "Coral Mode",
+    //     Commands.runOnce(
+    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.CORAL), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Algae Mode",
+    //     Commands.runOnce(
+    //         () -> superstructure.setAutoGamepieceCommand(GamePiece.ALGAE), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Score L1 Coral Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
 
-    NamedCommands.registerCommand(
-        "L2 Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
-    NamedCommands.registerCommand(
-        "L3 Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
-    NamedCommands.registerCommand(
-        "Barge Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+    // NamedCommands.registerCommand(
+    //     "L2 Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
+    // NamedCommands.registerCommand(
+    //     "L3 Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
+    // NamedCommands.registerCommand(
+    //     "Barge Position",
+    //     Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
     // NamedCommands.registerCommand(
     //     "Auto Align Center",
@@ -357,7 +353,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            superstructure,
+            // superstructure,
             () -> -controller.getLeftY(),
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
@@ -407,75 +403,76 @@ public class RobotContainer {
     controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
     controller.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
 
-    controller
-        .leftBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.LEFT, false),
-                    alignThenScore(BranchLocation.LEFT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+    // controller
+    //     .leftBumper()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //                 alignToScore(BranchLocation.LEFT, false),
+    //                 alignThenScore(BranchLocation.LEFT),
+    //                 () -> isCloseToReef())
+    //             .andThen(
+    //                 new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
 
-    controller
-        .leftStick()
-        .whileTrue(
-            new ConditionalCommand(
-                alignToScore(BranchLocation.LEFT, true),
-                alignThenScore(BranchLocation.LEFT),
-                () -> isCloseToReef()));
+    // controller
+    //     .leftStick()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignToScore(BranchLocation.LEFT, true),
+    //             alignThenScore(BranchLocation.LEFT),
+    //             () -> isCloseToReef()));
 
-    controller
-        .rightStick()
-        .whileTrue(
-            new ConditionalCommand(
-                alignToScore(BranchLocation.RIGHT, true),
-                alignThenScore(BranchLocation.RIGHT),
-                () -> isCloseToReef()));
-    //
+    // controller
+    //     .rightStick()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignToScore(BranchLocation.RIGHT, true),
+    //             alignThenScore(BranchLocation.RIGHT),
+    //             () -> isCloseToReef()));
+    // //
+    // //
     // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
-    controller
-        .rightBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.RIGHT, false),
-                    alignThenScore(BranchLocation.RIGHT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
-    controller
-        .a()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.CENTER, false),
-                    alignThenScore(BranchLocation.CENTER),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    controller
-        .a()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .rightBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .leftBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+    // controller
+    //     .rightBumper()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //                 alignToScore(BranchLocation.RIGHT, false),
+    //                 alignThenScore(BranchLocation.RIGHT),
+    //                 () -> isCloseToReef())
+    //             .andThen(
+    //                 new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+    // //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+    // controller
+    //     .a()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //                 alignToScore(BranchLocation.CENTER, false),
+    //                 alignThenScore(BranchLocation.CENTER),
+    //                 () -> isCloseToReef())
+    //             .andThen(
+    //                 new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+    // controller
+    //     .a()
+    //     .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+    // controller
+    //     .rightBumper()
+    //     .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+    // controller
+    //     .leftBumper()
+    //     .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
     // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
-    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
-    controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    // controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
+    // controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
-    controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
-    controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
-    controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
+    // controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
+    // controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    // controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
+    // controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
+    // controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
 
-    atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
+    // atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
-    controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
+    // controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
 
     // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
@@ -485,20 +482,24 @@ public class RobotContainer {
     // atariButton14.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.E)));
     // atariButton15.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.F)));
 
-    // controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
-    // controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+    controller.y().onTrue(new InstantCommand(() -> elevator.setVoltage(3)));
+    controller.y().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
 
-    // controller.start().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
-    // controller.start().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
+    controller.a().onTrue(new InstantCommand(() -> elevator.setVoltage(-3)));
+    controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(-0.25)));
 
-    // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
+    controller.x().onFalse(new InstantCommand(() -> windmi
+    ll.setVoltage(0)));
 
-    // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
-    // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
+    controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
-    // controller.rightTrigger().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
-    // controller.rightTrigger().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    controller.pov(180).onTrue(new InstantCommand(() -> groundAlgae.pivotDown()));
+    controller.pov(180).onFalse(new InstantCommand(() -> groundAlgae.pivotStop()));
+
+    controller.pov(0).onTrue(new InstantCommand(() -> groundAlgae.pivotUp()));
+    controller.pov(0).onFalse(new InstantCommand(() -> groundAlgae.pivotStop()));
 
     // controller.rightTrigger().onTrue(new InstantCommand(() -> coral.runVolts(-5)));
     // controller.rightTrigger().onFalse(new InstantCommand(() -> coral.runVolts(0)));
@@ -506,14 +507,23 @@ public class RobotContainer {
     // controller.leftTrigger().onTrue(new InstantCommand(() -> coral.runVolts(5)));
     // controller.leftTrigger().onFalse(new InstantCommand(() -> coral.runVolts(0)));
 
-    // controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
-    // controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    controller.rightTrigger().onTrue(new InstantCommand(() -> algae.setVoltageHolding(-6)));
+    controller.rightTrigger().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
 
-    // controller.leftTrigger().onTrue(new InstantCommand(() -> algae.setVoltageHolding(6)));
-    // controller.leftTrigger().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    controller.rightStick().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    controller.rightStick().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
-    // controller.leftTrigger().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-6)));
-    // controller.leftTrigger().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+    controller.rightTrigger().onTrue(new InstantCommand(() -> algae.setVoltageHolding(6)));
+    controller.rightTrigger().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+
+    controller.leftTrigger().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    controller.leftTrigger().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+
+    controller.leftBumper().onTrue(new InstantCommand(() -> groundAlgae.intake()));
+    controller.leftBumper().onFalse(new InstantCommand(() -> groundAlgae.stopRollers()));
+
+    controller.rightBumper().onTrue(new InstantCommand(() -> groundAlgae.outtake()));
+    controller.rightBumper().onFalse(new InstantCommand(() -> groundAlgae.stopRollers()));
 
     // if (atariButton13.getAsBoolean()) {
     //   coral.setCurrentGamePiece(GamePiece.ALGAE);
@@ -522,25 +532,28 @@ public class RobotContainer {
 
     //   coral.setCurrentGamePiece(GamePiece.CORAL);
     // }
-    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
-    controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
-    //  controller.x().whileTrue(drive.driveToStation());
-    // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
-    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
-    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
-    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
-    atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
-    atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
-    atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    atariButton8.whileFalse(
-        new ConditionalCommand(
-            new JiggleCoral(coral),
-            new InstantCommand(() -> coral.stop()),
-            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    // COMP CONTROLS
+
+    // atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    // atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    // controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+
+    // //  controller.x().whileTrue(drive.driveToStation());
+    // // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
+    // atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    // atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
+    // atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
+    // atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
+    // atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
+    // atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    // atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+    // atariButton8.whileFalse(
+    //     new ConditionalCommand(
+    //         new JiggleCoral(coral),
+    //         new InstantCommand(() -> coral.stop()),
+    //         () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+    // atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
   }
 
   public boolean isCloseToReef() {

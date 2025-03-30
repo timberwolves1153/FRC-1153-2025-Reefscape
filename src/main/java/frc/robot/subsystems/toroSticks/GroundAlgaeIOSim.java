@@ -34,12 +34,8 @@ public class GroundAlgaeIOSim implements GroundAlgaeIO {
   }
 
   @Override
-  public void pivotUp() {
-
-  }
+  public void pivotUp() {}
 
   @Override
-  public void pivotDown() {
-    
-  }
+  public void pivotDown() {}
 }

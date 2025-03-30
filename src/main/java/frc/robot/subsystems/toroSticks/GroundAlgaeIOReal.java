@@ -61,12 +61,12 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
 
   @Override
   public void intake() {
-    rollerMotor.setControl(voltageRequest.withOutput(6));
+    rollerMotor.setControl(voltageRequest.withOutput(8));
   }
 
   @Override
   public void outtake() {
-    rollerMotor.setControl(voltageRequest.withOutput(-6));
+    rollerMotor.setControl(voltageRequest.withOutput(-8));
   }
 
   @Override
@@ -97,7 +97,7 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
   public void configMotors() {
     var sparkConfig = new SparkMaxConfig();
 
-    sparkConfig.smartCurrentLimit(40);
+    sparkConfig.smartCurrentLimit(20);
     sparkConfig.idleMode(IdleMode.kBrake);
     sparkConfig.closedLoop.p(1);
     sparkConfig.closedLoop.i(0);
@@ -113,6 +113,5 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
     talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     rollerMotor.getConfigurator().apply(talonConfig);
-
   }
 }

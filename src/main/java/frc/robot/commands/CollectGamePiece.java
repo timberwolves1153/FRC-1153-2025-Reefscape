@@ -16,7 +16,8 @@ public class CollectGamePiece extends Command {
   private Superstructure superstructure;
   private double coralHoldingVoltage;
 
-  public CollectGamePiece(Coral coral, Algae algae, GroundAlgae groundAlgae, Superstructure superstructure) {
+  public CollectGamePiece(
+      Coral coral, Algae algae, GroundAlgae groundAlgae, Superstructure superstructure) {
     this.coral = coral;
     this.algae = algae;
     this.groundAlgae = groundAlgae;

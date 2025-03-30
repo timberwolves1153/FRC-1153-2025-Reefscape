@@ -221,11 +221,35 @@ public class FieldConstants {
     }
   }
 
-  public static Pose2d getNearestCage(Pose2d currentPose) {
+  public static double getNearestCage(Pose2d currentPose) {
 
-    Pose2d farCage = new Pose2d(FieldConstants.Barge.farCage, new Rotation2d());
-    Pose2d middleCage = new Pose2d(FieldConstants.Barge.middleCage, new Rotation2d());
-    Pose2d closeCage = new Pose2d(FieldConstants.Barge.closeCage, new Rotation2d());
+    Pose2d farCage;
+    Pose2d middleCage;
+    Pose2d closeCage;
+
+    boolean isFlipped =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+
+    if (isFlipped) {
+      farCage =
+          new Pose2d(FieldConstants.Barge.farCage, new Rotation2d())
+              .rotateAround(fieldCenter, Rotation2d.k180deg);
+      middleCage =
+          new Pose2d(FieldConstants.Barge.middleCage, new Rotation2d())
+              .rotateAround(fieldCenter, Rotation2d.k180deg);
+
+      closeCage =
+          new Pose2d(FieldConstants.Barge.closeCage, new Rotation2d())
+              .rotateAround(fieldCenter, Rotation2d.k180deg);
+      ;
+    } else {
+      farCage = new Pose2d(FieldConstants.Barge.farCage, new Rotation2d());
+      middleCage = new Pose2d(FieldConstants.Barge.middleCage, new Rotation2d());
+      closeCage = new Pose2d(FieldConstants.Barge.closeCage, new Rotation2d());
+    }
+
+    double closestDistance;
 
     double distanceToFarCage = currentPose.getTranslation().getDistance(farCage.getTranslation());
 
@@ -239,20 +263,27 @@ public class FieldConstants {
     SmartDashboard.putNumber("Distance to Middle Cage", distanceToMiddleCage);
     SmartDashboard.putNumber("Distance to Close Cage", distanceToCloseCage);
 
-    boolean isFlipped =
-        DriverStation.getAlliance().isPresent()
-            && DriverStation.getAlliance().get() == Alliance.Red;
-
     if (distanceToFarCage < distanceToMiddleCage && distanceToFarCage < distanceToCloseCage) {
-      return farCage;
+      closestDistance = distanceToFarCage;
+      SmartDashboard.putNumber("distance from cage", closestDistance);
+      return closestDistance;
+
     } else if (distanceToCloseCage < distanceToMiddleCage
         && distanceToCloseCage < distanceToFarCage) {
-      return closeCage;
+      closestDistance = distanceToCloseCage;
+      SmartDashboard.putNumber("distance from cage", closestDistance);
+      return closestDistance;
+
     } else if (distanceToMiddleCage < distanceToFarCage
         && distanceToMiddleCage < distanceToCloseCage) {
-      return middleCage;
+      closestDistance = distanceToMiddleCage;
+      SmartDashboard.putNumber("distance from cage", closestDistance);
+      return closestDistance;
+
     } else {
-      return middleCage;
+      closestDistance = distanceToMiddleCage;
+      SmartDashboard.putNumber("distance from cage", closestDistance);
+      return closestDistance;
     }
   }
 }

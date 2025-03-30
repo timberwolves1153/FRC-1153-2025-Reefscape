@@ -165,7 +165,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSparkMax());
         algae = new Algae(new AlgaeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae, drive);
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -195,7 +195,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOSim());
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae, drive);
         climber = new Climber(new ClimberIOSim());
         vision =
             new Vision(
@@ -229,7 +229,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIO() {});
         algae = new Algae(new AlgaeIO() {});
         climber = new Climber(new ClimberIO() {});
-        superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae, drive);
 
         vision =
             new Vision(
@@ -532,7 +532,7 @@ public class RobotContainer {
             new JiggleCoral(coral),
             new InstantCommand(() -> coral.stop()),
             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
   }
 
   public boolean isCloseToReef() {

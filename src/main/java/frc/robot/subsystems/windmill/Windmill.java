@@ -20,10 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.FieldConstants;
-import frc.robot.Interpolation.InterpolatingDouble;
 import frc.robot.Interpolation.WindmillTable;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
@@ -133,7 +130,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
 
   // public void interpolateWindmill() {
 
-  //   double interpolatedSetpoint = windmillMap.windmillMap.getInterpolated(new InterpolatingDouble(FieldConstants.getNearestCage(null))).value;
+  //   double interpolatedSetpoint = windmillMap.windmillMap.getInterpolated(new
+  // InterpolatingDouble(FieldConstants.getNearestCage(null))).value;
   // }
 
   public Command setTargetPositionCommand(WindmillGoal degreeGoal) {

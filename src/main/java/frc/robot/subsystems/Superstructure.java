@@ -45,7 +45,8 @@ public class Superstructure extends SubsystemBase {
   private WindmillTable windmillTable;
   private Timer goalTimer = new Timer();
 
-  public Superstructure(Elevator elevator, Windmill windmill, Coral coralManip, Algae algaeManip, Drive drive) {
+  public Superstructure(
+      Elevator elevator, Windmill windmill, Coral coralManip, Algae algaeManip, Drive drive) {
     this.elevator = elevator;
     this.windmill = windmill;
     this.coralManip = coralManip;
@@ -191,8 +192,13 @@ public class Superstructure extends SubsystemBase {
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);
         } else if (GamePiece.ALGAE.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
-          //windmill.setTargetPositionDegrees(windmillTable.windmillMap.getInterpolated(new InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose()))).value);
-          windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+          // windmill.setTargetPositionDegrees(windmillTable.windmillMap.getInterpolated(new
+          // InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose()))).value);
+          // windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+          windmill.setTargetPositionDegrees(
+              windmillTable.windmillMap.getInterpolated(
+                      new InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose())))
+                  .value);
         } else {
           elevator.setTargetHeight(ElevatorGoal.L4_CORAL);
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);

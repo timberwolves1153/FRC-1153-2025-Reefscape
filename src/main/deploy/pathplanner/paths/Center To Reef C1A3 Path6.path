@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.1,
-        "y": 2.898
+        "x": 5.071,
+        "y": 2.886
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.116807432432433,
-        "y": 2.5723817567567564
+        "x": 6.087807432432433,
+        "y": 2.5603817567567564
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.44,
-        "y": 5.536
+        "x": 7.048770491803278,
+        "y": 4.001024590163935
       },
       "prevControl": {
-        "x": 6.828293918918919,
-        "y": 5.42820945945946
+        "x": 6.980493464776251,
+        "y": 3.5196394550287993
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,35 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.502768549280188,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,7 +67,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -154.98310652189988
   },
   "reversed": false,
   "folder": "Center To Reef C1A3",

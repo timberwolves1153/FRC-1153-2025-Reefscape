@@ -3,25 +3,21 @@
   "robotLength": 0.84,
   "holonomicMode": true,
   "pathFolders": [
-    "Center To Left C4",
+    "Blue Right Reef paths",
     "Center To Reef C1A3",
     "Center To Right C3",
-    "Drive straight paths",
-    "Left To Reef A1 C1",
-    "Left To Reef&Source C3A2",
-    "Quoi",
-    "Right to Reef C3A1",
-    "Score 1 Left Coral Paths",
-    "Score 1 Right Coral Paths"
+    "Left To Reef A2C2",
+    "Left To Reef&Source C3A1",
+    "Push and Score Paths",
+    "Right To Reef&Source C3A1",
+    "Straight L2 Paths"
   ],
   "autoFolders": [
     "Algae Autos",
-    "Combination Autos",
-    "Coral Autos",
-    "Testing"
+    "Combination Autos"
   ],
-  "defaultMaxVel": 3.5,
-  "defaultMaxAccel": 3.5,
+  "defaultMaxVel": 4.5,
+  "defaultMaxAccel": 4.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,

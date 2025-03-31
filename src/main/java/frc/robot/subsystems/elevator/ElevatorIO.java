@@ -25,4 +25,6 @@ public interface ElevatorIO {
   public default void setTargetHeight(double rotations) {}
 
   public default void stop() {}
+
+  public default void resetEncoder() {}
 }

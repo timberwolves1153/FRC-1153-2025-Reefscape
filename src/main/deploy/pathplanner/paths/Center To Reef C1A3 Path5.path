@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.44,
-        "y": 5.53
+        "x": 7.049,
+        "y": 4.325
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.363851351351351,
-        "y": 3.590202702702703
+        "x": 6.600680327868852,
+        "y": 2.6267008196721315
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.1,
-        "y": 2.8981025137437824
+        "x": 5.0468237704918035,
+        "y": 2.8382172131147545
       },
       "prevControl": {
-        "x": 5.405320945945946,
-        "y": 2.295692567567568
+        "x": 5.7900614754098365,
+        "y": 2.454610655737706
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,65 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Stop Algae Intake",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Inner"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Outer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "L3 Position",
+      "waypointRelativePos": 0.5,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 3.5,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -47,8 +102,8 @@
   "reversed": false,
   "folder": "Center To Reef C1A3",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 0.0,
+    "rotation": -151.189
   },
   "useDefaultConstraints": true
 }

@@ -14,6 +14,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,6 +29,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -72,11 +75,21 @@ public class DriveCommands {
    */
   public static Command joystickDrive(
       Drive drive,
+      Superstructure superstructure,
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
+          // superstructure state
+          Goal currentGoal = superstructure.getCurrentGoal();
+          double speedScaleFactor;
+          if (currentGoal == Goal.BARGE || currentGoal == Goal.L3) {
+            speedScaleFactor = 0.75;
+          } else {
+            speedScaleFactor = 1;
+          }
+
           // Get linear velocity
           Translation2d linearVelocity =
               getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
@@ -90,8 +103,8 @@ public class DriveCommands {
           // Convert to field relative speeds & send command
           ChassisSpeeds speeds =
               new ChassisSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec() * speedScaleFactor,
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec() * speedScaleFactor,
                   omega * drive.getMaxAngularSpeedRadPerSec());
           boolean isFlipped =
               DriverStation.getAlliance().isPresent()
@@ -135,8 +148,10 @@ public class DriveCommands {
 
               // Calculate angular speed
               double omega =
-                  angleController.calculate(
-                      drive.getRotation().getRadians(), rotationSupplier.get().getRadians());
+                  15
+                      * angleController.calculate(
+                          drive.getRotation().getRadians(),
+                          rotationSupplier.get().getRadians() + Math.PI);
 
               // Convert to field relative speeds & send command
               ChassisSpeeds speeds =
@@ -165,7 +180,7 @@ public class DriveCommands {
    *
    */
 
-  public static Command alignToReefFace(Supplier<Pose2d> targetPose, Drive drive) {
+  public static Command alignToReefFace(boolean isLeft, Drive drive) {
 
     // Create PID controller
     ProfiledPIDController angleController =
@@ -176,12 +191,7 @@ public class DriveCommands {
             new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
     angleController.enableContinuousInput(-Math.PI, Math.PI);
 
-    ProfiledPIDController xController =
-        new ProfiledPIDController(
-            XY_KP,
-            0,
-            XY_KD,
-            new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 15));
+    PIDController xController = new PIDController(XY_KP, 0, XY_KD);
     ProfiledPIDController yController =
         new ProfiledPIDController(
             XY_KP,
@@ -191,16 +201,18 @@ public class DriveCommands {
 
     return Commands.run(
             () -> {
-              double xVal =
-                  xController.calculate(
-                      drive.getPose().getTranslation().getX(), targetPose.get().getX());
-              double yVal =
-                  yController.calculate(
-                      drive.getPose().getTranslation().getY(), targetPose.get().getY());
-              double omega =
-                  angleController.calculate(
-                      drive.getRotation().getRadians(),
-                      targetPose.get().getRotation().getRadians());
+              double xVal = 0;
+              double yVal = 0;
+              if (isLeft) {
+                yVal = 0.5;
+
+              } else {
+                yVal = -0.5;
+              }
+              double omega = 0;
+              // angleController.calculate(
+              //     drive.getRotation().getRadians(),
+              //     targetPose.get().getRotation().getRadians());
 
               // not actually from joysticks
               Translation2d linearSpeeds = getLinearVelocityFromJoysticks(xVal, yVal);
@@ -214,9 +226,9 @@ public class DriveCommands {
               drive.runVelocity(speeds);
             },
             drive)
-        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()))
-        .beforeStarting(() -> xController.reset(drive.getPose().getX()))
-        .beforeStarting(() -> yController.reset(drive.getPose().getY()));
+        .beforeStarting(() -> angleController.reset(drive.getRotation().getRadians()));
+    // .beforeStarting(() -> xController.reset(drive.getPose().getX()))
+    // .beforeStarting(() -> yController.reset(drive.getPose().getY()));
   }
 
   /**

@@ -17,9 +17,9 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class Windmill extends SubsystemBase implements AutoCloseable {
@@ -35,17 +35,46 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   private MechanismRoot2d root;
   private MechanismLigament2d windmillLigament;
 
-  public enum WindmillGoal {
-    STOW(25),
-    COLLECT_CORAL(126.2988),
+  public enum ProtoWindmillGoal {
+    STOW(-11.07),
+    COLLECT_CORAL(80.77),
     // PRESTAGE_ALGAE(131.57),
     L1_CORAL(-97.03),
     L2_CORAL(-141.67),
     L2_ALGAE(67.76),
     L3_CORAL(-141.67),
     L3_ALGAE(67.76),
+    L4_CORAL(-141.67),
     ALGAE_PROCESSOR_AND_PRESTAGE(131.57),
-    ALGAE_BARGE(-10.366);
+    ALGAE_BARGE(-10.366),
+    CLIMB(-97.03);
+
+    private double angleInDegrees;
+
+    private ProtoWindmillGoal(double angleInDegrees) {
+      this.angleInDegrees = angleInDegrees;
+    }
+
+    public double getPositionInDegrees() {
+      return this.angleInDegrees;
+    }
+  }
+
+  public enum WindmillGoal {
+
+    // bounds are +100 and
+    STOW(-135.07),
+    COLLECT_CORAL(-43.5),
+    // PRESTAGE_ALGAE(131.57),
+    L1_CORAL(-240.29),
+    L2_CORAL(-228.69),
+    L2_ALGAE(-99.66),
+    L3_CORAL(-228.69),
+    L3_ALGAE(-99.66),
+    L4_CORAL(-326.84),
+    ALGAE_PROCESSOR_AND_PRESTAGE(-252.5),
+    ALGAE_BARGE(-176.44),
+    CLIMB(-325);
 
     private double angleInDegrees;
 
@@ -87,7 +116,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
   }
 
   public void setTargetPosition(WindmillGoal degreeGoal) {
-    setTargetPositionDegrees(degreeGoal.getPositionInDegrees());
+    setTargetPositionDegrees(getDegreeGoalForCurrentRobot(degreeGoal));
   }
 
   public void setTargetPositionDegrees(double degrees) {
@@ -102,8 +131,39 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
 
   public boolean isAtGoal(WindmillGoal goal) {
     double currentDegrees = Units.rotationsToDegrees(windmillInputs.rotations);
-    double error = Math.abs(currentDegrees - goal.angleInDegrees);
+    double robotSpecificGoal = getDegreeGoalForCurrentRobot(goal);
+    double error = Math.abs(currentDegrees - robotSpecificGoal);
     return error < 5;
+  }
+
+  public double getDegreeGoalForCurrentRobot(WindmillGoal degreeGoal) {
+    if (Constants.Bot.COMP.equals(Constants.currentBot)) {
+      return degreeGoal.getPositionInDegrees();
+    } else {
+      if (degreeGoal.equals(WindmillGoal.STOW)) {
+        return ProtoWindmillGoal.STOW.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.COLLECT_CORAL)) {
+        return ProtoWindmillGoal.COLLECT_CORAL.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L1_CORAL)) {
+        return ProtoWindmillGoal.L1_CORAL.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L2_CORAL)) {
+        return ProtoWindmillGoal.L2_CORAL.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L3_CORAL)) {
+        return ProtoWindmillGoal.L3_CORAL.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L4_CORAL)) { // I literally hate all of you so much
+        return ProtoWindmillGoal.L3_CORAL.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L2_ALGAE)) {
+        return ProtoWindmillGoal.L2_ALGAE.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.L3_ALGAE)) {
+        return ProtoWindmillGoal.L3_ALGAE.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE)) {
+        return ProtoWindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE.getPositionInDegrees();
+      } else if (degreeGoal.equals(WindmillGoal.ALGAE_BARGE)) {
+        return ProtoWindmillGoal.ALGAE_BARGE.getPositionInDegrees();
+      } else {
+        return ProtoWindmillGoal.STOW.getPositionInDegrees();
+      }
+    }
   }
 
   @Override
@@ -123,9 +183,9 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     Logger.recordOutput("windmill position", windmillInputs.rotations);
 
     // Add values to smart Dashboard
-    SmartDashboard.putNumber("windmill position degrees", degrees);
-    SmartDashboard.putNumber("windmill position rotations", windmillInputs.rotations);
-    SmartDashboard.putNumber("windmill position radians", rads);
+    // SmartDashboard.putNumber("windmill position degrees", degrees);
+    // SmartDashboard.putNumber("windmill position rotations", windmillInputs.rotations);
+    // SmartDashboard.putNumber("windmill position radians", rads);
 
     // Update the simulation ligaments
     windmillLigament.setAngle(position);

@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.17,
+        "y": 5.11
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.524493243243242,
+        "y": 5.083293918918918
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.53,
+        "y": 5.04
+      },
+      "prevControl": {
+        "x": 6.198602424314219,
+        "y": 5.072628926270818
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.2015503875968945,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Slow Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Rev Motors",
+      "waypointRelativePos": 0.6481389578163704,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Left To Reef A2C2",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -120.11000000000001
+  },
+  "useDefaultConstraints": true
+}

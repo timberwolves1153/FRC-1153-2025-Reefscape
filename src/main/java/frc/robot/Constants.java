@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
@@ -26,6 +27,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final String protoRio = "0323818A";
+  public static final Bot currentBot =
+      protoRio.equalsIgnoreCase(HALUtil.getSerialNumber()) ? Bot.PROTO : Bot.COMP;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -43,24 +47,44 @@ public final class Constants {
     ALGAE;
   }
 
+  public static enum Bot {
+    PROTO,
+    COMP;
+  }
+
   public static final Transform2d ROBOT_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(180));
+  public static final Transform2d AUTO_ROBOT_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(18),
           /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d STATION_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(22),
-          /*y*/ Units.inchesToMeters(0),
-          /*rotation*/ Rotation2d.fromDegrees(0));
+          /*x*/ Units.inchesToMeters(18),
+          /*y*/ Units.inchesToMeters(-16),
+          /*rotation*/ Rotation2d.fromDegrees(180));
   public static final Transform2d ALGAE_TRANSFORM =
       new Transform2d(
-          /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(6),
+          /*x*/ Units.inchesToMeters(2),
+          /*y*/ Units.inchesToMeters(0),
           /*rotation*/ Rotation2d.fromDegrees(0));
   public static final Transform2d CORAL_TRANSFORM =
       new Transform2d(
           /*x*/ Units.inchesToMeters(0),
-          /*y*/ Units.inchesToMeters(-.75),
+          /*y*/ Units.inchesToMeters(1.66),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d AUTOALIGN_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(-24), // 10
+          /*y*/ Units.inchesToMeters(0),
+          /*rotation*/ Rotation2d.fromDegrees(0));
+  public static final Transform2d L4_TRANSFORM =
+      new Transform2d(
+          /*x*/ Units.inchesToMeters(0), // 10
+          /*y*/ Units.inchesToMeters(3.5),
           /*rotation*/ Rotation2d.fromDegrees(0));
 }

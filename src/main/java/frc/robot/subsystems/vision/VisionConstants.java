@@ -22,7 +22,7 @@ import edu.wpi.first.math.util.Units;
 public class VisionConstants {
   // AprilTag layout
   public static AprilTagFieldLayout aprilTagLayout =
-      AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+      AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
   // Camera names, must match names configured on coprocessor
   public static String camera0Name = "reefCam"; // coral scoring side
@@ -34,7 +34,7 @@ public class VisionConstants {
   public static Transform3d robotToCamera0 =
       new Transform3d(
           Units.inchesToMeters(10.147),
-          Units.inchesToMeters(-10.328),
+          Units.inchesToMeters(-10.328 + 1.5),
           Units.inchesToMeters(9.052),
           new Rotation3d(0.0, Units.degreesToRadians(-13), Units.degreesToRadians(10)));
   public static Transform3d robotToCamera1 =

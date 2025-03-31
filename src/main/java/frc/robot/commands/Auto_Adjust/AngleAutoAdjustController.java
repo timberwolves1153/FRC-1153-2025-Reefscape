@@ -15,16 +15,16 @@ public class AngleAutoAdjustController implements SwerveController {
    */
   public AngleAutoAdjustController(Supplier<Double> getMeasurment, double setPointDegrees) {
 
-    pid = new PIDController(0.9, 0, 0);
+    pid = new PIDController(1, 0, 0);
 
     measurment = getMeasurment;
     pid.setSetpoint(setPointDegrees);
-    pid.setTolerance(0.5);
+    pid.setTolerance(0);
     pid.enableContinuousInput(180, -180);
   }
 
   public AngleAutoAdjustController(Supplier<Double> getMeasurment) {
-    this(getMeasurment, 165);
+    this(getMeasurment, 0);
   }
 
   public ChassisSpeeds update() {

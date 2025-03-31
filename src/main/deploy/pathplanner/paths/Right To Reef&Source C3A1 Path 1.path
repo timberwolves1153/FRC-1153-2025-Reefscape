@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.856967213114754,
+        "y": 2.059016393442623
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.715102459016394,
+        "y": 2.3468729508196717
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.322540983606557,
+        "y": 2.850204918032787
+      },
+      "prevControl": {
+        "x": 5.706147540983607,
+        "y": 2.4546106557377048
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "L2 Position",
+      "waypointRelativePos": 0.1,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L2 Position"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 121.94707728936393
+  },
+  "reversed": false,
+  "folder": "Right To Reef&Source C3A1",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 121.95
+  },
+  "useDefaultConstraints": true
+}

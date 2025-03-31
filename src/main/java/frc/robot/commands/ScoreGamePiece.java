@@ -3,24 +3,32 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.GamePiece;
+import frc.robot.FieldConstants;
+import frc.robot.Interpolation.InterpolatingDouble;
+import frc.robot.Interpolation.WindmillTable;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.Goal;
+import frc.robot.subsystems.drive.Drive;
 
 public class ScoreGamePiece extends Command {
 
   private Coral coral;
   private Algae algae;
+  private Drive drive;
   private Superstructure superstructure;
   private Timer timer;
+  private WindmillTable launcherMap;
 
-  public ScoreGamePiece(Coral coral, Algae algae, Superstructure superstructure) {
+  public ScoreGamePiece(Coral coral, Algae algae, Drive drive, Superstructure superstructure) {
     this.coral = coral;
     this.algae = algae;
     this.superstructure = superstructure;
+    this.drive = drive;
     timer = new Timer();
     timer.reset();
+    launcherMap = new WindmillTable();
     addRequirements(coral, algae);
   }
 
@@ -56,10 +64,14 @@ public class ScoreGamePiece extends Command {
         algae.setVoltageLauncher(4);
         algae.setVoltageHolding(-4);
       } else if ((currentGoal.equals(Goal.BARGE))) {
+        double shootingVolts =
+            launcherMap.launcherMap.getInterpolated(
+                    new InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose())))
+                .value;
 
-        algae.setVoltageLauncher(12);
+        algae.setVoltageLauncher(shootingVolts);
 
-        if (algae.inputs.outerAppliedVolts > 11.95
+        if (algae.inputs.outerAppliedVolts > (shootingVolts - 0.05)
         /* isRobotAtDesiredPose, isLauncherReady, isWindmillReady, isElevatorReady */ ) {
           algae.setVoltageHolding(-6);
         }

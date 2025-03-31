@@ -8,8 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GamePiece;
+import frc.robot.FieldConstants;
+import frc.robot.Interpolation.InterpolatingDouble;
+import frc.robot.Interpolation.WindmillTable;
 import frc.robot.subsystems.Manipulator.Algae;
 import frc.robot.subsystems.Manipulator.Coral;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.Elevator.ElevatorGoal;
 import frc.robot.subsystems.windmill.Windmill;
@@ -35,15 +39,20 @@ public class Superstructure extends SubsystemBase {
 
   private Elevator elevator;
   private Windmill windmill;
+  private Drive drive;
   private Coral coralManip;
   private Algae algaeManip;
+  private WindmillTable windmillTable;
   private Timer goalTimer = new Timer();
 
-  public Superstructure(Elevator elevator, Windmill windmill, Coral coralManip, Algae algaeManip) {
+  public Superstructure(
+      Elevator elevator, Windmill windmill, Coral coralManip, Algae algaeManip, Drive drive) {
     this.elevator = elevator;
     this.windmill = windmill;
     this.coralManip = coralManip;
     this.algaeManip = algaeManip;
+    this.drive = drive;
+    windmillTable = new WindmillTable();
   }
 
   private void setGoal(Goal goal) {
@@ -183,7 +192,13 @@ public class Superstructure extends SubsystemBase {
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);
         } else if (GamePiece.ALGAE.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
-          windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+          // windmill.setTargetPositionDegrees(windmillTable.windmillMap.getInterpolated(new
+          // InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose()))).value);
+          // windmill.setTargetPosition(WindmillGoal.ALGAE_BARGE);
+          windmill.setTargetPositionDegrees(
+              windmillTable.windmillMap.getInterpolated(
+                      new InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose())))
+                  .value);
         } else {
           elevator.setTargetHeight(ElevatorGoal.L4_CORAL);
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);

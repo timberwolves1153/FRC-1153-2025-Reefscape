@@ -48,6 +48,12 @@ public class FieldConstants {
     public static final double shallowHeight = Units.inchesToMeters(30.125);
   }
 
+  public static class Net {
+    public static final Translation3d rightClosePoint =
+        new Translation3d(
+            Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0));
+  }
+
   public static class CoralStation {
     public static final Pose2d leftCenterFace =
         new Pose2d(

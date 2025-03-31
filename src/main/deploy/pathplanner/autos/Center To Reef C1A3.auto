@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Auto Align Center"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.5
@@ -49,7 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Align Right"
+            "name": "Auto Align Left"
           }
         },
         {
@@ -117,7 +111,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.2
           }
         },
         {
@@ -129,7 +123,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.15
+            "waitTime": 0.1
           }
         },
         {
@@ -147,7 +141,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 0.1
           }
         },
         {
@@ -178,7 +172,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.1
           }
         },
         {
@@ -190,7 +184,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.15
+            "waitTime": 0.2
           }
         },
         {
@@ -243,7 +237,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.2
+                  "waitTime": 0.1
                 }
               },
               {

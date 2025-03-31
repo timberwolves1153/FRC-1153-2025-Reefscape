@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 6.79702868852459,
+        "y": 4.864
       },
       "prevControl": {
-        "x": 6.507485804218623,
-        "y": 4.806860189212861
+        "x": 6.694514492743213,
+        "y": 4.630860189212861
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -171.675
   },
   "reversed": false,
   "folder": "Center To Reef C1A3",

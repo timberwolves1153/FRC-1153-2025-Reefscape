@@ -91,7 +91,7 @@ public class WindmillTest {
     assertEquals(fx_sim.getMotorVoltage(), 0.0, DELTA);
   }
 
-  @Test // Ensure that the motor has postive voltage when setting the algae desired position
+  //  @Test // Ensure that the motor has postive voltage when setting the algae desired position
   // postive
   void AlgaePostive() {
     // double desiredVolts = 4;

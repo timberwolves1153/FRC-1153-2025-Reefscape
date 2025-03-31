@@ -1,5 +1,6 @@
 package frc.robot.subsystems.toroSticks;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -16,6 +17,8 @@ public class GroundAlgae extends SubsystemBase {
   public void periodic() {
     groundAlgaeIO.updateInputs(inputs);
     Logger.processInputs("Ground Algae", inputs);
+
+    SmartDashboard.putNumber("ground rotations", inputs.pivotRotations);
   }
 
   public void pivotUp() {

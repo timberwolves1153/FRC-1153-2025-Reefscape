@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -72,7 +73,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     L3_CORAL(-228.69),
     L3_ALGAE(-99.66),
     L4_CORAL(-326.84),
-    ALGAE_PROCESSOR_AND_PRESTAGE(-252.5),
+    ALGAE_PROCESSOR_AND_PRESTAGE(-268.77),
     ALGAE_BARGE(-176.44),
     CLIMB(-325);
 
@@ -183,8 +184,8 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     Logger.recordOutput("windmill position", windmillInputs.rotations);
 
     // Add values to smart Dashboard
-    // SmartDashboard.putNumber("windmill position degrees", degrees);
-    // SmartDashboard.putNumber("windmill position rotations", windmillInputs.rotations);
+    SmartDashboard.putNumber("windmill position degrees", degrees);
+    SmartDashboard.putNumber("windmill position rotations", windmillInputs.rotations);
     // SmartDashboard.putNumber("windmill position radians", rads);
 
     // Update the simulation ligaments

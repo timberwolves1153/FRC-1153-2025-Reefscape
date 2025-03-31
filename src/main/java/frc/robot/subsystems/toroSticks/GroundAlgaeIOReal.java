@@ -21,8 +21,9 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
   private RelativeEncoder pivotEncoder;
   private TalonFX rollerMotor;
   private VoltageOut voltageRequest;
-  private final double DEPLOY_POSITION = 0.0;
-  private final double STOW_POSITION = 0.0;
+  private final double DEPLOY_POSITION = 22.0;
+  private final double STOW_POSITION = 5.0;
+  private final double STARTING_POSITION = 0.0;
 
   public GroundAlgaeIOReal() {
 
@@ -61,12 +62,12 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
 
   @Override
   public void intake() {
-    rollerMotor.setControl(voltageRequest.withOutput(8));
+    rollerMotor.setControl(voltageRequest.withOutput(-8));
   }
 
   @Override
   public void outtake() {
-    rollerMotor.setControl(voltageRequest.withOutput(-8));
+    rollerMotor.setControl(voltageRequest.withOutput(8));
   }
 
   @Override

@@ -28,12 +28,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.GamePiece;
 import frc.robot.commands.Auto_Adjust.AdjustToPose;
+import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.JiggleCoral;
+import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -51,6 +56,8 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.alignment.Alignment;
 import frc.robot.subsystems.alignment.AlignmentConstants;
 import frc.robot.subsystems.alignment.AlignmentIO;
@@ -98,7 +105,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Windmill windmill;
   private final Elevator elevator;
-  // private final Superstructure superstructure;
+  private final Superstructure superstructure;
   private final Coral coral;
   private final Algae algae;
   private final Vision vision;
@@ -163,7 +170,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIOSparkMax());
         climber = new Climber(new ClimberIOSparkMax());
         groundAlgae = new GroundAlgae(new GroundAlgaeIOReal());
-        // superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         vision =
             new Vision(
                 drive::addVisionMeasurement,
@@ -194,7 +201,7 @@ public class RobotContainer {
         coral = new Coral(new CoralIOSim());
         algae = new Algae(new AlgaeIOSim());
         groundAlgae = new GroundAlgae(new GroundAlgaeIOSim());
-        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
         climber = new Climber(new ClimberIOSim());
         vision =
             new Vision(
@@ -229,7 +236,7 @@ public class RobotContainer {
         algae = new Algae(new AlgaeIO() {});
         climber = new Climber(new ClimberIO() {});
         groundAlgae = new GroundAlgae(new GroundAlgaeIO() {});
-        //  superstructure = new Superstructure(elevator, windmill, coral, algae);
+        superstructure = new Superstructure(elevator, windmill, coral, algae);
 
         vision =
             new Vision(
@@ -359,29 +366,30 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // // Lock to 0° when A button is held
-    controller
-        .y()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> // Are we red?
-                DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ?
-                        // Red
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .getRadians())
-                        :
-                        // Blue
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .rotateBy(Rotation2d.k180deg)
-                                .getRadians())));
+    // controller
+    //     .y()
+    //     .whileTrue(
+    //         DriveCommands.joystickDriveAtAngle(
+    //             drive,
+    //             () -> -controller.getLeftY(),
+    //             () -> -controller.getLeftX(),
+    //             () -> // Are we red?
+    //             DriverStation.getAlliance().isPresent()
+    //                         && DriverStation.getAlliance().get() == Alliance.Red
+    //                     ?
+    //                     // Red
+    //                     new Rotation2d(
+    //                         FieldConstants.getNearestCoralStation(drive.getPose())
+    //                             .getRotation()
+    //                             .getRadians())
+    //                     :
+    //                     // Blue
+    //                     new Rotation2d(
+    //                         FieldConstants.getNearestCoralStation(drive.getPose())[]\
+
+    //                             .getRotation()
+    //                             .rotateBy(Rotation2d.k180deg)
+    //                             .getRadians())));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
     // controller.b().whileTrue(drive.driveToBarge());
@@ -489,8 +497,7 @@ public class RobotContainer {
     controller.a().onFalse(new InstantCommand(() -> elevator.setVoltage(-0.25)));
 
     controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    controller.x().onFalse(new InstantCommand(() -> windmi
-    ll.setVoltage(0)));
+    controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
 
     controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
@@ -535,25 +542,25 @@ public class RobotContainer {
 
     // COMP CONTROLS
 
-    // atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    // atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
     // controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
     // //  controller.x().whileTrue(drive.driveToStation());
     // // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
-    // atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
-    // atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
+    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
     // atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
     // atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
     // atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     // atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    // atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    // atariButton8.whileFalse(
-    //     new ConditionalCommand(
-    //         new JiggleCoral(coral),
-    //         new InstantCommand(() -> coral.stop()),
-    //         () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    // atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
+    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+    atariButton8.whileFalse(
+        new ConditionalCommand(
+            new JiggleCoral(coral),
+            new InstantCommand(() -> coral.stop()),
+            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, superstructure));
   }
 
   public boolean isCloseToReef() {

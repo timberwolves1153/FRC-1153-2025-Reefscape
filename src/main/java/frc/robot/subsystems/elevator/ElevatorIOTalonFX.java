@@ -125,6 +125,11 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   }
 
   @Override
+  public void resetEncoder() {
+    leftMotor.setPosition(0);
+  }
+
+  @Override
   public void updateInputs(ElevatorInputs elevatorInputs) {
     BaseStatusSignal.refreshAll(
         leaderCurrentValue, leaderAppliedVolts,

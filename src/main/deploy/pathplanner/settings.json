@@ -3,18 +3,18 @@
   "robotLength": 0.84,
   "holonomicMode": true,
   "pathFolders": [
+    "Blue Right Reef paths",
     "Center To Reef C1A3",
     "Center To Right C3",
     "Left To Reef A2C2",
     "Left To Reef&Source C3A1",
-    "Blue Right Reef paths",
+    "Push and Score Paths",
     "Right To Reef&Source C3A1",
     "Straight L2 Paths"
   ],
   "autoFolders": [
     "Algae Autos",
-    "Combination Autos",
-    "Coral Autos"
+    "Combination Autos"
   ],
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 4.5,

@@ -99,7 +99,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.15
+            "waitTime": 0.4
           }
         },
         {
@@ -137,12 +137,6 @@
           "type": "named",
           "data": {
             "name": "Auto Align Right"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
           }
         },
         {

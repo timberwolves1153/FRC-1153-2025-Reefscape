@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.322398925564909,
-        "y": 5.270456081081082
+        "x": 5.358504098360656,
+        "y": 5.391598360655737
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.61,
-        "y": 5.04
+        "x": 7.048770491803278,
+        "y": 4.32469262295082
       },
       "prevControl": {
-        "x": 6.278602424314219,
-        "y": 5.072628926270818
+        "x": 6.717372916117497,
+        "y": 4.357321549221638
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -151.189
   },
   "reversed": false,
   "folder": "Center To Reef C1A3",

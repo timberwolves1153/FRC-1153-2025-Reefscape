@@ -41,10 +41,10 @@ public class ScoreGamePiece extends Command {
         coral.runVolts(4);
 
       } else if (currentGoal.equals(Goal.L2)) {
-        coral.runVolts(6);
+        coral.runVolts(5);
 
       } else if (currentGoal.equals(Goal.L3)) {
-        coral.runVolts(6);
+        coral.runVolts(5);
       } else if (currentGoal.equals(Goal.BARGE)) {
         coral.runVolts(5);
       } else if (currentGoal.equals(Goal.COLLECT)) {
@@ -52,6 +52,7 @@ public class ScoreGamePiece extends Command {
       }
     } else if (currentGamePiece.equals(GamePiece.ALGAE)) {
       if (currentGoal.equals(Goal.L1)) {
+
         algae.setVoltageLauncher(4);
         algae.setVoltageHolding(-4);
       } else if ((currentGoal.equals(Goal.BARGE))) {

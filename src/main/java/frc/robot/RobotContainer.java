@@ -285,6 +285,8 @@ public class RobotContainer {
         "Score L1 Coral Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L1), superstructure));
 
+    NamedCommands.registerCommand("Auto Align Source", drive.driveToStation());
+
     NamedCommands.registerCommand(
         "L2 Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L2), superstructure));
@@ -295,30 +297,6 @@ public class RobotContainer {
         "Barge Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
 
-    // NamedCommands.registerCommand(
-    //     "Auto Align Center",
-    //     new ConditionalCommand(
-    //             alignThenScore(BranchLocation.CENTER),
-    //             alignToScore(BranchLocation.CENTER, false),
-    //             () -> isCloseToReef())
-    //         .withTimeout(1));
-
-    NamedCommands.registerCommand(
-        "Auto Align Left",
-        new ConditionalCommand(
-                alignThenScore(BranchLocation.LEFT),
-                alignToScore(BranchLocation.LEFT, false),
-                () -> isCloseToReef())
-            .withTimeout(1));
-
-    // NamedCommands.registerCommand(
-    //     "Auto Align Right",
-    //     new ConditionalCommand(
-    //             alignThenScore(BranchLocation.RIGHT),
-    //             alignToScore(BranchLocation.RIGHT, false),
-    //             () -> isCloseToReef())
-    //         .withTimeout(5));
-
     NamedCommands.registerCommand(
         "Auto Align Center", alignToScore(BranchLocation.CENTER, false).withTimeout(3));
 
@@ -327,8 +305,6 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "Auto Align Left", alignToScore(BranchLocation.LEFT, false).withTimeout(1.75));
-
-    // NamedCommands.registerCommand("Aut87o Align Station", drive.driveToStation());
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());

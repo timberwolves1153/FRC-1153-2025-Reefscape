@@ -340,7 +340,7 @@ public class RobotContainer {
 
     // // Lock to 0° when A button is held
     controller
-        .y()
+        .rightStick()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
@@ -350,7 +350,7 @@ public class RobotContainer {
                 DriverStation.getAlliance().isPresent()
                             && DriverStation.getAlliance().get() == Alliance.Red
                         ?
-                        // Red
+                        // Red[]\
                         new Rotation2d(
                             FieldConstants.getNearestCoralStation(drive.getPose())
                                 .getRotation()
@@ -393,21 +393,21 @@ public class RobotContainer {
                 .andThen(
                     new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
 
-    controller
-        .leftStick()
-        .whileTrue(
-            new ConditionalCommand(
-                alignToScore(BranchLocation.LEFT, true),
-                alignThenScore(BranchLocation.LEFT),
-                () -> isCloseToReef()));
+    // controller
+    //     .leftStick()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignToScore(BranchLocation.LEFT, true),
+    //             alignThenScore(BranchLocation.LEFT),
+    //             () -> isCloseToReef()));
 
-    controller
-        .rightStick()
-        .whileTrue(
-            new ConditionalCommand(
-                alignToScore(BranchLocation.RIGHT, true),
-                alignThenScore(BranchLocation.RIGHT),
-                () -> isCloseToReef()));
+    // controller
+    //     .rightStick()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             alignToScore(BranchLocation.RIGHT, true),
+    //             alignThenScore(BranchLocation.RIGHT),
+    //             () -> isCloseToReef()));
     //
     // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
     controller

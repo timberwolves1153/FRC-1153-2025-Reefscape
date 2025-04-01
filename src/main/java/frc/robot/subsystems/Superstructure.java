@@ -24,7 +24,7 @@ public class Superstructure extends SubsystemBase {
   public enum Goal {
     STOW,
     COLLECT,
-    // PRESTAGE_ALGAE,
+    PRESTAGE_ALGAE,
     L1,
     L2,
     L3,
@@ -140,10 +140,10 @@ public class Superstructure extends SubsystemBase {
           SmartDashboard.putBoolean("Is At Goal", windmill.isAtGoal(WindmillGoal.L1_CORAL));
           actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
         } else if ((GamePiece.ALGAE.equals(getGamePiece()))) {
-          elevator.setTargetHeight(ElevatorGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+          elevator.setTargetHeight(ElevatorGoal.ALGAE_PRESTAGE);
           coralManip.setSolenoidState(Value.kForward);
           // windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
-          windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
+          windmill.setTargetPosition(WindmillGoal.ALGAE_PRESTAGE);
         } else { // default is coral
           elevator.setTargetHeight(ElevatorGoal.L1_CORAL);
           windmill.setTargetPosition(WindmillGoal.L1_CORAL);
@@ -209,6 +209,10 @@ public class Superstructure extends SubsystemBase {
       case CLIMB -> {
         elevator.setTargetHeight(ElevatorGoal.CLIMB);
         windmill.setTargetPosition(WindmillGoal.CLIMB);
+      }
+      case PRESTAGE_ALGAE -> {
+        elevator.setTargetHeight(ElevatorGoal.ALGAE_PRESTAGE);
+        windmill.setTargetPosition(WindmillGoal.ALGAE_PRESTAGE);
       }
 
       case STAY_STILL -> {

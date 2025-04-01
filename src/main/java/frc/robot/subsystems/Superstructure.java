@@ -28,6 +28,7 @@ public class Superstructure extends SubsystemBase {
     L1,
     L2,
     L3,
+    GROUND,
     // PROCESSOR_AND_PRESTAGE,
     BARGE,
     STAY_STILL,
@@ -128,6 +129,8 @@ public class Superstructure extends SubsystemBase {
         break;
       }
       case COLLECT -> {
+        //okay so now zena goes absolutley crazy at the coral station and slams that coral in in 0.000000000001 seconds 
+        //and then we win world champs and theyre all like OOOOOOOHHHHH THAT GOES CRAZY WHO LET 1153 COOK THAT HARD WHOOOOOOOOO
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         coralManip.setSolenoidState(Value.kForward);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
@@ -141,7 +144,7 @@ public class Superstructure extends SubsystemBase {
           actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
         } else if ((GamePiece.ALGAE.equals(getGamePiece()))) {
           elevator.setTargetHeight(ElevatorGoal.ALGAE_PRESTAGE);
-          coralManip.setSolenoidState(Value.kForward);
+          // coralManip.setSolenoidState(Value.kForward);
           // windmill.setTargetPosition(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE);
           windmill.setTargetPosition(WindmillGoal.ALGAE_PRESTAGE);
         } else { // default is coral
@@ -210,9 +213,9 @@ public class Superstructure extends SubsystemBase {
         elevator.setTargetHeight(ElevatorGoal.CLIMB);
         windmill.setTargetPosition(WindmillGoal.CLIMB);
       }
-      case PRESTAGE_ALGAE -> {
-        elevator.setTargetHeight(ElevatorGoal.ALGAE_PRESTAGE);
-        windmill.setTargetPosition(WindmillGoal.ALGAE_PRESTAGE);
+      case GROUND -> {
+        elevator.setTargetHeight(ElevatorGoal.ALGAE_GROUND);
+        windmill.setTargetPosition(WindmillGoal.ALGAE_GROUND);
       }
 
       case STAY_STILL -> {

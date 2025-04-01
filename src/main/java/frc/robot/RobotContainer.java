@@ -510,6 +510,7 @@ public class RobotContainer {
     atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
     atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
     atariButton8.whileFalse(
         new ConditionalCommand(
@@ -767,6 +768,7 @@ public class RobotContainer {
                       goalPose
                           .transformBy(Constants.ROBOT_TRANSFORM)
                           .transformBy(l4Transform)
+                          .transformBy(algaeTransform)
                           .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg)
                           .transformBy(new Transform2d(0, 0, Rotation2d.k180deg)),
                       drive,

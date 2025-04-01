@@ -50,9 +50,17 @@ public class CollectGamePiece extends Command {
         coral.runVolts(coralHoldingVoltage);
         algae.setVoltageHolding(6);
         algae.setVoltageLauncher(-6);
+        groundAlgae.stow();
+        groundAlgae.stopRollers();
+      } else if (currentGoal.equals(Goal.GROUND)) {
+        coral.runVolts(coralHoldingVoltage);
+        algae.setVoltageHolding(6);
+        algae.setVoltageLauncher(-6);
         groundAlgae.deploy();
         groundAlgae.intake();
+
       } else {
+
         coral.runVolts(coralHoldingVoltage);
         algae.setVoltageHolding(6);
         algae.setVoltageLauncher(-6);

@@ -40,7 +40,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     STOW(-11.07),
     COLLECT_CORAL(80.77),
     // PRESTAGE_ALGAE(131.57),
-    L1_CORAL(-97.03),
+    L1_CORAL(-115.03),
     L2_CORAL(-141.67),
     L2_ALGAE(67.76),
     L3_CORAL(-141.67),
@@ -67,13 +67,13 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     STOW(-135.07),
     COLLECT_CORAL(-43.5),
     // PRESTAGE_ALGAE(131.57),
-    L1_CORAL(-240.29),
+    L1_CORAL(-265.29),
     L2_CORAL(-228.69),
     L2_ALGAE(-99.66),
     L3_CORAL(-228.69),
     L3_ALGAE(-99.66),
     L4_CORAL(-326.84),
-    ALGAE_PROCESSOR_AND_PRESTAGE(-268.77),
+    ALGAE_GROUND(-268.77),
     ALGAE_BARGE(-176.44),
     ALGAE_PRESTAGE(-43.5),
     CLIMB(-325);
@@ -158,7 +158,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
         return ProtoWindmillGoal.L2_ALGAE.getPositionInDegrees();
       } else if (degreeGoal.equals(WindmillGoal.L3_ALGAE)) {
         return ProtoWindmillGoal.L3_ALGAE.getPositionInDegrees();
-      } else if (degreeGoal.equals(WindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE)) {
+      } else if (degreeGoal.equals(WindmillGoal.ALGAE_GROUND)) {
         return ProtoWindmillGoal.ALGAE_PROCESSOR_AND_PRESTAGE.getPositionInDegrees();
       } else if (degreeGoal.equals(WindmillGoal.ALGAE_BARGE)) {
         return ProtoWindmillGoal.ALGAE_BARGE.getPositionInDegrees();

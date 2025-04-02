@@ -451,7 +451,7 @@ public class RobotContainer {
 
     atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
-    controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
+    //controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
 
     // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));

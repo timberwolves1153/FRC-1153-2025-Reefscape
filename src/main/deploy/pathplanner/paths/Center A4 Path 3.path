@@ -1,0 +1,181 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.094774590163934,
+        "y": 2.9101434426229513
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.785836847387315,
+        "y": 3.12768303439853
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.92889344262295,
+        "y": 4.360655737704918
+      },
+      "prevControl": {
+        "x": 7.010868579423728,
+        "y": 4.124477675754842
+      },
+      "nextControl": {
+        "x": 6.6807565518917595,
+        "y": 5.075561405915458
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.286577868852459,
+        "y": 5.139856557377049
+      },
+      "prevControl": {
+        "x": 5.68053606993951,
+        "y": 5.093709836962882
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.763326226012786,
+      "rotationDegrees": -146.84577110105147
+    },
+    {
+      "waypointRelativePos": 1.2,
+      "rotationDegrees": -146.15761120715695
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "continue collecting",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 0.10803511141120709,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Inner"
+        }
+      }
+    },
+    {
+      "name": "collect again",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.12424037812288512,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Slow Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -123.69006752597976
+  },
+  "reversed": false,
+  "folder": "Center A4",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 120.68147224143806
+  },
+  "useDefaultConstraints": true
+}

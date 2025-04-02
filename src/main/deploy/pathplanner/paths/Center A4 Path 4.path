@@ -1,0 +1,177 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.166700819672132,
+        "y": 5.151844262295082
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.845652511120232,
+        "y": 5.995907966266819
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.653176229508197,
+        "y": 5.763217213114753
+      },
+      "prevControl": {
+        "x": 6.9637638709247645,
+        "y": 5.750365690420325
+      },
+      "nextControl": {
+        "x": 5.37219278852045,
+        "y": 5.816221858399274
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.8720286885245896,
+        "y": 5.283709016393443
+      },
+      "prevControl": {
+        "x": 4.783375561481738,
+        "y": 5.736098843735341
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7334754797441313,
+      "rotationDegrees": -170.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "continue collecting",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 0.10803511141121769,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Barge Position",
+      "waypointRelativePos": 0.11883862255232192,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Barge Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Slow Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 0.5239702903443657,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Outer"
+        }
+      }
+    },
+    {
+      "name": "collect again",
+      "waypointRelativePos": 1.4800810263335467,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.85861444792466
+  },
+  "reversed": false,
+  "folder": "Center A4",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -119.9315118405079
+  },
+  "useDefaultConstraints": true
+}

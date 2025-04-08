@@ -44,6 +44,7 @@ public class AlignmentIOPhotonVision implements AlignmentIO {
     for (var result : camera.getAllUnreadResults()) {
       Optional<EstimatedRobotPose> overallPhotonResult = Optional.empty();
       if (!result.targets.isEmpty()) { // single tag result
+        inputs.hasTarget = true;
         overallPhotonResult = alignmentPoseEstimator.update(result);
         var target = result.getBestTarget();
         // Add tag ID
@@ -55,6 +56,8 @@ public class AlignmentIOPhotonVision implements AlignmentIO {
             inputs.photonpose = overallPhotonResult.get().estimatedPose;
           }
         }
+      } else { // no targets
+        inputs.hasTarget = false;
       }
     }
   }

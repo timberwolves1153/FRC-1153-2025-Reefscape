@@ -69,7 +69,7 @@
     },
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.11883862255232394,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -94,6 +94,17 @@
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Inner"
         }
       }
     }

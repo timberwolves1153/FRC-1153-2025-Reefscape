@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.856967213114754,
-        "y": 2.059016393442623
+        "x": 7.145,
+        "y": 3.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.796202266643032,
-        "y": 2.6280291138714302
+        "x": 6.317520491803278,
+        "y": 4.001024590163935
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.9868852459016395,
-        "y": 2.706352459016393
+        "x": 5.91,
+        "y": 3.98
       },
       "prevControl": {
-        "x": 5.593901581951323,
-        "y": 2.3662197691840317
+        "x": 6.605286885245902,
+        "y": 3.9890368852459024
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,19 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "L2 Position",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "L2 Position"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
@@ -53,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 121.94707728936393
+    "velocity": 0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Right To Reef&Source C3A1",
+  "folder": "Skip N Sprint",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 121.95
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

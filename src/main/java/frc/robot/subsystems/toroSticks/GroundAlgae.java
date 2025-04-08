@@ -53,6 +53,10 @@ public class GroundAlgae extends SubsystemBase {
     groundAlgaeIO.stow();
   }
 
+  public void climb() {
+    groundAlgaeIO.climb();
+  }
+
   public void setPivotPostion(double rotations) {
     groundAlgaeIO.setPivotPostion(rotations);
     ;

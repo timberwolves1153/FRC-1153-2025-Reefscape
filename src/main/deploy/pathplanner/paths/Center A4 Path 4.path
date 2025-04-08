@@ -120,7 +120,7 @@
       "command": {
         "type": "named",
         "data": {
-          "name": "Shoot Algae Outer"
+          "name": "Shoot Algae Inner"
         }
       }
     },

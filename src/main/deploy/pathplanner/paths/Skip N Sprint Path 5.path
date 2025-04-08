@@ -1,0 +1,116 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 10.81,
+        "y": 5.868
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 9.477,
+        "y": 5.67275
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.389249999999999,
+        "y": 5.57525
+      },
+      "prevControl": {
+        "x": 9.672,
+        "y": 5.555750000000001
+      },
+      "nextControl": {
+        "x": 7.150584298069498,
+        "y": 5.7296407380641625
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.227,
+        "y": 5.236
+      },
+      "prevControl": {
+        "x": 6.34725,
+        "y": 5.3315
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.848132780082961,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 1.107053941908708,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.9866004962778829,
+      "maxWaypointRelativePos": 1.2009925558312748,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Stow",
+      "waypointRelativePos": 0.30769230769230316,
+      "endWaypointRelativePos": 1.3320099255583326,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Stow Position"
+        }
+      }
+    },
+    {
+      "name": "Collect Algae",
+      "waypointRelativePos": 1.375682382134006,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L3 Position"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -120.11000000000001
+  },
+  "reversed": false,
+  "folder": "Skip N Sprint",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 5.0
+  },
+  "useDefaultConstraints": true
+}

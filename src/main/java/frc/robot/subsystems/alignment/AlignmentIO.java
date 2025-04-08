@@ -22,6 +22,7 @@ public interface AlignmentIO {
   @AutoLog
   public static class AlignmentIOInputs {
     public boolean connected = false;
+    public boolean hasTarget = false;
     public int bestTargetTagId;
     public Transform3d cameraToTarget;
     public Pose3d photonpose;

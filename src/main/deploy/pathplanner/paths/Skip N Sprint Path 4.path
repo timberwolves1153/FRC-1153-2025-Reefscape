@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.856967213114754,
-        "y": 2.059016393442623
+        "x": 12.578,
+        "y": 5.01
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.796202266643032,
-        "y": 2.6280291138714302
+        "x": 11.81775,
+        "y": 5.3412500000000005
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.9868852459016395,
-        "y": 2.706352459016393
+        "x": 10.81,
+        "y": 5.868
       },
       "prevControl": {
-        "x": 5.593901581951323,
-        "y": 2.3662197691840317
+        "x": 11.42425,
+        "y": 5.93625
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L2 Position",
-      "waypointRelativePos": 0.1,
+      "name": "Barge Position",
+      "waypointRelativePos": 0.19851116625309895,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "L2 Position"
+          "name": "Barge Position"
         }
       }
     }
@@ -53,14 +53,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 121.94707728936393
+    "velocity": 0,
+    "rotation": 5.0
   },
   "reversed": false,
-  "folder": "Right To Reef&Source C3A1",
+  "folder": "Skip N Sprint",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 121.95
+    "rotation": -60.376
   },
   "useDefaultConstraints": true
 }

@@ -88,47 +88,6 @@
       }
     },
     {
-      "name": "shoot",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Shoot Algae Inner"
-        }
-      }
-    },
-    {
-      "name": "collect again",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "L3 Position"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Grab Algae Outer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Grab Algae Inner"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Barge Position",
       "waypointRelativePos": 0.12424037812288512,
       "endWaypointRelativePos": null,
@@ -152,6 +111,47 @@
               "type": "named",
               "data": {
                 "name": "Slow Algae Inner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoot",
+      "waypointRelativePos": 0.7778528021607194,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Inner"
+        }
+      }
+    },
+    {
+      "name": "collect again",
+      "waypointRelativePos": 1.679945982444282,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L3 Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab Algae Inner"
               }
             }
           ]

@@ -437,6 +437,14 @@ public class Drive extends SubsystemBase {
     return this.reefMap.getClosestReefFaceToTargetReefFace(closestReefPose);
   }
 
+  public Pose2d getDesiredReefFacePose() {
+    boolean isRedAlliance =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+    Pose2d closestReefPose = this.reefMap.getClosestReefFacePose(isRedAlliance, getPose());
+    return closestReefPose; // this.reefMap.getClosestReefFaceToTargetReefFace(closestReefPose);
+  }
+
   public Command driveToStation() {
     return new DeferredCommand(
         () -> {

@@ -129,8 +129,10 @@ public class Superstructure extends SubsystemBase {
         break;
       }
       case COLLECT -> {
-        //okay so now zena goes absolutley crazy at the coral station and slams that coral in in 0.000000000001 seconds 
-        //and then we win world champs and theyre all like OOOOOOOHHHHH THAT GOES CRAZY WHO LET 1153 COOK THAT HARD WHOOOOOOOOO
+        // okay so now zena goes absolutley crazy at the coral station and slams that coral in in
+        // 0.000000000001 seconds
+        // and then we win world champs and theyre all like OOOOOOOHHHHH THAT GOES CRAZY WHO LET
+        // 1153 COOK THAT HARD WHOOOOOOOOO
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         coralManip.setSolenoidState(Value.kForward);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);

@@ -35,9 +35,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Center A4 Path 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
           }
         },
         {
@@ -47,9 +65,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Center A4 Path 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "reset gyro -176"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         }
       ]

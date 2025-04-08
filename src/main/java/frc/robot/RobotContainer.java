@@ -90,7 +90,6 @@ import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.windmill.WindmillIOTalonFX;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -252,9 +251,16 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
     NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
+    NamedCommands.registerCommand(
+        "reset gyro -176", new InstantCommand(() -> drive.resetGyro(-176.63)));
+    NamedCommands.registerCommand(
+        "reset gyro -155", new InstantCommand(() -> drive.resetGyro(-154.983)));
     NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
     NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() -> drive.resetGyro(-60)));
     NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() -> drive.resetGyro(60)));
+    NamedCommands.registerCommand(
+        "reset gyro -120", new InstantCommand(() -> drive.resetGyro(-120.110)));
+
     NamedCommands.registerCommand("Hold Coral", new InstantCommand(() -> coral.runVolts(-2)));
     NamedCommands.registerCommand("Stop Coral", new InstantCommand(() -> coral.runVolts(0)));
     NamedCommands.registerCommand("Outtake Coral", new InstantCommand(() -> coral.runVolts(5)));
@@ -314,6 +320,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Auto Align Left", alignToScore(BranchLocation.LEFT, false).withTimeout(1.75));
 
+    NamedCommands.registerCommand("Score Game Piece", new ScoreGamePiece(coral, algae, drive, superstructure));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -338,7 +346,7 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // // Lock to 0° when A button is held
+    // Lock to nearest station angle when right stick button is held
     controller
         .rightStick()
         .whileTrue(
@@ -361,6 +369,29 @@ public class RobotContainer {
                             FieldConstants.getNearestCoralStation(drive.getPose())
                                 .getRotation()
                                 .rotateBy(Rotation2d.k180deg)
+                                .getRadians())));
+
+    // Lock to nearest reef face angle when left stick button is held
+    controller
+        .leftStick()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                () -> // Are we red?
+                DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get() == Alliance.Red
+                        ?
+                        // Red[]\
+                        new Rotation2d(drive.getDesiredReefFacePose().getRotation().getRadians())
+                        :
+                        // Blue
+                        new Rotation2d(
+                            drive
+                                .getDesiredReefFacePose()
+                                .getRotation()
+                                // .rotateBy(Rotation2d.k180deg)
                                 .getRadians())));
 
     // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
@@ -448,10 +479,11 @@ public class RobotContainer {
     controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
     controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
     controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
+    controller.leftTrigger().onTrue(Commands.runOnce(() -> groundAlgae.climb()));
 
     atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
-    //controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
+    // controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
 
     // atariButton9.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.A)));
     // atariButton10.onTrue(new InstantCommand(() -> drive.setDesiredReefFace(TargetReefFace.B)));
@@ -561,64 +593,6 @@ public class RobotContainer {
     algae.stopHolding();
     algae.stopLauncher();
     coral.stop();
-  }
-
-  public Command driveToReef(Supplier<TargetReefFace> desiredFace, BranchLocation desiredLocation) {
-    // FieldConstants.getNearestReefFace(drive.getPose());
-    // List<Map<ReefHeight branchPositions = FieldConstants.Reef.branchPositions;
-    //            6   7
-    //         5        8
-    //        4          9
-    //         3        10
-    //          2     11
-    //            1 0
-
-    return new DeferredCommand(
-        () -> {
-          DesiredReefPosition goalPosition =
-              new DesiredReefPosition(desiredFace.get().faceNumber, desiredLocation);
-          SmartDashboard.putNumber("desiredPosition Face", desiredFace.get().faceNumber);
-          SmartDashboard.putNumber("goalPosition Face", goalPosition.getFace());
-
-          Transform2d desiredGamepieceTransform;
-          if (BranchLocation.CENTER.equals(desiredLocation)) {
-            desiredGamepieceTransform = Constants.ALGAE_TRANSFORM;
-          } else {
-            desiredGamepieceTransform = Constants.CORAL_TRANSFORM;
-          }
-
-          Pose2d goalPose = reefmap.get(goalPosition);
-          Logger.recordOutput(
-              "Auto Drive Target Pose",
-              goalPose
-                  .transformBy(Constants.ROBOT_TRANSFORM)
-                  .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg));
-          boolean isRedAlliance =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          if (isRedAlliance) {
-            // return AutoBuilder.pathfindToPose(
-            //     goalPose
-            //         .transformBy(robotTransform)
-            //         .transformBy(desiredGamepieceTransform)
-            //         .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-            //     constraints);
-            // drive.setPose(vision.getReefCameraPose());
-            drive.setPose(alignment.getRobotPose());
-            return new AdjustToPose(
-                goalPose
-                    .transformBy(Constants.ROBOT_TRANSFORM)
-                    .transformBy(desiredGamepieceTransform)
-                    .rotateAround(FieldConstants.fieldCenter, Rotation2d.k180deg),
-                drive,
-                alignment::getRobotPose);
-          } else {
-            // AutoBuilder.pathfindToPose(goalPose.transformBy(robotTransform), constraints);
-            return new AdjustToPose(
-                goalPose.transformBy(Constants.ROBOT_TRANSFORM), drive, alignment::getRobotPose);
-          }
-        },
-        Set.of(drive));
   }
 
   public Command alignToTape() {

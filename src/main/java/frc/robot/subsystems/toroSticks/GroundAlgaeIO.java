@@ -23,6 +23,8 @@ public interface GroundAlgaeIO {
 
   public default void deploy() {}
 
+  public default void climb() {}
+
   public default void stow() {}
 
   public default void pivotStop() {}

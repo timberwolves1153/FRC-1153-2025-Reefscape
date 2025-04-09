@@ -133,6 +133,12 @@ public class Superstructure extends SubsystemBase {
         // 0.000000000001 seconds
         // and then we win world champs and theyre all like OOOOOOOHHHHH THAT GOES CRAZY WHO LET
         // 1153 COOK THAT HARD WHOOOOOOOOO
+
+        // if robot-stick side is closer to station
+        // go to x setoint
+
+        // if robot-scoring side is closer to station
+        // go to y settoint
         elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
         coralManip.setSolenoidState(Value.kForward);
         windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);

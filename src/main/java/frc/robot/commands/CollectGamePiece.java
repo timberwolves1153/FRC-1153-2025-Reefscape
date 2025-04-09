@@ -22,7 +22,7 @@ public class CollectGamePiece extends Command {
     this.algae = algae;
     this.groundAlgae = groundAlgae;
     this.superstructure = superstructure;
-    coralHoldingVoltage = 0.1;
+    coralHoldingVoltage = -0.1;
 
     addRequirements(coral, algae, groundAlgae);
   }
@@ -38,7 +38,7 @@ public class CollectGamePiece extends Command {
       groundAlgae.stow();
       groundAlgae.stopRollers();
       if (currentGoal.equals(Goal.L2) || currentGoal.equals(Goal.L3)) {
-        coral.runVolts(2);
+        coral.runVolts(-2);
       } else {
         coral.runVolts(-6);
       }

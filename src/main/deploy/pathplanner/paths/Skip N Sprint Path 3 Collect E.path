@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 12.563,
-        "y": 4.996004098360656
+        "x": 12.49,
+        "y": 5.10725
       },
       "prevControl": {
-        "x": 12.514250000000002,
-        "y": 5.269004098360655
+        "x": 12.441250000000002,
+        "y": 5.380249999999999
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,11 +47,11 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.3326226012793221,
-      "rotationDegrees": 90.0
+      "rotationDegrees": -90.0
     },
     {
       "waypointRelativePos": 0.5159914712153515,
-      "rotationDegrees": 90.0
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [
@@ -60,8 +60,8 @@
       "minWaypointRelativePos": 0.36327543424316955,
       "maxWaypointRelativePos": 0.5339950372208583,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 4.25,
+        "maxAcceleration": 4.25,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -73,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Stow",
-      "waypointRelativePos": 0.25111662531017614,
+      "waypointRelativePos": 0.17270471464020057,
       "endWaypointRelativePos": 0.6133995037220837,
       "command": {
         "type": "named",
@@ -107,7 +107,7 @@
     "rotation": -60.376
   },
   "reversed": false,
-  "folder": "Skip N Sprint",
+  "folder": "Skip N Sprint Collect E",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

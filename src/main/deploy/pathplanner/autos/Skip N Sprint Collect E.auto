@@ -21,22 +21,9 @@
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Skip N Sprint Path 1"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Align Center"
-                      }
-                    }
-                  ]
+                  "pathName": "Skip N Sprint Path 1 Collect E"
                 }
               },
               {
@@ -116,7 +103,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path2"
+                  "pathName": "Skip N Sprint Path2 Collect E"
                 }
               },
               {
@@ -159,7 +146,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 3"
+                  "pathName": "Skip N Sprint Path 3 Collect E"
                 }
               },
               {
@@ -187,7 +174,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.35
           }
         },
         {
@@ -197,7 +184,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 4"
+                  "pathName": "Skip N Sprint Path 4 Collect E"
                 }
               },
               {
@@ -244,7 +231,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Skip N Sprint Path 5"
+                        "pathName": "Skip N Sprint Path 5 Collect E"
                       }
                     },
                     {
@@ -276,6 +263,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {

@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.81,
-        "y": 5.868
+        "x": 6.797,
+        "y": 4.864
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.477,
-        "y": 5.67275
+        "x": 7.0395,
+        "y": 6.0432500000000005
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 9.389249999999999,
-        "y": 5.57525
+        "x": 10.2765,
+        "y": 5.38025
       },
       "prevControl": {
-        "x": 9.672,
-        "y": 5.555750000000001
+        "x": 10.08492765037723,
+        "y": 5.540873892556519
       },
       "nextControl": {
-        "x": 7.150584298069498,
-        "y": 5.7296407380641625
+        "x": 10.490250000000001,
+        "y": 5.20103125
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.227,
-        "y": 5.236
+        "x": 11.944,
+        "y": 4.09325
       },
       "prevControl": {
-        "x": 6.34725,
-        "y": 5.3315
+        "x": 11.524750000000001,
+        "y": 4.13225
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,22 +46,22 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.848132780082961,
+      "waypointRelativePos": 0.3,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 1.107053941908708,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.9866004962778829,
-      "maxWaypointRelativePos": 1.2009925558312748,
+      "minWaypointRelativePos": 0.4,
+      "maxWaypointRelativePos": 0.5,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 4.25,
+        "maxAcceleration": 4.25,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -73,8 +73,8 @@
   "eventMarkers": [
     {
       "name": "Stow",
-      "waypointRelativePos": 0.30769230769230316,
-      "endWaypointRelativePos": 1.3320099255583326,
+      "waypointRelativePos": 0.2,
+      "endWaypointRelativePos": 0.6133995037220837,
       "command": {
         "type": "named",
         "data": {
@@ -83,8 +83,8 @@
       }
     },
     {
-      "name": "Collect Algae",
-      "waypointRelativePos": 1.375682382134006,
+      "name": "Collect",
+      "waypointRelativePos": 0.6,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -104,13 +104,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.11000000000001
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Skip N Sprint",
+  "folder": "Skip N Sprint Collect D",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 5.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

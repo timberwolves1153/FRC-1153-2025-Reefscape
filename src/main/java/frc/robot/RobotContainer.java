@@ -15,7 +15,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -35,17 +34,17 @@ import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Auto_Adjust.AdjustToPose;
 import frc.robot.Constants.GamePiece;
+import frc.robot.commands.Auto_Adjust.AdjustToPose;
+import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.JiggleCoral;
 import frc.robot.commands.ScoreGamePiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
 import frc.robot.generated.FinalTunerConstants;
 import frc.robot.generated.ProtoTunerConstants;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Climber.ClimberIO;
 import frc.robot.subsystems.Climber.ClimberIOSim;
@@ -58,6 +57,8 @@ import frc.robot.subsystems.Manipulator.Coral;
 import frc.robot.subsystems.Manipulator.CoralIO;
 import frc.robot.subsystems.Manipulator.CoralIOSim;
 import frc.robot.subsystems.Manipulator.CoralIOSparkMax;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Goal;
 import frc.robot.subsystems.alignment.Alignment;
 import frc.robot.subsystems.alignment.AlignmentConstants;
 import frc.robot.subsystems.alignment.AlignmentIO;
@@ -248,19 +249,15 @@ public class RobotContainer {
         break;
     }
 
-    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() ->
-    coral.runVolts(-6.5)));
-    NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() ->
-    drive.resetGyro(180)));
+    NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
+    NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
     NamedCommands.registerCommand(
         "reset gyro -176", new InstantCommand(() -> drive.resetGyro(-176.63)));
     NamedCommands.registerCommand(
         "reset gyro -155", new InstantCommand(() -> drive.resetGyro(-154.983)));
     NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
-    NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() ->
-    drive.resetGyro(-60)));
-    NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() ->
-    drive.resetGyro(60)));
+    NamedCommands.registerCommand("reset gyro -60", new InstantCommand(() -> drive.resetGyro(-60)));
+    NamedCommands.registerCommand("reset gyro 60", new InstantCommand(() -> drive.resetGyro(60)));
     NamedCommands.registerCommand(
         "reset gyro -120", new InstantCommand(() -> drive.resetGyro(-120.110)));
 
@@ -323,8 +320,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Auto Align Left", alignToScore(BranchLocation.LEFT, false).withTimeout(1.75));
 
-    NamedCommands.registerCommand("Score Game Piece", new ScoreGamePiece(coral, algae, drive,
-    superstructure));
+    NamedCommands.registerCommand(
+        "Score Game Piece", new ScoreGamePiece(coral, algae, drive, superstructure));
 
     // // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -504,7 +501,7 @@ public class RobotContainer {
     // controller.start().onFalse(new InstantCommand(() -> elevator.setVoltage(0.25)));
 
     // controller.x().onTrue(new InstantCommand(() -> windmill.setVoltage(3)));
-    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
+    // controller.x().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));\[]
 
     // controller.b().onTrue(new InstantCommand(() -> windmill.setVoltage(-3)));
     // controller.b().onFalse(new InstantCommand(() -> windmill.setVoltage(0)));
@@ -534,26 +531,29 @@ public class RobotContainer {
 
     //   coral.setCurrentGamePiece(GamePiece.CORAL);
     // }
-    // atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    // atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
-    // controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
     //  controller.x().whileTrue(drive.driveToStation());
     // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
-    //     atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
-    //     atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
-    //     atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
-    //     atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
-    //     atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
-    //     atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    //     atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
-    //     atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    //     atariButton8.whileFalse(
-    //         new ConditionalCommand(
-    //             new JiggleCoral(coral),
-    //             new InstantCommand(() -> coral.stop()),
-    //             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    //     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+
+    // COMPETITION CONTROLS BELOW
+    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+    controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+
+    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
+    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
+    atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
+    atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
+    atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
+    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+    atariButton8.whileFalse(
+        new ConditionalCommand(
+            new JiggleCoral(coral),
+            new InstantCommand(() -> coral.stop()),
+            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
   }
 
   public boolean isCloseToReef() {

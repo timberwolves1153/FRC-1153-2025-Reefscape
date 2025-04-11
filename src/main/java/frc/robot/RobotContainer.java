@@ -384,7 +384,7 @@ public class RobotContainer {
                 DriverStation.getAlliance().isPresent()
                             && DriverStation.getAlliance().get() == Alliance.Red
                         ?
-                        // Red[]\
+                        // Red
                         new Rotation2d(drive.getDesiredReefFacePose().getRotation().getRadians())
                         :
                         // Blue
@@ -533,7 +533,12 @@ public class RobotContainer {
     // }
 
     //  controller.x().whileTrue(drive.driveToStation());
-    // // controller.b().whileTrue(drive.driveToBarge());whd(Goal.STOW));
+    // controller.b().onTrue(new InstantCommand(() -> superstructure.interpolateAlgaeShot()));
+    // //controller.b().onFalse(new InstantCommand(() -> algae.setVoltageHolding(0)));
+    // controller.b().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
+
+    // controller.x().onTrue(new InstantCommand(() -> algae.setVoltageLauncher(-6)));
+    // controller.x().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
     // COMPETITION CONTROLS BELOW
     atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));

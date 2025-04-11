@@ -48,6 +48,7 @@ public class Elevator extends SubsystemBase {
     L3_ALGAE(17),
     L4_CORAL(30),
     COLLECT_CORAL(10),
+    COLLECT_CORAL_FRONT(2.0),
     ALGAE_GROUND(3.5),
     ALGAE_PRESTAGE(0.25),
     ALGAE_BARGE(30.25),

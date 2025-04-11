@@ -262,6 +262,7 @@ public class Drive extends SubsystemBase {
     TargetReefFace desiredReefFace = getDesiredReefFace();
     SmartDashboard.putNumber("Current Desired Reef Face", desiredReefFace.faceNumber);
     SmartDashboard.putString("Current Desired Reef Face Name", desiredReefFace.toString());
+    SmartDashboard.putNumber("drive angle", getPose().getRotation().getDegrees());
     FieldConstants.getNearestCoralStation(getPose());
     SmartDashboard.putData(poseEstimatorField);
     poseEstimatorField.setRobotPose(getPose());

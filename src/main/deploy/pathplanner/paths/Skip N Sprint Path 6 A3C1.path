@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.96275,
-        "y": 2.7769999999999992
+        "x": 12.519,
+        "y": 5.058
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.256275385836639,
-        "y": 2.288082008596904
+        "x": 11.502259520813455,
+        "y": 5.516457698126101
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.402561475409836,
-        "y": 0.4406762295081967
+        "x": 10.36,
+        "y": 5.77025
       },
       "prevControl": {
-        "x": 1.7945141781125384,
-        "y": 0.8931310921577312
+        "x": 10.661224128214972,
+        "y": 5.655070425866797
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,26 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Collect Position",
-      "waypointRelativePos": 0.1026333558406428,
+      "name": "Barge Position",
+      "waypointRelativePos": 0.19851116625309895,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Coral Mode"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Collect Coral Position"
-              }
-            }
-          ]
+          "name": "Barge Position"
         }
       }
     }
@@ -67,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 51.3
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Right To Reef&Source C3A1",
+  "folder": "Skip N Sprint A3C1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 121.94700000000002
+    "rotation": -60.376
   },
   "useDefaultConstraints": true
 }

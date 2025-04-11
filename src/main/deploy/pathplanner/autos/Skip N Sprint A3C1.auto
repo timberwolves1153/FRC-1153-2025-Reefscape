@@ -11,19 +11,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Hold Coral"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 1 Collect D"
+                  "pathName": "Skip N Sprint Path 1 A3C1"
                 }
               },
               {
@@ -50,7 +44,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.35
           }
         },
         {
@@ -66,13 +60,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L3 Position"
+                  "name": "Auto Align Left"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align Left"
+                  "name": "L3 Position"
                 }
               }
             ]
@@ -103,19 +97,19 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path2 Collect D"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Algae Outer"
+                  "pathName": "Skip N Sprint Path 2 A3C1"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Slow Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
                 }
               }
             ]
@@ -124,7 +118,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
+            "waitTime": 0.3
           }
         },
         {
@@ -144,28 +138,40 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Skip N Sprint Path 3 Collect D"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": "Grab Algae Outer"
+                        "pathName": "Skip N Sprint Path 3 A3C1"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Grab Algae Inner"
+                        "name": "Auto Align Center"
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L3 Position"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Grab Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Grab Algae Inner"
                 }
               }
             ]
@@ -184,19 +190,19 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 4 Collect D"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Algae Outer"
+                  "pathName": "Skip N Sprint Path 4 A3C1"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Slow Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
                 }
               }
             ]
@@ -217,7 +223,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 0.2
           }
         },
         {
@@ -225,22 +231,40 @@
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Skip N Sprint Path 5 Collect D"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Align Center"
-                      }
-                    }
-                  ]
+                  "pathName": "Skip N Sprint Path 5 A3C1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Grab Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Grab Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.35
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Skip N Sprint Path 6 A3C1"
                 }
               },
               {
@@ -248,15 +272,21 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "Grab Algae Outer"
+                        "waitTime": 0.15
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Grab Algae Inner"
+                        "name": "Shoot Algae Outer"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Slow Algae Inner"
                       }
                     }
                   ]
@@ -268,13 +298,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 0.2
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "reset gyro -120"
+            "name": "Shoot Algae Inner"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
           }
         }
       ]

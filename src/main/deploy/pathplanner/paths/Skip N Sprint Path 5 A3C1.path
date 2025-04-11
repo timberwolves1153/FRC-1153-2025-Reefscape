@@ -4,40 +4,40 @@
     {
       "anchor": {
         "x": 6.95,
-        "y": 4.864
+        "y": 5.419
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.192500000000001,
-        "y": 6.0432500000000005
+        "x": 6.952315244249725,
+        "y": 5.685788671183241
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 10.2765,
-        "y": 5.38025
+        "x": 12.3045,
+        "y": 5.6435
       },
       "prevControl": {
-        "x": 10.084927650377224,
-        "y": 5.540873892556522
+        "x": 10.67625,
+        "y": 5.653250000000001
       },
       "nextControl": {
-        "x": 10.490250000000001,
-        "y": 5.20103125
+        "x": 12.554495518066673,
+        "y": 5.6420030208499
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 11.953,
-        "y": 4.063999999999999
+        "x": 12.519,
+        "y": 5.0584999999999996
       },
       "prevControl": {
-        "x": 11.53375,
-        "y": 4.102999999999999
+        "x": 12.275377975770443,
+        "y": 5.114609796919013
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,19 +46,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.3,
+      "waypointRelativePos": 0.3326226012793221,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.5159914712153515,
       "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.4,
-      "maxWaypointRelativePos": 0.5,
+      "minWaypointRelativePos": 0.36327543424316955,
+      "maxWaypointRelativePos": 0.5339950372208583,
       "constraints": {
         "maxVelocity": 4.25,
         "maxAcceleration": 4.25,
@@ -73,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Stow",
-      "waypointRelativePos": 0.1607940446650163,
+      "waypointRelativePos": 0.17270471464020057,
       "endWaypointRelativePos": 0.6133995037220837,
       "command": {
         "type": "named",
@@ -84,12 +84,12 @@
     },
     {
       "name": "Collect",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.619354838709677,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "L2 Position"
+          "name": "L3 Position"
         }
       }
     }
@@ -104,10 +104,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -60.376
   },
   "reversed": false,
-  "folder": "Skip N Sprint Collect D",
+  "folder": "Skip N Sprint A3C1",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

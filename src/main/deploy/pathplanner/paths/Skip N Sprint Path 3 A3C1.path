@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.953,
-        "y": 4.064
+        "x": 6.95,
+        "y": 4.864
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.248688126236097,
-        "y": 4.57795986925341
+        "x": 6.0840000000000005,
+        "y": 5.16575
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 10.36,
-        "y": 5.77025
+        "x": 5.21625,
+        "y": 5.1267499999999995
       },
       "prevControl": {
-        "x": 10.655625762544405,
-        "y": 5.580185063698556
+        "x": 5.5672500000000005,
+        "y": 5.312
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,19 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Barge Position",
-      "waypointRelativePos": 0.19851116625309895,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Barge Position"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
@@ -54,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 5.0
+    "rotation": -121.987
   },
   "reversed": false,
-  "folder": "Skip N Sprint Collect D",
+  "folder": "Skip N Sprint A3C1",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

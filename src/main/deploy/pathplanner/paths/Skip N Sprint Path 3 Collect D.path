@@ -74,7 +74,7 @@
     {
       "name": "Stow",
       "waypointRelativePos": 0.1607940446650163,
-      "endWaypointRelativePos": 0.6133995037220837,
+      "endWaypointRelativePos": 0.7523573200992494,
       "command": {
         "type": "named",
         "data": {
@@ -84,7 +84,7 @@
     },
     {
       "name": "Collect",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.8317617866004844,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

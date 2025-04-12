@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 1 A3C1"
+                  "pathName": "Skip N Sprint Path 1 A3C1 Collect E"
                 }
               },
               {
@@ -97,7 +97,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 2 A3C1"
+                  "pathName": "Skip N Sprint Path 2 A3C1 Collect E"
                 }
               },
               {
@@ -144,7 +144,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Skip N Sprint Path 3 A3C1"
+                        "pathName": "Skip N Sprint Path 3 A3C1 Collect E"
                       }
                     },
                     {
@@ -180,7 +180,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.2
           }
         },
         {
@@ -190,7 +190,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 4 A3C1"
+                  "pathName": "Skip N Sprint Path 4 A3C1 Collect E"
                 }
               },
               {
@@ -200,9 +200,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Shoot Algae Outer"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Grab Algae Outer"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot Algae Outer"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -233,7 +252,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 5 A3C1"
+                  "pathName": "Skip N Sprint Path 5 A3C1 Collect E"
                 }
               },
               {
@@ -264,7 +283,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Skip N Sprint Path 6 A3C1"
+                  "pathName": "Skip N Sprint Path 6 A3C1 Collect E"
                 }
               },
               {

@@ -73,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Stow",
-      "waypointRelativePos": 0.17270471464020057,
+      "waypointRelativePos": 0.10124069478908693,
       "endWaypointRelativePos": 0.6133995037220837,
       "command": {
         "type": "named",
@@ -107,7 +107,7 @@
     "rotation": -60.376
   },
   "reversed": false,
-  "folder": "Skip N Sprint A3C1",
+  "folder": "Skip N Sprint A3C1 Collect E",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

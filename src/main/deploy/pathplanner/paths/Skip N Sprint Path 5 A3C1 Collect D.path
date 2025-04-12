@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.36,
-        "y": 5.77
+        "x": 6.95,
+        "y": 5.419
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.027,
-        "y": 5.574749999999999
+        "x": 7.3027500000000005,
+        "y": 5.82875
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 9.1065,
-        "y": 5.565499999999999
+        "x": 10.2765,
+        "y": 5.38025
       },
       "prevControl": {
-        "x": 9.389250000000002,
-        "y": 5.546
+        "x": 10.084927650377224,
+        "y": 5.540873892556522
       },
       "nextControl": {
-        "x": 6.8678342980695,
-        "y": 5.719890738064162
+        "x": 10.490250000000001,
+        "y": 5.20103125
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.227,
-        "y": 5.236
+        "x": 11.98,
+        "y": 4.064
       },
       "prevControl": {
-        "x": 6.34725,
-        "y": 5.3315
+        "x": 11.56075,
+        "y": 4.103
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,19 +46,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.848132780082961,
+      "waypointRelativePos": 0.3,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 1.107053941908708,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.9866004962778829,
-      "maxWaypointRelativePos": 1.2009925558312748,
+      "minWaypointRelativePos": 0.4,
+      "maxWaypointRelativePos": 0.5,
       "constraints": {
         "maxVelocity": 4.25,
         "maxAcceleration": 4.25,
@@ -73,8 +73,8 @@
   "eventMarkers": [
     {
       "name": "Stow",
-      "waypointRelativePos": 0.02580645161290289,
-      "endWaypointRelativePos": 1.3320099255583326,
+      "waypointRelativePos": 0.09727047146402569,
+      "endWaypointRelativePos": 0.7940446650124114,
       "command": {
         "type": "named",
         "data": {
@@ -83,13 +83,13 @@
       }
     },
     {
-      "name": "Collect Algae",
-      "waypointRelativePos": 1.375682382134006,
+      "name": "Collect",
+      "waypointRelativePos": 0.8416873449131552,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "L3 Position"
+          "name": "L2 Position"
         }
       }
     }
@@ -104,13 +104,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.11000000000001
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Skip N Sprint Collect D",
+  "folder": "Skip N Sprint A3C1 Collect D",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 5.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

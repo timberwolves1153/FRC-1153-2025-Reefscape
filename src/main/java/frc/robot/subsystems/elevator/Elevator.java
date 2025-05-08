@@ -52,6 +52,9 @@ public class Elevator extends SubsystemBase {
     ALGAE_GROUND(3.5),
     ALGAE_PRESTAGE(0.25),
     ALGAE_BARGE(30.25),
+    LYNK_L1_READY(0.25),
+    LYNK_L1_SCORE(3.25),
+    BACKSIDE_L1(0.25),
     CLIMB(12);
 
     private double heightInInches;

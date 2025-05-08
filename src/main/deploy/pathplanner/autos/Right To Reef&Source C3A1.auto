@@ -39,22 +39,15 @@
           "data": {
             "commands": [
               {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake Coral"
-                      }
-                    }
-                  ]
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Right To Reef&Source C3A1 Path 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
                 }
               }
             ]
@@ -162,7 +155,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.175
+            "waitTime": 0.225
           }
         },
         {

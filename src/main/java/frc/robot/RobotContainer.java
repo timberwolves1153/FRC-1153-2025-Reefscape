@@ -251,6 +251,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Intake Coral", new InstantCommand(() -> coral.runVolts(-6.5)));
     NamedCommands.registerCommand("reset gyro 180", new InstantCommand(() -> drive.resetGyro(180)));
+    NamedCommands.registerCommand("reset gyro 5", new InstantCommand(() -> drive.resetGyro(5)));
+
     NamedCommands.registerCommand(
         "reset gyro -176", new InstantCommand(() -> drive.resetGyro(-176.63)));
     NamedCommands.registerCommand(
@@ -559,6 +561,8 @@ public class RobotContainer {
             new InstantCommand(() -> coral.stop()),
             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
     atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+    atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
+    atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
   }
 
   public boolean isCloseToReef() {

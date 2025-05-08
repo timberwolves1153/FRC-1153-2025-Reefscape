@@ -22,7 +22,7 @@ public class WindmillTable {
     // windmillMap.put(new InterpolatingDouble(1.695), new InterpolatingDouble(-165.234));
     // windmillMap.put(new InterpolatingDouble(1.695), new InterpolatingDouble(-165.234));
     windmillMap.put(new InterpolatingDouble(1.037), new InterpolatingDouble(-154.775));
-    windmillMap.put(new InterpolatingDouble(1.912), new InterpolatingDouble(-175.429));
+    windmillMap.put(new InterpolatingDouble(2.1), new InterpolatingDouble(-175.429));
     windmillMap.put(new InterpolatingDouble(2.764), new InterpolatingDouble(-175.429));
 
     launcherMap.put(new InterpolatingDouble(1.0), new InterpolatingDouble(5.0));

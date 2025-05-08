@@ -321,9 +321,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Shoot Algae Inner"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "reset gyro 0"
+                }
+              }
+            ]
           }
         },
         {

@@ -48,6 +48,13 @@ public class ScoreGamePiece extends Command {
       if (currentGoal.equals(Goal.L1)) {
         coral.runVolts(4);
 
+      } else if (currentGoal.equals(Goal.BACKSIDE_L1)) {
+        coral.runVolts(2);
+      } else if (currentGoal.equals(Goal.LYNK_L1_READY)) {
+        coral.runVolts(3);
+        superstructure.setGoalCommand(Goal.LYNK_L1_SCORE);
+      } else if (currentGoal.equals(Goal.LYNK_L1_SCORE)) {
+        coral.runVolts(2);
       } else if (currentGoal.equals(Goal.L2)) {
         coral.runVolts(5);
 

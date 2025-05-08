@@ -23,7 +23,7 @@ public class GroundAlgaeIOReal implements GroundAlgaeIO {
   private VoltageOut voltageRequest;
   private final double DEPLOY_POSITION = 22.0;
   private final double STOW_POSITION = 3.0;
-  private final double CLIMB_POSITION = 10.0;
+  private final double CLIMB_POSITION = 7.0;
   private final double STARTING_POSITION = 0.0;
 
   public GroundAlgaeIOReal() {

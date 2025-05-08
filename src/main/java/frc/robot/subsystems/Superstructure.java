@@ -33,6 +33,9 @@ public class Superstructure extends SubsystemBase {
     // PROCESSOR_AND_PRESTAGE,
     BARGE,
     STAY_STILL,
+    BACKSIDE_L1,
+    LYNK_L1_READY,
+    LYNK_L1_SCORE,
     CLIMB;
   }
 
@@ -216,6 +219,18 @@ public class Superstructure extends SubsystemBase {
           actuateCoralWhenAtPosition(Value.kForward, WindmillGoal.L1_CORAL);
         }
         break;
+      }
+      case BACKSIDE_L1 -> {
+        elevator.setTargetHeight(ElevatorGoal.BACKSIDE_L1);
+        windmill.setTargetPosition(WindmillGoal.BACKSIDE_L1);
+      }
+      case LYNK_L1_READY -> {
+        elevator.setTargetHeight(ElevatorGoal.LYNK_L1_READY);
+        windmill.setTargetPosition(WindmillGoal.LYNK_L1_READY);
+      }
+      case LYNK_L1_SCORE -> {
+        elevator.setTargetHeight(ElevatorGoal.LYNK_L1_SCORE);
+        windmill.setTargetPosition(WindmillGoal.LYNK_L1_SCORE);
       }
       case L2 -> {
         if (GamePiece.CORAL.equals(getGamePiece())) {

@@ -172,7 +172,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
+            "waitTime": 0.25
           }
         },
         {
@@ -237,13 +237,13 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.1
+                  "waitTime": 0.2
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "reset gyro 180"
+                  "name": "reset gyro -155"
                 }
               }
             ]

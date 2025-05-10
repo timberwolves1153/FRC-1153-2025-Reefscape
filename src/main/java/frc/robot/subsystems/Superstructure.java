@@ -155,6 +155,7 @@ public class Superstructure extends SubsystemBase {
 
         // if robot-scoring side is closer to station
         // go to y settoint
+        if (GamePiece.CORAL.equals(getGamePiece())) {
         if (FieldConstants.getNearestCoralStation(drive.getPose())
                 .equals(FieldConstants.CoralStation.rightCenterFace)
             && isRedAlliance) {
@@ -199,6 +200,11 @@ public class Superstructure extends SubsystemBase {
             windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
           }
         }
+      } else if (GamePiece.ALGAE.equals(getGamePiece())) {
+          elevator.setTargetHeight(ElevatorGoal.ALGAE_GROUND);
+          windmill.setTargetPosition(WindmillGoal.ALGAE_GROUND);
+        }
+
         break;
       }
       case L1 -> {

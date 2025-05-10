@@ -31,6 +31,8 @@ public final class Constants {
   public static final Bot currentBot =
       protoRio.equalsIgnoreCase(HALUtil.getSerialNumber()) ? Bot.PROTO : Bot.COMP;
 
+public static final boolean HERSH_MODE = true;
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,

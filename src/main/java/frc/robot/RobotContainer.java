@@ -348,306 +348,313 @@ public class RobotContainer {
             () -> -controller.getLeftY(),
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
-if (!Constants.HERSH_MODE) {
-    // Lock to nearest station angle when right stick button is held
-    controller
-        .rightStick()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> // Are we red?
-                DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ?
-                        // Red[]\
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .getRadians())
-                        :
-                        // Blue
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .rotateBy(Rotation2d.k180deg)
-                                .getRadians())));
+    if (!Constants.HERSH_MODE) {
+      // Lock to nearest station angle when right stick button is held
+      controller
+          .rightStick()
+          .whileTrue(
+              DriveCommands.joystickDriveAtAngle(
+                  drive,
+                  () -> -controller.getLeftY(),
+                  () -> -controller.getLeftX(),
+                  () -> // Are we red?
+                  DriverStation.getAlliance().isPresent()
+                              && DriverStation.getAlliance().get() == Alliance.Red
+                          ?
+                          // Red[]\
+                          new Rotation2d(
+                              FieldConstants.getNearestCoralStation(drive.getPose())
+                                  .getRotation()
+                                  .getRadians())
+                          :
+                          // Blue
+                          new Rotation2d(
+                              FieldConstants.getNearestCoralStation(drive.getPose())
+                                  .getRotation()
+                                  .rotateBy(Rotation2d.k180deg)
+                                  .getRadians())));
 
-    // Lock to nearest reef face angle when left stick button is held
-    controller
-        .leftStick()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> // Are we red?
-                DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ?
-                        // Red
-                        new Rotation2d(drive.getDesiredReefFacePose().getRotation().getRadians())
-                        :
-                        // Blue
-                        new Rotation2d(
-                            drive
-                                .getDesiredReefFacePose()
-                                .getRotation()
-                                // .rotateBy(Rotation2d.k180deg)
-                                .getRadians())));
+      // Lock to nearest reef face angle when left stick button is held
+      controller
+          .leftStick()
+          .whileTrue(
+              DriveCommands.joystickDriveAtAngle(
+                  drive,
+                  () -> -controller.getLeftY(),
+                  () -> -controller.getLeftX(),
+                  () -> // Are we red?
+                  DriverStation.getAlliance().isPresent()
+                              && DriverStation.getAlliance().get() == Alliance.Red
+                          ?
+                          // Red
+                          new Rotation2d(drive.getDesiredReefFacePose().getRotation().getRadians())
+                          :
+                          // Blue
+                          new Rotation2d(
+                              drive
+                                  .getDesiredReefFacePose()
+                                  .getRotation()
+                                  // .rotateBy(Rotation2d.k180deg)
+                                  .getRadians())));
 
-    // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
-    // controller.b().whileTrue(drive.driveToBarge());
+      // controller.x().whileTrue(new AdjustToPose(FieldConstants.Reef.centerFaces[2], drive));
+      // controller.b().whileTrue(drive.driveToBarge());
 
-    // Switch to X pattern when X button is pressed
-    // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+      // Switch to X pattern when X button is pressed
+      // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when Back button is pressed
-    controller
-        .back()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+      // Reset gyro to 0° when Back button is pressed
+      controller
+          .back()
+          .onTrue(
+              Commands.runOnce(
+                      () ->
+                          drive.setPose(
+                              new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                      drive)
+                  .ignoringDisable(true));
 
-    controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
-    controller.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
+      controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
+      controller.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
 
-    controller
-        .leftBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.LEFT, false),
-                    alignThenScore(BranchLocation.LEFT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+      controller
+          .leftBumper()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.LEFT, false),
+                      alignThenScore(BranchLocation.LEFT),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
 
-    // controller
-    //     .leftStick()
-    //     .whileTrue(
-    //         new ConditionalCommand(
-    //             alignToScore(BranchLocation.LEFT, true),
-    //             alignThenScore(BranchLocation.LEFT),
-    //             () -> isCloseToReef()));
+      // controller
+      //     .leftStick()
+      //     .whileTrue(
+      //         new ConditionalCommand(
+      //             alignToScore(BranchLocation.LEFT, true),
+      //             alignThenScore(BranchLocation.LEFT),
+      //             () -> isCloseToReef()));
 
-    // controller
-    //     .rightStick()
-    //     .whileTrue(
-    //         new ConditionalCommand(
-    //             alignToScore(BranchLocation.RIGHT, true),
-    //             alignThenScore(BranchLocation.RIGHT),
-    //             () -> isCloseToReef()));
-    //
-    // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
-    controller
-        .rightBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.RIGHT, false),
-                    alignThenScore(BranchLocation.RIGHT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
-    controller
-        .a()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.CENTER, false),
-                    alignThenScore(BranchLocation.CENTER),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    controller
-        .a()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .rightBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .leftBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+      // controller
+      //     .rightStick()
+      //     .whileTrue(
+      //         new ConditionalCommand(
+      //             alignToScore(BranchLocation.RIGHT, true),
+      //             alignThenScore(BranchLocation.RIGHT),
+      //             () -> isCloseToReef()));
+      //
+      // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
+      controller
+          .rightBumper()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.RIGHT, false),
+                      alignThenScore(BranchLocation.RIGHT),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+      //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
+      controller
+          .a()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.CENTER, false),
+                      alignThenScore(BranchLocation.CENTER),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+      controller
+          .a()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      controller
+          .rightBumper()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      controller
+          .leftBumper()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
-    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
-    controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+      controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
+      controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
-    controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
-    controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
-    controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> groundAlgae.climb()));
+      controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
+      controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+      controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
+      controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
+      controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
+      controller.leftTrigger().onTrue(Commands.runOnce(() -> groundAlgae.climb()));
 
-    atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
+      atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
-   
+      // COMPETITION CONTROLS BELOW
+      atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+      atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+      controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
-    // COMPETITION CONTROLS BELOW
-    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
-    controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+      atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
+      atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
+      atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
+      atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
+      atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
+      atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+      atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
+      atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+      atariButton8.whileFalse(
+          new ConditionalCommand(
+              new JiggleCoral(coral),
+              new InstantCommand(() -> coral.stop()),
+              () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+      atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+      atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
+      atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
+    } else {
+      // CONTROL SCHEME FOR HERSH MODE
+      // Drive
+      // normal swerve control
+      // coral auto align on bumpers
+      // Left trigger -> Algae align
+      // reset gyro on start button
+      // superstructure
+      // algae mode toggle on right trigger hold (when not held: coral mode, when held: algae mode)
+      // A -> L2
+      // B -> L3
+      // Y -> L4/Barge
+      // X -> L1/lolipop
+      // right stick/right underneath -> Coral Station/Ground Algae
+      // menu/back -> score
+      // left stick/left underneath -> collect (algae)
+      // up D-pad -> super sturcture climb position + move climb out
+      // down D-pad -> climber in
 
-    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
-    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
-    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
-    atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
-    atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
-    atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
-    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    atariButton8.whileFalse(
-        new ConditionalCommand(
-            new JiggleCoral(coral),
-            new InstantCommand(() -> coral.stop()),
-            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
-    atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
-    atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
-} else {
-    // CONTROL SCHEME FOR HERSH MODE
-        // Drive
-            // normal swerve control
-            // coral auto align on bumpers
-            // Left trigger -> Algae align 
-            // reset gyro on start button
-        // superstructure
-            // algae mode toggle on right trigger hold (when not held: coral mode, when held: algae mode)
-            // A -> L2 
-            // B -> L3
-            // Y -> L4/Barge
-            // X -> L1/lolipop
-            // right stick/right underneath -> Coral Station/Ground Algae
-            // menu/back -> score 
-            // left stick/left underneath -> collect (algae)
-            // up D-pad -> super sturcture climb position + move climb out
-            // down D-pad -> climber in
+      // STATION COLLECT
+      controller
+          .rightStick()
+          .whileTrue(
+              DriveCommands.joystickDriveAtAngle(
+                  drive,
+                  () -> -controller.getLeftY(),
+                  () -> -controller.getLeftX(),
+                  () -> // Are we red?
+                  DriverStation.getAlliance().isPresent()
+                              && DriverStation.getAlliance().get() == Alliance.Red
+                          ?
+                          // Red[]\
+                          new Rotation2d(
+                              FieldConstants.getNearestCoralStation(drive.getPose())
+                                  .getRotation()
+                                  .getRadians())
+                          :
+                          // Blue
+                          new Rotation2d(
+                              FieldConstants.getNearestCoralStation(drive.getPose())
+                                  .getRotation()
+                                  .rotateBy(Rotation2d.k180deg)
+                                  .getRadians())));
+      // AUTO ALIGN
+      controller
+          .leftBumper()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.LEFT, false),
+                      alignThenScore(BranchLocation.LEFT),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+      controller
+          .rightBumper()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.RIGHT, false),
+                      alignThenScore(BranchLocation.RIGHT),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
 
-// STATION COLLECT 
-    controller
-        .rightStick()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> // Are we red?
-                DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ?
-                        // Red[]\
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .getRadians())
-                        :
-                        // Blue
-                        new Rotation2d(
-                            FieldConstants.getNearestCoralStation(drive.getPose())
-                                .getRotation()
-                                .rotateBy(Rotation2d.k180deg)
-                                .getRadians())));
-// AUTO ALIGN
-    controller
-        .leftBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.LEFT, false),
-                    alignThenScore(BranchLocation.LEFT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    controller
-        .rightBumper()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.RIGHT, false),
-                    alignThenScore(BranchLocation.RIGHT),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    
-    controller
-        .leftTrigger()
-        .whileTrue(
-            new ConditionalCommand(
-                    alignToScore(BranchLocation.CENTER, false),
-                    alignThenScore(BranchLocation.CENTER),
-                    () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+      controller
+          .leftTrigger()
+          .whileTrue(
+              new ConditionalCommand(
+                      alignToScore(BranchLocation.CENTER, false),
+                      alignThenScore(BranchLocation.CENTER),
+                      () -> isCloseToReef())
+                  .andThen(
+                      new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
 
-    controller
-        .a()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .rightBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
-        .leftBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-// RESET SENSORS
-    controller
-        .start()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+      controller
+          .leftTrigger()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      controller
+          .rightBumper()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      controller
+          .leftBumper()
+          .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+      // RESET SENSORS
+      controller
+          .start()
+          .onTrue(
+              Commands.runOnce(
+                      () ->
+                          drive.setPose(
+                              new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                      drive)
+                  .ignoringDisable(true));
 
-    controller.start().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
-    controller.start().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
+      controller.start().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
+      controller.start().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
 
-// CLIMB
-    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
-    controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
-    controller.pov(0).onTrue(Commands.runOnce(() -> groundAlgae.climb()));
-    controller.pov(0).onTrue(superstructure.setGoalCommand(Goal.CLIMB));
-    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
-    controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+      // CLIMB
+      controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
+      controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+      controller.pov(0).onTrue(Commands.runOnce(() -> groundAlgae.climb()));
+      controller.pov(0).onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+      controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
+      controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-// GAMEPIECE STATE
-    controller.rightTrigger().whileTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    controller.rightTrigger().whileFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
+      // GAMEPIECE STATE
+      controller.rightTrigger().whileTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+      controller.rightTrigger().whileFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
 
-// SUPERSTRUCTURE STATES
-    
-    controller.x().whileTrue(superstructure.setGoalCommand(Goal.L1));
-    controller.x().whileFalse(superstructure.setGoalCommand(Goal.STOW));
-    
-    controller.a().onTrue(superstructure.setGoalCommand(Goal.L2));
-    controller.a().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+      // SUPERSTRUCTURE STATES
 
-    controller.b().whileTrue(superstructure.setGoalCommand(Goal.L3));
-    controller.b().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+      controller.x().whileTrue(superstructure.setGoalCommand(Goal.L1));
+      controller.x().whileFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    controller.y().whileTrue(superstructure.setGoalCommand(Goal.BARGE));
-    controller.y().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+      controller.a().onTrue(superstructure.setGoalCommand(Goal.L2));
+      controller.a().whileFalse(superstructure.setGoalCommand(Goal.STOW));
 
-    controller.rightStick().onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-  
-    controller.rightStick().whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    controller.rightStick().whileFalse(
-        new ConditionalCommand(
-            new JiggleCoral(coral),
-            new InstantCommand(() -> coral.stop()),
-            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    controller.leftStick().whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    controller.leftStick().whileFalse(
-        new ConditionalCommand(
-            new JiggleCoral(coral),
-            new InstantCommand(() -> coral.stop()),
-            () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    
-    controller.back().whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
-}
+      controller.b().whileTrue(superstructure.setGoalCommand(Goal.L3));
+      controller.b().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+
+      controller.y().whileTrue(superstructure.setGoalCommand(Goal.BARGE));
+      controller.y().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+
+      controller.rightStick().onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+      controller.rightStick().whileFalse(superstructure.setGoalCommand(Goal.STOW));
+
+      controller
+          .rightStick()
+          .whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+      controller
+          .rightStick()
+          .whileFalse(
+              new ConditionalCommand(
+                  new JiggleCoral(coral),
+                  new InstantCommand(() -> coral.stop()),
+                  () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+      controller
+          .leftStick()
+          .whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+      controller
+          .leftStick()
+          .whileFalse(
+              new ConditionalCommand(
+                  new JiggleCoral(coral),
+                  new InstantCommand(() -> coral.stop()),
+                  () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
+
+      controller.back().whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+    }
   }
 
   public boolean isCloseToReef() {

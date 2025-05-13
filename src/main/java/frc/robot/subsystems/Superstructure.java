@@ -156,51 +156,51 @@ public class Superstructure extends SubsystemBase {
         // if robot-scoring side is closer to station
         // go to y settoint
         if (GamePiece.CORAL.equals(getGamePiece())) {
-        if (FieldConstants.getNearestCoralStation(drive.getPose())
-                .equals(FieldConstants.CoralStation.rightCenterFace)
-            && isRedAlliance) {
-          if (drive.getPose().getRotation().getDegrees() < 142
-              && drive.getPose().getRotation().getDegrees() > -38) {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
-          } else {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-          }
+          if (FieldConstants.getNearestCoralStation(drive.getPose())
+                  .equals(FieldConstants.CoralStation.rightCenterFace)
+              && isRedAlliance) {
+            if (drive.getPose().getRotation().getDegrees() < 142
+                && drive.getPose().getRotation().getDegrees() > -38) {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
+            } else {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
+            }
 
-        } else if (FieldConstants.getNearestCoralStation(drive.getPose())
-                .equals(FieldConstants.CoralStation.leftCenterFace)
-            && isRedAlliance) {
-          if (drive.getPose().getRotation().getDegrees() < 174
-              && drive.getPose().getRotation().getDegrees() > -5) {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-          } else {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
+          } else if (FieldConstants.getNearestCoralStation(drive.getPose())
+                  .equals(FieldConstants.CoralStation.leftCenterFace)
+              && isRedAlliance) {
+            if (drive.getPose().getRotation().getDegrees() < 174
+                && drive.getPose().getRotation().getDegrees() > -5) {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
+            } else {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
+            }
+          } else if (FieldConstants.getNearestCoralStation(drive.getPose())
+              .equals(FieldConstants.CoralStation.leftCenterFace)) {
+            if (drive.getPose().getRotation().getDegrees() < 174
+                && drive.getPose().getRotation().getDegrees() > -5) {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
+            } else {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
+            }
+          } else if (FieldConstants.getNearestCoralStation(drive.getPose())
+              .equals(FieldConstants.CoralStation.rightCenterFace)) {
+            if (drive.getPose().getRotation().getDegrees() < 142
+                && drive.getPose().getRotation().getDegrees() > -38) {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
+            } else {
+              elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
+              windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
+            }
           }
-        } else if (FieldConstants.getNearestCoralStation(drive.getPose())
-            .equals(FieldConstants.CoralStation.leftCenterFace)) {
-          if (drive.getPose().getRotation().getDegrees() < 174
-              && drive.getPose().getRotation().getDegrees() > -5) {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
-          } else {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-          }
-        } else if (FieldConstants.getNearestCoralStation(drive.getPose())
-            .equals(FieldConstants.CoralStation.rightCenterFace)) {
-          if (drive.getPose().getRotation().getDegrees() < 142
-              && drive.getPose().getRotation().getDegrees() > -38) {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL);
-          } else {
-            elevator.setTargetHeight(ElevatorGoal.COLLECT_CORAL_FRONT);
-            windmill.setTargetPosition(WindmillGoal.COLLECT_CORAL_FRONT);
-          }
-        }
-      } else if (GamePiece.ALGAE.equals(getGamePiece())) {
+        } else if (GamePiece.ALGAE.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.ALGAE_GROUND);
           windmill.setTargetPosition(WindmillGoal.ALGAE_GROUND);
         }

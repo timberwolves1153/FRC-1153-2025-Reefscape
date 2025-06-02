@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -88,6 +87,7 @@ import frc.robot.subsystems.windmill.Windmill;
 import frc.robot.subsystems.windmill.WindmillIO;
 import frc.robot.subsystems.windmill.WindmillIOSim;
 import frc.robot.subsystems.windmill.WindmillIOTalonFX;
+import frc.robot.util.AxisButton;
 import java.util.Map;
 import java.util.Set;
 import org.littletonrobotics.junction.Logger;
@@ -114,26 +114,29 @@ public class RobotContainer {
 
   private final Alignment alignment;
 
-  // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
-  private final Joystick opBoard = new Joystick(1);
-  private final CommandXboxController opOverride = new CommandXboxController(2);
+  // Controllers
+  private final CommandXboxController driver = new CommandXboxController(0);
+  private final XboxController op = new XboxController(1);
 
-  private final JoystickButton atariButton1 = new JoystickButton(opBoard, 1);
-  private final JoystickButton atariButton2 = new JoystickButton(opBoard, 2);
-  private final JoystickButton atariButton3 = new JoystickButton(opBoard, 3);
-  private final JoystickButton atariButton4 = new JoystickButton(opBoard, 4);
-  private final JoystickButton atariButton5 = new JoystickButton(opBoard, 5);
-  private final JoystickButton atariButton6 = new JoystickButton(opBoard, 6);
-  private final JoystickButton atariButton7 = new JoystickButton(opBoard, 7);
-  private final JoystickButton atariButton8 = new JoystickButton(opBoard, 8);
-  private final JoystickButton atariButton9 = new JoystickButton(opBoard, 9);
-  private final JoystickButton atariButton10 = new JoystickButton(opBoard, 10);
-  private final JoystickButton atariButton11 = new JoystickButton(opBoard, 11);
-  private final JoystickButton atariButton12 = new JoystickButton(opBoard, 12);
-  private final JoystickButton atariButton13 = new JoystickButton(opBoard, 13);
-  private final JoystickButton atariButton14 = new JoystickButton(opBoard, 14);
-  private final JoystickButton atariButton15 = new JoystickButton(opBoard, 15);
+  // Operator Buttons
+  private final JoystickButton opA = new JoystickButton(op, XboxController.Button.kA.value);
+  private final JoystickButton opX = new JoystickButton(op, XboxController.Button.kX.value);
+  private final JoystickButton opB = new JoystickButton(op, XboxController.Button.kB.value);
+  private final JoystickButton opY = new JoystickButton(op, XboxController.Button.kY.value);
+
+  private final JoystickButton opLeftButton =
+      new JoystickButton(op, XboxController.Button.kLeftBumper.value);
+  private final JoystickButton opRightButton =
+      new JoystickButton(op, XboxController.Button.kRightBumper.value);
+  private final AxisButton opLeftTrigger =
+      new AxisButton(op, XboxController.Axis.kLeftTrigger.value, 0.5);
+  private final AxisButton opRightTrigger =
+      new AxisButton(op, XboxController.Axis.kRightTrigger.value, 0.5);
+
+  private final JoystickButton opLeftStick =
+      new JoystickButton(op, XboxController.Button.kLeftStick.value);
+  private final JoystickButton opRightStick =
+      new JoystickButton(op, XboxController.Button.kRightStick.value);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -311,7 +314,7 @@ public class RobotContainer {
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L3), superstructure));
     NamedCommands.registerCommand(
         "Barge Position",
-        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.BARGE), superstructure));
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L4), superstructure));
 
     NamedCommands.registerCommand(
         "Auto Align Center", alignToScore(BranchLocation.CENTER, false).withTimeout(3));
@@ -345,18 +348,18 @@ public class RobotContainer {
         DriveCommands.joystickDrive(
             drive,
             superstructure,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -driver.getLeftY(),
+            () -> -driver.getLeftX(),
+            () -> -driver.getRightX()));
 
     // Lock to nearest station angle when right stick button is held
-    controller
+    driver
         .rightStick()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                () -> -driver.getLeftY(),
+                () -> -driver.getLeftX(),
                 () -> // Are we red?
                 DriverStation.getAlliance().isPresent()
                             && DriverStation.getAlliance().get() == Alliance.Red
@@ -375,13 +378,13 @@ public class RobotContainer {
                                 .getRadians())));
 
     // Lock to nearest reef face angle when left stick button is held
-    controller
+    driver
         .leftStick()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                () -> -driver.getLeftY(),
+                () -> -driver.getLeftX(),
                 () -> // Are we red?
                 DriverStation.getAlliance().isPresent()
                             && DriverStation.getAlliance().get() == Alliance.Red
@@ -404,7 +407,7 @@ public class RobotContainer {
     // controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when Back button is pressed
-    controller
+    driver
         .back()
         .onTrue(
             Commands.runOnce(
@@ -414,18 +417,17 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
-    controller.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
+    driver.back().onTrue(Commands.runOnce(() -> drive.resetGyro(0), drive));
+    driver.back().onTrue(Commands.runOnce(() -> climber.zeroClimb(), climber));
 
-    controller
+    driver
         .leftBumper()
         .whileTrue(
             new ConditionalCommand(
                     alignToScore(BranchLocation.LEFT, false),
                     alignThenScore(BranchLocation.LEFT),
                     () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+                .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))));
 
     // controller
     //     .leftStick()
@@ -444,47 +446,43 @@ public class RobotContainer {
     //             () -> isCloseToReef()));
     //
     // controller.rightBumper().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.RIGHT)));
-    controller
+    driver
         .rightBumper()
         .whileTrue(
             new ConditionalCommand(
                     alignToScore(BranchLocation.RIGHT, false),
                     alignThenScore(BranchLocation.RIGHT),
                     () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
+                .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))));
     //    controller.a().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
-    controller
+    driver
         .a()
         .whileTrue(
             new ConditionalCommand(
                     alignToScore(BranchLocation.CENTER, false),
                     alignThenScore(BranchLocation.CENTER),
                     () -> isCloseToReef())
-                .andThen(
-                    new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 1))));
-    controller
-        .a()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
+                .andThen(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 1))));
+    driver.a().onFalse(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)));
+    driver
         .rightBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
-    controller
+        .onFalse(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)));
+    driver
         .leftBumper()
-        .onFalse(new InstantCommand(() -> controller.setRumble(RumbleType.kBothRumble, 0)));
+        .onFalse(new InstantCommand(() -> driver.setRumble(RumbleType.kBothRumble, 0)));
     // controller.b().whileTrue(alignToTape().andThen(alignToScore(BranchLocation.LEFT)));
 
-    controller.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
-    controller.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    driver.pov(0).onTrue(new InstantCommand(() -> climber.setVoltage(-12)));
+    driver.pov(0).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
 
-    controller.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
-    controller.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
-    controller.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
-    controller.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
-    controller.leftTrigger().onTrue(Commands.runOnce(() -> groundAlgae.climb()));
+    driver.pov(180).onTrue(new InstantCommand(() -> climber.setVoltage(12)));
+    driver.pov(180).onFalse(new InstantCommand(() -> climber.setVoltage(0)));
+    driver.pov(270).whileTrue(DriveCommands.alignToReefFace(true, drive));
+    driver.pov(90).whileTrue(DriveCommands.alignToReefFace(false, drive));
+    driver.leftTrigger().onTrue(Commands.runOnce(() -> climber.setPosition(-76)));
+    driver.leftTrigger().onTrue(Commands.runOnce(() -> groundAlgae.climb()));
 
-    atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
+    // atariButton12.onTrue(Commands.runOnce(() -> elevator.resetEncoder()));
 
     // controller.b().whileTrue(alignToScore(BranchLocation.CENTER, false));
 
@@ -543,26 +541,28 @@ public class RobotContainer {
     // controller.x().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
     // COMPETITION CONTROLS BELOW
-    atariButton13.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
-    atariButton13.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
-    controller.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+    opRightStick.onTrue(superstructure.setGamepieceCommand(GamePiece.ALGAE));
+    opRightStick.onFalse(superstructure.setGamepieceCommand(GamePiece.CORAL));
 
-    atariButton1.onTrue(superstructure.setGoalCommand(Goal.STOW));
-    atariButton2.onTrue(superstructure.setGoalCommand(Goal.L1));
-    atariButton3.onTrue(superstructure.setGoalCommand(Goal.L2));
-    atariButton4.onTrue(superstructure.setGoalCommand(Goal.L3));
-    atariButton5.onTrue(superstructure.setGoalCommand(Goal.BARGE));
-    atariButton6.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    atariButton9.onTrue(superstructure.setGoalCommand(Goal.GROUND));
-    atariButton8.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    atariButton8.whileFalse(
+    driver.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
+
+    opLeftTrigger.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    opA.onTrue(superstructure.setGoalCommand(Goal.L1));
+    opX.onTrue(superstructure.setGoalCommand(Goal.L2));
+    opB.onTrue(superstructure.setGoalCommand(Goal.L3));
+    opY.onTrue(superstructure.setGoalCommand(Goal.L4));
+    opRightButton.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    opLeftButton.onTrue(superstructure.setGoalCommand(Goal.GROUND));
+
+    opRightButton.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+    opRightButton.whileFalse(
         new ConditionalCommand(
             new JiggleCoral(coral),
             new InstantCommand(() -> coral.stop()),
             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    atariButton7.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
-    atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
-    atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
+    opRightTrigger.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+    // atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
+    // atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
   }
 
   public boolean isCloseToReef() {

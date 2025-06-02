@@ -29,9 +29,8 @@ public class Superstructure extends SubsystemBase {
     L1,
     L2,
     L3,
+    L4,
     GROUND,
-    // PROCESSOR_AND_PRESTAGE,
-    BARGE,
     STAY_STILL,
     BACKSIDE_L1,
     LYNK_L1_READY,
@@ -266,7 +265,7 @@ public class Superstructure extends SubsystemBase {
         }
         break;
       }
-      case BARGE -> {
+      case L4 -> {
         if (GamePiece.CORAL.equals(getGamePiece())) {
           elevator.setTargetHeight(ElevatorGoal.L4_CORAL);
           windmill.setTargetPosition(WindmillGoal.L4_CORAL);

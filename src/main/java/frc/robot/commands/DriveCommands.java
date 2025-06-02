@@ -84,7 +84,7 @@ public class DriveCommands {
           // superstructure state
           Goal currentGoal = superstructure.getCurrentGoal();
           double speedScaleFactor;
-          if (currentGoal == Goal.BARGE || currentGoal == Goal.L3) {
+          if (currentGoal == Goal.L4 || currentGoal == Goal.L3) {
             speedScaleFactor = 0.75;
           } else {
             speedScaleFactor = 1;

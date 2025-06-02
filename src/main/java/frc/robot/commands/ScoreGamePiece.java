@@ -60,7 +60,7 @@ public class ScoreGamePiece extends Command {
 
       } else if (currentGoal.equals(Goal.L3)) {
         coral.runVolts(5);
-      } else if (currentGoal.equals(Goal.BARGE)) {
+      } else if (currentGoal.equals(Goal.L4)) {
         coral.runVolts(5);
       } else if (currentGoal.equals(Goal.COLLECT)) {
         coral.runVolts(4);
@@ -70,7 +70,7 @@ public class ScoreGamePiece extends Command {
 
         algae.setVoltageLauncher(4);
         algae.setVoltageHolding(-4);
-      } else if ((currentGoal.equals(Goal.BARGE))) {
+      } else if ((currentGoal.equals(Goal.L4))) {
         double shootingVolts =
             launcherMap.launcherMap.getInterpolated(
                     new InterpolatingDouble(FieldConstants.getNearestCage(drive.getPose())))

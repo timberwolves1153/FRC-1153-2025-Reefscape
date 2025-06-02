@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
     LYNK_L1_READY(0.25),
     LYNK_L1_SCORE(3.25),
     BACKSIDE_L1(0.25),
-    CLIMB(12);
+    CLIMB(13);
 
     private double heightInInches;
 

@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Hold Coral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right To Reef&Source C3A1 Path 1"

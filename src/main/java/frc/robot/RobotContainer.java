@@ -546,21 +546,21 @@ public class RobotContainer {
 
     driver.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 
-    opLeftTrigger.onTrue(superstructure.setGoalCommand(Goal.STOW));
+    opLeftStick.onTrue(superstructure.setGoalCommand(Goal.STOW));
     opA.onTrue(superstructure.setGoalCommand(Goal.L1));
     opX.onTrue(superstructure.setGoalCommand(Goal.L2));
     opB.onTrue(superstructure.setGoalCommand(Goal.L3));
     opY.onTrue(superstructure.setGoalCommand(Goal.L4));
-    opRightButton.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
-    opLeftButton.onTrue(superstructure.setGoalCommand(Goal.GROUND));
+    opRightTrigger.onTrue(superstructure.setGoalCommand(Goal.COLLECT));
+    opRightButton.onTrue(superstructure.setGoalCommand(Goal.GROUND));
 
-    opRightButton.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
-    opRightButton.whileFalse(
+    opLeftButton.whileTrue(new CollectGamePiece(coral, algae, groundAlgae, superstructure));
+    opLeftButton.whileFalse(
         new ConditionalCommand(
             new JiggleCoral(coral),
             new InstantCommand(() -> coral.stop()),
             () -> GamePiece.CORAL.equals(superstructure.getGamePiece())));
-    opRightTrigger.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
+    opLeftTrigger.whileTrue(new ScoreGamePiece(coral, algae, drive, superstructure));
     // atariButton10.onTrue(superstructure.setGoalCommand(Goal.BACKSIDE_L1));
     // atariButton14.onTrue(superstructure.setGoalCommand(Goal.LYNK_L1_READY));
   }

@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.094774590163934,
-        "y": 2.9101434426229513
+        "x": 4.75,
+        "y": 5.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.785836847387315,
-        "y": 3.12768303439853
+        "x": 5.616025403784439,
+        "y": 5.6
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.92889344262295,
-        "y": 4.360655737704918
+        "x": 6.9,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 7.010868579423728,
-        "y": 4.124477675754842
+        "x": 5.934074173710932,
+        "y": 5.758819045102521
       },
       "nextControl": {
-        "x": 6.6807565518917595,
-        "y": 5.075561405915458
+        "x": 7.865925826289068,
+        "y": 5.241180954897479
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.286577868852459,
-        "y": 5.139856557377049
+        "x": 6.571500000000001,
+        "y": 2.669749999999998
       },
       "prevControl": {
-        "x": 5.68053606993951,
-        "y": 5.093709836962882
+        "x": 7.071500000000001,
+        "y": 2.674624999999997
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,91 +46,27 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.763326226012786,
-      "rotationDegrees": -146.84577110105147
-    },
-    {
-      "waypointRelativePos": 1.2,
-      "rotationDegrees": -146.15761120715695
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 150.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "continue collecting",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": 0.10803511141120709,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "L3 Position"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Grab Algae Outer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Grab Algae Inner"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Barge Position",
-      "waypointRelativePos": 0.12424037812288512,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Barge Position"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Outer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Slow Algae Inner"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "shoot",
-      "waypointRelativePos": 0.7778528021607194,
+      "waypointRelativePos": 0.2,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Shoot Algae Inner"
+          "name": "Barge Position"
         }
       }
     },
     {
-      "name": "collect again",
-      "waypointRelativePos": 1.679945982444282,
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -139,7 +75,31 @@
             {
               "type": "named",
               "data": {
-                "name": "L3 Position"
+                "name": "Shoot Algae Inner"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer Slow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "L2 Algae Position",
+      "waypointRelativePos": 1.3,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "L2 Position"
               }
             },
             {
@@ -169,13 +129,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -123.69006752597976
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Center A4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 120.68147224143806
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": true
 }

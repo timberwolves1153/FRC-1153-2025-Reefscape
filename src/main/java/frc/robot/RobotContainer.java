@@ -287,6 +287,8 @@ public class RobotContainer {
         "Shoot Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(-6)));
     NamedCommands.registerCommand(
         "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer Slow", new InstantCommand(() -> algae.setVoltageLauncher(7)));
 
     NamedCommands.registerCommand(
         "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));

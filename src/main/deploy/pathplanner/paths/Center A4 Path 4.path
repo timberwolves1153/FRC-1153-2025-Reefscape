@@ -3,38 +3,73 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.4,
-        "y": 5.3
+        "x": 5.085,
+        "y": 2.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.4,
-        "y": 4.299999999999999
+        "x": 6.069807753012208,
+        "y": 2.72635182233307
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.085,
-        "y": 2.9
+        "x": 7.35,
+        "y": 4.4
       },
       "prevControl": {
-        "x": 6.964385241571817,
-        "y": 2.2159597133486617
+        "x": 7.523648177666931,
+        "y": 3.4151922469877922
+      },
+      "nextControl": {
+        "x": 7.219763866749802,
+        "y": 5.138605814759156
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.2,
+        "y": 5.2
+      },
+      "prevControl": {
+        "x": 5.84278760968654,
+        "y": 5.966044443118978
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -125.00000000000001
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.1,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Stow Position",
-      "waypointRelativePos": 0.3,
+      "name": "Barge Position",
+      "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -43,19 +78,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Stow Position"
+                "name": "Barge Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Stop Algae Outer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Stop Algae Inner"
+                "name": "Shoot Algae Outer Slow"
               }
             }
           ]
@@ -63,8 +92,19 @@
       }
     },
     {
+      "name": "Shoot",
+      "waypointRelativePos": 0.8,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Inner"
+        }
+      }
+    },
+    {
       "name": "L3 Algae Position",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 1.3,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -103,13 +143,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "Center A4",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

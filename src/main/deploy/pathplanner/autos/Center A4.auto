@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Hold Coral"
+            "name": "Intake Coral"
           }
         },
         {
@@ -23,40 +23,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.4
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stop Algae Outer"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Slow Algae Inner"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center A4 Path 2"
+            "name": "Auto Align Center Fast"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.3
           }
         },
         {
@@ -81,7 +56,81 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Center A4 Path 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.35
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Outer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Center A4 Path 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center Fast"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center A4 Path 4"
           }
         }
       ]

@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.7,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

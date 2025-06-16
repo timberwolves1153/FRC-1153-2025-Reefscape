@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.145,
-        "y": 1.915
+        "x": 3.8,
+        "y": 2.925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.050910869801083,
-        "y": 2.3786284834600373
+        "x": 4.147296355333861,
+        "y": 0.9553844939755838
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.025,
-        "y": 3.0
+        "x": 7.283634868421052,
+        "y": 4.563815789473684
       },
       "prevControl": {
-        "x": 5.404367359916552,
-        "y": 2.805431021695624
+        "x": 6.783634868421052,
+        "y": 3.6977903856892453
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,32 +33,37 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L3 Algae Position",
-      "waypointRelativePos": 0.25,
+      "name": "Barge Position",
+      "waypointRelativePos": 0.6,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "L3 Position"
+                "name": "Barge Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Grab Algae Outer"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Grab Algae Inner"
+                "name": "Shoot Algae Outer Slow"
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 0.9,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Inner"
         }
       }
     }
@@ -73,13 +78,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": "Center A4",
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": 180.0
+    "velocity": 0,
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

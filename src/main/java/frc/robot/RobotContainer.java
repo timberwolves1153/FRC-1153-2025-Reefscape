@@ -322,7 +322,7 @@ public class RobotContainer {
         "Auto Align Center", alignToScore(BranchLocation.CENTER, false).withTimeout(3));
 
     NamedCommands.registerCommand(
-        "Auto Align Center Fast", alignToScore(BranchLocation.CENTER, false).withTimeout(0.5));
+        "Auto Align Center Fast", alignToScore(BranchLocation.CENTER, false).withTimeout(0.3));
 
     NamedCommands.registerCommand(
         "Auto Align Right", alignToScore(BranchLocation.RIGHT, false).withTimeout(1.75));

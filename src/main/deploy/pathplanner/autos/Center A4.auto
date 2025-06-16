@@ -62,7 +62,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.35
+            "waitTime": 0.25
           }
         },
         {
@@ -131,6 +131,117 @@
           "type": "path",
           "data": {
             "pathName": "Center A4 Path 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center Fast"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center A4 Path 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Center Fast"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center A4 Path 6"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Algae Inner"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Mode"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow Position"
           }
         }
       ]

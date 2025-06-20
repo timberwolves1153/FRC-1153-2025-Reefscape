@@ -76,6 +76,7 @@ public class Windmill extends SubsystemBase implements AutoCloseable {
     L4_CORAL(-326.84),
     ALGAE_GROUND(-268.77),
     ALGAE_BARGE(-176.44),
+    AUTO_BARGE(-160),
     ALGAE_PRESTAGE(-43.5),
     LYNK_L1_READY(-230),
     LYNK_L1_SCORE(-230),

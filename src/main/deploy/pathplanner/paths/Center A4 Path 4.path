@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 5.16,
-        "y": 5.1
+        "x": 5.25,
+        "y": 5.25
       },
       "prevControl": {
-        "x": 5.80278760968654,
-        "y": 5.8660444431189775
+        "x": 5.89278760968654,
+        "y": 6.016044443118978
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.0,
-      "rotationDegrees": -125.00000000000001
+      "rotationDegrees": -130.0
     }
   ],
   "constraintZones": [],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 0.6,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -79,12 +79,25 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.85,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "parallel",
         "data": {
-          "name": "Shoot Algae Inner"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Inner"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer Slower"
+              }
+            }
+          ]
         }
       }
     },

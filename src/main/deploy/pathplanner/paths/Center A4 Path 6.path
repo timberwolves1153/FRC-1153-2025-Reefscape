@@ -63,7 +63,7 @@
       "command": {
         "type": "named",
         "data": {
-          "name": "Shoot Algae Inner"
+          "name": "Shoot Algae Outer"
         }
       }
     }
@@ -78,7 +78,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.99999999999999
+    "rotation": -130.0
   },
   "reversed": false,
   "folder": "Center A4",

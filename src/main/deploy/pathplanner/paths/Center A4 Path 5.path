@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.026025403784439,
-        "y": 5.6
+        "x": 5.867106781186548,
+        "y": 5.8071067811865476
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 6.9,
-        "y": 5.5
+        "y": 5.7
       },
       "prevControl": {
         "x": 5.934074173710932,
-        "y": 5.75881904510252
+        "y": 5.95881904510252
       },
       "nextControl": {
         "x": 7.865925826289068,
-        "y": 5.241180954897479
+        "y": 5.441180954897479
       },
       "isLocked": false,
       "linkedName": null
@@ -63,7 +63,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.0,
-      "rotationDegrees": 150.0
+      "rotationDegrees": 145.0
     }
   ],
   "constraintZones": [],
@@ -71,18 +71,7 @@
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.2,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Barge Position"
-        }
-      }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -91,16 +80,27 @@
             {
               "type": "named",
               "data": {
-                "name": "Shoot Algae Inner"
+                "name": "Barge Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Shoot Algae Outer Slow"
+                "name": "Shoot Algae Outer"
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot Algae Outer"
         }
       }
     },

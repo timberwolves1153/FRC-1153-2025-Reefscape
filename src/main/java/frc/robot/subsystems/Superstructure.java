@@ -30,6 +30,7 @@ public class Superstructure extends SubsystemBase {
     L2,
     L3,
     L4,
+    AUTO_BARGE,
     GROUND,
     STAY_STILL,
     BACKSIDE_L1,
@@ -284,6 +285,11 @@ public class Superstructure extends SubsystemBase {
         }
 
         break;
+      }
+      case AUTO_BARGE -> {
+        elevator.setTargetHeight(ElevatorGoal.ALGAE_BARGE);
+        windmill.setTargetPosition(WindmillGoal.AUTO_BARGE);
+        ;
       }
       case CLIMB -> {
         elevator.setTargetHeight(ElevatorGoal.CLIMB);

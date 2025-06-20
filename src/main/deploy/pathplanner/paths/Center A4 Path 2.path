@@ -34,12 +34,31 @@
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.3,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "parallel",
         "data": {
-          "name": "Barge Position"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Auto Barge Position"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Hold Algae Inner"
+              }
+            }
+          ]
         }
       }
     }

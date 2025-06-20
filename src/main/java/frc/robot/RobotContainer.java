@@ -281,6 +281,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
     NamedCommands.registerCommand(
+        "Hold Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(1)));
+    NamedCommands.registerCommand(
         "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
 
     NamedCommands.registerCommand(
@@ -289,6 +291,8 @@ public class RobotContainer {
         "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
     NamedCommands.registerCommand(
         "Shoot Algae Outer Slow", new InstantCommand(() -> algae.setVoltageLauncher(7)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer Slower", new InstantCommand(() -> algae.setVoltageLauncher(4)));
 
     NamedCommands.registerCommand(
         "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));
@@ -317,7 +321,9 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Barge Position",
         Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.L4), superstructure));
-
+    NamedCommands.registerCommand(
+        "Auto Barge Position",
+        Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.AUTO_BARGE), superstructure));
     NamedCommands.registerCommand(
         "Auto Align Center", alignToScore(BranchLocation.CENTER, false).withTimeout(3));
 

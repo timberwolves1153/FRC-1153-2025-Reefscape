@@ -281,8 +281,6 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Grab Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(6)));
     NamedCommands.registerCommand(
-        "Hold Algae Inner", new InstantCommand(() -> algae.setVoltageHolding(1)));
-    NamedCommands.registerCommand(
         "Grab Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(-6)));
 
     NamedCommands.registerCommand(
@@ -290,9 +288,13 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Shoot Algae Outer", new InstantCommand(() -> algae.setVoltageLauncher(12)));
     NamedCommands.registerCommand(
-        "Shoot Algae Outer Slow", new InstantCommand(() -> algae.setVoltageLauncher(7)));
+        "Shoot Algae Outer 10V", new InstantCommand(() -> algae.setVoltageLauncher(10)));
     NamedCommands.registerCommand(
-        "Shoot Algae Outer Slower", new InstantCommand(() -> algae.setVoltageLauncher(4)));
+        "Shoot Algae Outer 7V", new InstantCommand(() -> algae.setVoltageLauncher(7)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer 5.5V", new InstantCommand(() -> algae.setVoltageLauncher(5.5)));
+    NamedCommands.registerCommand(
+        "Shoot Algae Outer 4V", new InstantCommand(() -> algae.setVoltageLauncher(4)));
 
     NamedCommands.registerCommand(
         "Stow Position", Commands.runOnce(() -> superstructure.setAutoGoalCommand(Goal.STOW)));

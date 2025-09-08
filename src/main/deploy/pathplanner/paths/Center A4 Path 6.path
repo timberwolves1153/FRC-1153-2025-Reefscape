@@ -8,33 +8,38 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.147296355333861,
-        "y": 0.9553844939755838
+        "x": 4.051789857617048,
+        "y": 1.497028758132298
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.283634868421052,
-        "y": 4.563815789473684
+        "x": 7.0,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 6.783634868421052,
-        "y": 3.6977903856892453
+        "x": 6.53292915734689,
+        "y": 2.8405411486631733
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -165.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.4,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -43,27 +48,22 @@
             {
               "type": "named",
               "data": {
-                "name": "Barge Position"
+                "name": "Auto Barge Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Shoot Algae Outer Slow"
+                "name": "Shoot Algae Outer"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Slow Algae Inner"
               }
             }
           ]
-        }
-      }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.9,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Shoot Algae Outer"
         }
       }
     }
@@ -71,14 +71,14 @@
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1080.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -130.0
+    "rotation": -155.0
   },
   "reversed": false,
   "folder": "Center A4",

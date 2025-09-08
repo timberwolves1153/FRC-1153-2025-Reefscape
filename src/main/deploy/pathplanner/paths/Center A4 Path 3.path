@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.4,
+        "x": 7.0,
         "y": 5.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.4,
+        "x": 7.0,
         "y": 4.299999999999999
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.175,
-        "y": 2.75
+        "x": 4.95,
+        "y": 3.05
       },
       "prevControl": {
-        "x": 7.054385241571817,
-        "y": 2.065959713348662
+        "x": 6.196277948480155,
+        "y": 1.4857777411339217
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Stow Position",
+      "name": "L2 Position",
       "waypointRelativePos": 0.3,
       "endWaypointRelativePos": null,
       "command": {
@@ -43,7 +43,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Stow Position"
+                "name": "L2 Algae Position"
               }
             },
             {
@@ -64,7 +64,7 @@
     },
     {
       "name": "L3 Algae Position",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.55,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -96,8 +96,8 @@
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1080.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

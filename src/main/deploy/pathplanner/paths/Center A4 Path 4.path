@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 7.35,
+        "x": 7.0,
         "y": 4.4
       },
       "prevControl": {
-        "x": 7.523648177666931,
+        "x": 7.173648177666931,
         "y": 3.4151922469877922
       },
       "nextControl": {
-        "x": 7.219763866749802,
+        "x": 6.869763866749802,
         "y": 5.138605814759156
       },
       "isLocked": false,
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 5.25,
-        "y": 5.25
+        "x": 5.025,
+        "y": 4.95
       },
       "prevControl": {
-        "x": 5.89278760968654,
-        "y": 6.016044443118978
+        "x": 5.828484512108175,
+        "y": 5.907555553898723
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.0,
-      "rotationDegrees": -130.0
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [],
@@ -55,7 +55,7 @@
   "eventMarkers": [
     {
       "name": "Barge Position",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.3,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -64,13 +64,19 @@
             {
               "type": "named",
               "data": {
-                "name": "Barge Position"
+                "name": "Auto Barge Position"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "Shoot Algae Outer Slow"
+                "name": "Shoot Algae Outer 10V"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Slow Algae Inner"
               }
             }
           ]
@@ -79,25 +85,12 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 0.85,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "parallel",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Inner"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Algae Outer Slower"
-              }
-            }
-          ]
+          "name": "Shoot Algae Inner"
         }
       }
     },
@@ -135,8 +128,8 @@
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.5,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1080.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

@@ -39,7 +39,6 @@ import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.JiggleCoral;
 import frc.robot.commands.ScoreGamePiece;
-import frc.robot.commands.SwapPiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -555,7 +554,7 @@ public class RobotContainer {
     // controller.x().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
     // COMPETITION CONTROLS BELOW
-    opRightStick.onTrue(new SwapPiece(superstructure));
+    opRightStick.onTrue(superstructure.swapGamepieceCommand());
 
     driver.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 

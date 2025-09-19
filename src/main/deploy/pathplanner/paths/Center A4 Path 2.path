@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.15,
-        "y": 3.975
+        "x": 5.828442623935843,
+        "y": 4.150094917010436
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.0,
+        "x": 7.25,
         "y": 5.3
       },
       "prevControl": {
-        "x": 6.75,
-        "y": 5.3
+        "x": 7.071521202167486,
+        "y": 5.124941956128089
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Shoot Algae Outer 10V"
+                "name": "Shoot Algae Outer"
               }
             },
             {

@@ -121,6 +121,21 @@ public class Superstructure extends SubsystemBase {
             .value);
   }
 
+  private void swapGamepiece() {
+    if (currentGamePiece == GamePiece.ALGAE) {
+      currentGamePiece = GamePiece.CORAL;
+      setDefaultCommand(setGoalCommand(desiredGoal));
+    } else if (currentGamePiece == GamePiece.CORAL) {
+      currentGamePiece = GamePiece.ALGAE;
+      setDefaultCommand(setGoalCommand(desiredGoal));
+    } else {
+    }
+  }
+
+  public Command swapGamepieceCommand() {
+    return runOnce(() -> swapGamepiece()).withName("Superstructure Swap Gamepiece");
+  }
+
   @Override
   public void periodic() {
 

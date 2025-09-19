@@ -39,7 +39,6 @@ import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.JiggleCoral;
 import frc.robot.commands.ScoreGamePiece;
-import frc.robot.commands.SwapPiece;
 import frc.robot.data.BranchLocation;
 import frc.robot.data.DesiredReefPosition;
 import frc.robot.data.ReefMap;
@@ -141,6 +140,7 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+  private boolean position = true;
 
   private Map<DesiredReefPosition, Pose2d> reefmap = new ReefMap().getReefMap();
 
@@ -259,6 +259,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "reset gyro -176", new InstantCommand(() -> drive.resetGyro(-176.63)));
+    NamedCommands.registerCommand(
+        "reset gyro -155", new InstantCommand(() -> drive.resetGyro(-155.0)));
     NamedCommands.registerCommand(
         "reset gyro -155", new InstantCommand(() -> drive.resetGyro(-154.983)));
     NamedCommands.registerCommand("reset gyro 0", new InstantCommand(() -> drive.resetGyro(0)));
@@ -555,7 +557,8 @@ public class RobotContainer {
     // controller.x().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
     // COMPETITION CONTROLS BELOW
-    opRightStick.onTrue(new SwapPiece(superstructure));
+
+    opRightStick.onTrue(superstructure.swapGamepieceCommand());
 
     driver.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));
 

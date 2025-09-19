@@ -557,7 +557,6 @@ public class RobotContainer {
     // controller.x().onFalse(new InstantCommand(() -> algae.setVoltageLauncher(0)));
 
     // COMPETITION CONTROLS BELOW
-
     opRightStick.onTrue(superstructure.swapGamepieceCommand());
 
     driver.leftTrigger().onTrue(superstructure.setGoalCommand(Goal.CLIMB));

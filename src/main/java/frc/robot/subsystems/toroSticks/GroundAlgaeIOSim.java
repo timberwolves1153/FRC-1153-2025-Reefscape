@@ -18,7 +18,7 @@ public class GroundAlgaeIOSim implements GroundAlgaeIO {
     armSim =
         new SingleJointedArmSim(
             DCMotor.getNeo550(1),
-            0,
+            1,
             84368.260313,
             Units.inchesToMeters(22),
             Math.PI / 2,

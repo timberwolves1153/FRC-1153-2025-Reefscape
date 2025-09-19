@@ -89,6 +89,20 @@ public class Superstructure extends SubsystemBase {
     currentGamePiece = gamePiece; // Update the desired goal to be the new goal
   }
 
+  /*
+   * This will swap the game piece from ALGAE -> CORAL or CORAL -> ALGAE
+   * Should only be used when attempting to run the robot with an xbox controller
+   */
+  private void swapGamepiece() {
+    if (currentGamePiece == GamePiece.ALGAE) {
+      currentGamePiece = GamePiece.CORAL;
+    } else if (currentGamePiece == GamePiece.CORAL) {
+      currentGamePiece = GamePiece.ALGAE;
+    } else {
+      // Unknown current gamepiece state -- Do nothing
+    }
+  }
+
   public GamePiece getGamePiece() {
     return currentGamePiece;
   }
@@ -96,6 +110,10 @@ public class Superstructure extends SubsystemBase {
   public Command setGamepieceCommand(GamePiece gamePiece) {
     return startEnd(() -> setGamepiece(gamePiece), () -> setGamepiece(getGamePiece()))
         .withName("Superstructure Gamepiece" + gamePiece);
+  }
+
+  public Command swapGamepieceCommand() {
+    return runOnce(() -> swapGamepiece()).withName("Superstructure Swap Gamepiece");
   }
 
   public void setAutoGamepieceCommand(GamePiece gamePiece) {
